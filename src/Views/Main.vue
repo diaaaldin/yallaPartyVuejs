@@ -1,12 +1,55 @@
 <script>
 import { RouterView } from 'vue-router';
+import { ElLoading } from 'element-plus';
+
 import { mapState, mapGetters, mapActions } from "vuex";
 import pageFooter from '../components/footer.vue';
+import axios from "axios";
+
 
 export default {
     data() {
         return {
+            data: {
+                id: 0,
+                orderType: 0,
+                name: "",
+                nickName: "",
+                email: "",
+                mobile: "",
+                stateId: "",
+                cityId: "",
+                orderDate : null,
+                comunicationMethods: 0,
+                service: 0,
+                otherService:"",
+                moreInfo: "",
+                questionData: [],
+                birthdayOwnerName: "",
+                childrenServices: "",
+                totalPrice: 0
+            },
+            states: [], // Will hold the list of states
+            cities: [], // Will hold the list of cities for the selected state
 
+            selectedService: '', // To store the selected service
+            showOtherServiceText: false,
+            birthdayBookingFor : 0,
+            birthdayAgeGroup : 0,
+            childrenServices:[],
+
+            weddingQuestion: [],
+            engagementQuestion: [],
+            birthdayQuestion: [],
+            graduationQuestion: [],
+            specialQuestion: [],
+            jobApplicationQuestion: [],
+
+            userAnswers: {},
+            questions: [ /* your questions array */],
+            questionAnswers: {}, // For storing answers to text, radio, and date questions
+            selectedAnswers: {}, // For storing checkbox selections
+            questionData: [] // This will hold the final structured data
         }
     },
     components: {
@@ -14,32 +57,717 @@ export default {
         pageFooter,
     },
     mounted() {
+        //console.log("this.getQuestionsData : ", this.getQuestionsData);
+        // Initialize intl-tel-input on the input element
+        this.iti = window.intlTelInput(this.$refs.phoneInput1, {
+            initialCountry: "us",
+            strictMode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+        this.iti2 = window.intlTelInput(this.$refs.phoneInput2, {
+            initialCountry: "us",
+            strictMode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+        this.iti3 = window.intlTelInput(this.$refs.phoneInput3, {
+            initialCountry: "us",
+            strictMode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+        this.iti4 = window.intlTelInput(this.$refs.phoneInput4, {
+            initialCountry: "us",
+            strictMode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+        this.iti5 = window.intlTelInput(this.$refs.phoneInput5, {
+            initialCountry: "us",
+            strictMode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        this.organizeQuestions();
+        console.log("this.getChildrenServicesData : ",this.getChildrenServicesData);
+    },
+    beforeUnmount() {
+        // Properly destroy the instance when the component is unmounted
+        if (this.iti) {
+            this.iti.destroy();
+        }
+        if (this.iti2) {
+            this.iti2.destroy();
+        }
+        if (this.iti3) {
+            this.iti3.destroy();
+        }
+
+        if (this.iti4) {
+            this.iti4.destroy();
+        }
+
+        if (this.iti5) {
+            this.iti5.destroy();
+        }
+
 
     },
+
     created() {
+        this.fetchStates();
+
+
     },
 
     computed: {
-        ...mapGetters("Users", ["getUserLoginName"]),
+        ...mapGetters("Code", ["getQuestionsData", "getComunicationMethodsData", "getOrderServicesData" ,"getChildrenServicesData"]),
 
         GetUserName() {
-            const name = this.getUserLoginName;// just for loud this function again when name change
-            let userName = localStorage.getItem("userName");
+            let userName = localStorage.getItem("customerName");
             if (userName == null) {
                 return "";
             } else {
                 return userName;
             }
         },
-        goToProfileFunc(){
-            this.$router.push({ name: 'profileProfile' });
-        },
-        logOutFunc(){
-            this.$router.push({ name: 'main' });
-        }
+
     },
 
     methods: {
+        ...mapActions("Code", ["GetQuestionsData", "GetComunicationMethods", "GetOrderServices" , "GetChildrenServices"]),
+        ...mapActions("Orders", ["CreateOrder"]),
+        ...mapActions("Users", ["CustomerProfileInfo"]),
+
+        goToProfileFunc() {
+            if (!this.isTokenValid()) {
+                this.$router.push({ name: 'login' });
+            } else {
+                let Id = parseInt(localStorage.getItem("id"));
+                this.CustomerProfileInfo(Id).then(Response => {
+                    this.$router.push({ name: 'profileProfile' });
+                })
+            }
+        },
+        goToBookStore() {
+            this.$router.push({ name: 'bookStore' });
+        },
+        isTokenValid() {
+            const token = localStorage.getItem('token');
+            if (!token) return false;
+            // Example: check token expiration
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const currentTime = Math.floor(Date.now() / 1000);
+            return payload.exp > currentTime;
+        },
+        logoutFunc() {
+            localStorage.clear();
+            this.$router.push({ name: 'main' });
+            window.location.reload();
+        },
+
+        // Fetch the states from the API
+        async fetchStates() {
+            try {
+                const response = await axios.get("https://api.census.gov/data/2020/dec/pl?get=NAME&for=state:*", {
+                    withCredentials: false,
+                });
+                // API returns the first element as headers, so we slice it off
+                this.states = response.data;
+            } catch (error) {
+                console.error("Error fetching states:", error);
+            }
+        },
+
+        // Fetch cities based on the selected state
+        async fetchCities(stateId) {
+            try {
+                const response = await axios.get(
+                    `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`, {
+                    withCredentials: false,
+                });
+                this.cities = response.data;
+                console.log(this.cities);
+            } catch (error) {
+                console.error("Error fetching cities:", error);
+            }
+        },
+
+        weddingOrderCreate() {
+            this.data.orderType = 17;
+            this.saveWeddingAnswers();
+            console.log("this.data : ",this.data);
+            if (this.checkValidation()) {
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+                });
+
+                this.CreateOrder(this.data).then(Response => {
+                    console.log(Response);
+                    this.$moshaToast('Send order success', {
+                        hideProgressBar: 'false',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'success',
+                        timeout: 3000,
+                    });
+
+                    loading.close();
+                    $('#wedding_party').modal('hide');
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
+            }
+        },
+
+        engagementOrderCreate() {
+            this.data.orderType = 18;
+            this.saveEngagementAnswers();
+
+            if (this.checkValidation()) {
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+                });
+
+                this.CreateOrder(this.data).then(Response => {
+                    console.log(Response);
+                    this.$moshaToast('Send order success', {
+                        hideProgressBar: 'false',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'success',
+                        timeout: 3000,
+                    });
+
+                    loading.close();
+                    $('#engagement_parties').modal('hide');
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
+            }
+        },
+
+        birthdayOrderCreate() {
+            this.data.orderType = 19;
+            this.data.childrenServices = this.convertSelectedChildrenServicesToString();
+            this.saveBirthdayAnswers();
+
+            console.log("data : ", this.data);
+            if (this.checkValidation()) {
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+                });
+
+                this.CreateOrder(this.data).then(Response => {
+                    console.log(Response);
+                    this.$moshaToast('Send order success', {
+                        hideProgressBar: 'false',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'success',
+                        timeout: 3000,
+                    });
+
+                    loading.close();
+                    $('#birthday_parties').modal('hide');
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
+            }
+        },
+
+        graduationOrderCreate() {
+            this.data.orderType = 20;
+            this.saveGraduationAnswers();
+
+            console.log("data : ", this.data);
+            if (this.checkValidation()) {
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+                });
+
+                this.CreateOrder(this.data).then(Response => {
+                    console.log(Response);
+                    this.$moshaToast('Send order success', {
+                        hideProgressBar: 'false',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'success',
+                        timeout: 3000,
+                    });
+
+                    loading.close();
+                    $('#graduation_party').modal('hide');
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
+            }
+        },
+
+        specialOrderCreate() {
+            this.data.orderType = 21;
+            this.saveSpecialAnswers();
+
+            console.log("data : ", this.data);
+            if (this.checkValidation()) {
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+                });
+
+                this.CreateOrder(this.data).then(Response => {
+                    console.log(Response);
+                    this.$moshaToast('Send order success', {
+                        hideProgressBar: 'false',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'success',
+                        timeout: 3000,
+                    });
+
+                    loading.close();
+                    $('#special_occasions').modal('hide');
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
+            }
+        },
+        jobApplicationCreate() {
+            this.data.orderType = 23;
+            this.saveJobApplicationAnswers();
+
+            console.log("data : ", this.data);
+            if (this.checkJobApplicationValidation()) {
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+                });
+
+                this.CreateOrder(this.data).then(Response => {
+                    console.log(Response);
+                    this.$moshaToast('Send order success', {
+                        hideProgressBar: 'false',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'success',
+                        timeout: 3000,
+                    });
+
+                    loading.close();
+                    $('#special_occasions').modal('hide');
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
+            }
+        },
+
+        checkValidation() {
+            if (this.data.orderType == 0) {
+                this.$moshaToast("there are error comunicate with site manager", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.email.focus();
+                return false;
+            } else if (this.data.name.trim() == '') {
+                this.$moshaToast("enter name", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.email.focus();
+                return false;
+            } else if (this.data.nickName.trim() == '') {
+                this.$moshaToast("enter nickname", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.nickName.focus();
+                return false;
+            } else if (this.data.email.trim() == '') {
+                this.$moshaToast("enter email", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.mobile.trim() == '') {
+                this.$moshaToast("enter mobile", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            }
+
+            // else if (this.data.stateId.trim() == '') {
+            //     this.$moshaToast("select state", {
+            //         hideProgressBar: 'false',
+            //         position: 'top-center',
+            //         showIcon: 'true',
+            //         swipeClose: 'true',
+            //         type: 'warning',
+            //         timeout: 3000,
+            //     });
+            //     this.$refs.password.focus();
+            //     return false;
+            // } else if (this.data.cityId.trim() == '') {
+            //     this.$moshaToast("select city", {
+            //         hideProgressBar: 'false',
+            //         position: 'top-center',
+            //         showIcon: 'true',
+            //         swipeClose: 'true',
+            //         type: 'warning',
+            //         timeout: 3000,
+            //     });
+            //     this.$refs.password.focus();
+            //     return false;
+            // }
+
+            else if (this.data.orderDate == null) {
+                this.$moshaToast("enter party date", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.comunicationMethods == 0) {
+                this.$moshaToast("select comunication method", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            }
+
+            return true;
+        },
+
+        organizeQuestions() {
+            // Clear previous data
+            this.weddingQuestion = [];
+            this.engagementQuestion = [];
+            this.birthdayQuestion = [];
+            this.graduationQuestion = [];
+            this.specialQuestion = [];
+            this.jobApplicationQuestion=[];
+
+            // Iterate over questions and filter based on orderType
+            for (const question of this.getQuestionsData) {
+                switch (question.orderType) {
+                    case 17:
+                        this.weddingQuestion.push(question);
+                        break;
+                    case 18:
+                        this.engagementQuestion.push(question);
+                        break;
+                    case 19:
+                        this.birthdayQuestion.push(question);
+                        break;
+                    case 20:
+                        this.graduationQuestion.push(question);
+                        break;
+                    case 21:
+                        this.specialQuestion.push(question);
+                        break;
+                    case 23:
+                        this.jobApplicationQuestion.push(question);
+                        break;
+                    default:
+                        console.warn(`No array for orderType: ${question.orderType}`);
+                }
+            }
+
+        },
+
+        saveWeddingAnswers() {
+            // Clear the previous questionData
+            this.data.questionData = [];
+
+            // Loop through each question to build the questionData
+            for (const question of this.weddingQuestion) {
+                // Create a new entry for questionData
+                const questionEntry = {
+                    id: question.id, // Using the question ID
+                    question: question.questionName, // Using the question name
+                    answer: ""
+                };
+
+                questionEntry.answer = String(this.userAnswers[question.id] || '');
+
+
+                // Add the question entry to the questionData array
+                this.data.questionData.push(questionEntry);
+            }
+
+            console.log(this.data.questionData); // Display the collected data
+        },
+
+        saveEngagementAnswers() {
+            // Clear the previous questionData
+            this.data.questionData = [];
+
+            // Loop through each question to build the questionData
+            for (const question of this.engagementQuestion) {
+                // Create a new entry for questionData
+                const questionEntry = {
+                    id: question.id, // Using the question ID
+                    question: question.questionName, // Using the question name
+                    answer: ""
+                };
+
+
+                questionEntry.answer = this.userAnswers[question.id] || '';
+                // Add the question entry to the questionData array
+                this.data.questionData.push(questionEntry);
+            }
+
+            console.log(this.data.questionData); // Display the collected data
+        },
+
+        saveBirthdayAnswers() {
+            // Clear the previous questionData
+            this.data.questionData = [];
+
+            // Loop through each question to build the questionData
+            for (const question of this.birthdayQuestion) {
+                // Create a new entry for questionData
+                const questionEntry = {
+                    id: question.id, // Using the question ID
+                    question: question.questionName, // Using the question name
+                    answer: ""
+                };
+
+                questionEntry.answer = this.userAnswers[question.id] || '';
+                // Add the question entry to the questionData array
+                this.data.questionData.push(questionEntry);
+            }
+
+            console.log(this.data.questionData); // Display the collected data
+        },
+
+        saveGraduationAnswers() {
+            // Clear the previous questionData
+            this.data.questionData = [];
+            // Loop through each question to build the questionData
+            for (const question of this.graduationQuestion) {
+                // Create a new entry for questionData
+                const questionEntry = {
+                    id: question.id, // Using the question ID
+                    question: question.questionName, // Using the question name
+                    answer: ""
+                };
+
+                questionEntry.answer = this.userAnswers[question.id] || '';
+                // Add the question entry to the questionData array
+                this.data.questionData.push(questionEntry);
+            }
+
+            console.log(this.data.questionData); // Display the collected data
+        },
+
+        saveSpecialAnswers() {
+            // Clear the previous questionData
+            this.data.questionData = [];
+
+            // Loop through each question to build the questionData
+            for (const question of this.specialQuestion) {
+                // Create a new entry for questionData
+                const questionEntry = {
+                    id: question.id, // Using the question ID
+                    question: question.questionName, // Using the question name
+                    answer: ""
+                };
+
+                questionEntry.answer = this.userAnswers[question.id] || '';
+                // Add the question entry to the questionData array
+                this.data.questionData.push(questionEntry);
+            }
+
+            console.log(this.data.questionData); // Display the collected data
+        },
+        saveJobApplicationAnswers() {
+            // Clear the previous questionData
+            this.data.questionData = [];
+
+            // Loop through each question to build the questionData
+            for (const question of this.jobApplicationQuestion) {
+                // Create a new entry for questionData
+                const questionEntry = {
+                    id: question.id, // Using the question ID
+                    question: question.questionName, // Using the question name
+                    answer: ""
+                };
+
+                questionEntry.answer = this.userAnswers[question.id] || '';
+                // Add the question entry to the questionData array
+                this.data.questionData.push(questionEntry);
+            }
+
+            console.log(this.data.questionData); // Display the collected data
+        },
+
+        handleServiceChange() {
+            // If "Other services" is selected, clear the textarea
+            const selectedUser = this.getOrderServicesData.find(x => x.id === this.data.service);
+            // console.log("selectedUser :", selectedUser);
+            if (selectedUser) {
+                if (selectedUser.name.toLowerCase().includes('other')) {
+                    this.showOtherServiceText = true;
+                }else{
+                    this.data.otherService = '';
+                    this.showOtherServiceText = false;
+                }
+            }
+
+            this.showOtherServi
+            //console.log("this.selectedService : ", this.selectedService);
+        },
+
+        deleteChildrenService() {
+            // If "Other services" is selected, clear the textarea
+           this.childrenServices = [];
+        },
+
+        getCommaSeparatedAnswers(questionId) {
+            // Ensure userAnswers[questionId] is an array, otherwise use an empty array
+            const answers = Array.isArray(this.userAnswers[questionId]) ? this.userAnswers[questionId] : [];
+            return answers.join(', ');
+        },
+
+        handleCheckboxChange(questionId, answerName, event) {
+            // Ensure userAnswers[questionId] is an array
+            if (!this.userAnswers[questionId]) {
+                // Initialize it as an empty array if it's not defined or is not an array
+                this.userAnswers[questionId] = [];
+            } else if (typeof this.userAnswers[questionId] === 'string') {
+                // If it's a string, convert it back to an array
+                this.userAnswers[questionId] = this.userAnswers[questionId].split(', ').filter(Boolean);
+            }
+
+            // Add or remove the answer based on the checkbox state
+            if (event.target.checked) {
+                // Add the answer to the array if not already present
+                if (!this.userAnswers[questionId].includes(answerName)) {
+                    this.userAnswers[questionId].push(answerName);
+                }
+            } else {
+                // Remove the answer from the array
+                const index = this.userAnswers[questionId].indexOf(answerName);
+                if (index !== -1) {
+                    this.userAnswers[questionId].splice(index, 1);
+                }
+            }
+
+            // Convert the array to a comma-separated string
+            this.userAnswers[questionId] = this.userAnswers[questionId].join(', ');
+            //  console.log("this.userAnswers[questionId] : " , this.userAnswers[questionId]);
+        },
+
+        clearData() {
+                this.data.id = 0,
+                this.data.orderType = 0,
+                this.data.name = "",
+                this.data.nickName = "",
+                this.data.email = "",
+                this.data.mobile = "",
+                this.data.stateId = "",
+                this.data.cityId = "",
+                this.data.orderDate = null,
+                this.data.service = 0,
+                this.data.otherService = "",
+                this.data.comunicationMethods = 0,
+                this.data.moreInfo = "",
+                this.data.questionData = [],
+                this.data.childrenServices = "",
+                this.data.totalPrice = 0
+        },
+
+        convertSelectedChildrenServicesToString(){
+            return this.childrenServices.join(', ');
+        }
 
     }
 };
@@ -84,14 +812,19 @@ export default {
                             </li>
                         </ul>
 
-                        <ul
+                        <ul v-if="GetUserName == ''"
                             class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                             <li class="nav-item login">
-                                <router-link to="/login" type="button" class="px-3 py-2 align-items-center d-flex login-btn ">LOGIN</router-link>
+                                <router-link to="/login" type="button"
+                                    class="px-3 py-2 align-items-center d-flex login-btn ">LOGIN</router-link>
                             </li>
                             <li class="nav-item sign-up">
-                                <router-link to="/signUp" type="button" class="px-3 py-2 align-items-center d-flex login-btn ">SIGN UP</router-link>
+                                <router-link to="/signUp" type="button"
+                                    class="px-3 py-2 align-items-center d-flex login-btn ">SIGN UP</router-link>
                             </li>
+                        </ul>
+                        <ul v-else
+                            class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                             <li class="nav-item dropdown ms-2">
                                 <a href="log_in.html"
                                     class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
@@ -107,7 +840,7 @@ export default {
                                                 fill="#0B3D74"></path>
                                         </svg>
                                     </span>
-                                    Ahmad Mahmood
+                                    {{ GetUserName }}
                                 </a>
                                 <ul class="dropdown-menu user-ul" aria-labelledby="navbarDropdown">
                                     <li class="profile">
@@ -130,7 +863,7 @@ export default {
                                         </a>
                                     </li>
                                     <li class="log-out">
-                                        <a class="dropdown-item"  v-on:click="logOutFunc()">
+                                        <a class="dropdown-item" v-on:click="logoutFunc()">
                                             <span>
                                                 <svg width="24" height="24" viewBox="0 0 17 13" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -147,7 +880,6 @@ export default {
                                     </li>
                                 </ul>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -181,8 +913,8 @@ export default {
                                 <div class="col-lg-7 col-md-12 col-sm-12">
                                     <!--      start card link               -->
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div class="a1" data-bs-toggle="modal" data-bs-target="#wedding_party">
-                                            <a>
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#wedding_party">
+                                            <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
@@ -243,8 +975,8 @@ export default {
                                         </div>
                                     </div>
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div class="a1" data-bs-toggle="modal" data-bs-target="#engagement_parties">
-                                            <a>
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#engagement_parties">
+                                            <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
@@ -305,8 +1037,8 @@ export default {
                                         </div>
                                     </div>
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div class="a1" data-bs-toggle="modal" data-bs-target="#birthday_parties">
-                                            <a>
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#birthday_parties">
+                                            <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
@@ -367,8 +1099,8 @@ export default {
                                         </div>
                                     </div>
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div class="a1" data-bs-toggle="modal" data-bs-target="#wedding_party">
-                                            <a>
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#graduation_party">
+                                            <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
@@ -429,8 +1161,8 @@ export default {
                                         </div>
                                     </div>
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div class="a1" data-bs-toggle="modal" data-bs-target="#special_occasions">
-                                            <a>
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#special_occasions">
+                                            <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
@@ -491,8 +1223,8 @@ export default {
                                         </div>
                                     </div>
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div class="a1" data-bs-toggle="modal" data-bs-target="#equipmentreservation">
-                                            <a>
+                                        <div class="a1">
+                                            <a v-on:click="goToBookStore()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
@@ -597,9 +1329,10 @@ export default {
                                         nobis voluptate unde.
                                     </span>
                                     <div class="my-4">
-                                        <router-link to="/signUp" type="button" class="home-btn p-2"> Create Account </router-link> 
+                                        <router-link to="/signUp" type="button" class="home-btn p-2"> Create Account
+                                        </router-link>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -618,9 +1351,7 @@ export default {
     </div>
 
     <!--start footer section -->
-    <pageFooter>
-
-    </pageFooter>
+    <pageFooter> </pageFooter>
     <!--end footer section-->
 
     <!-- Modal -->
@@ -635,322 +1366,562 @@ export default {
                     <form action="" method="">
                         <label class=" label-form"> Name </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.name" type="text" class="form-control" placeholder="Username"
+                                aria-label="Username" aria-describedby="basic-addon1" required >
                         </div>
                         <label class=" label-form"> Nickname </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nickname" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.nickName" type="text" class="form-control" placeholder="Nickname"
+                                aria-label="Username" aria-describedby="basic-addon1" required >
                         </div>
-                        <label class=" label-form"> Phone Number </label>
+                        <label class=" label-form"> Mobile </label>
                         <div class="input-group mb-3">
-                            <input id="phone" type="tel" class="form-control" maxlength="10"
-                                placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1">
+                            <input v-model="data.mobile" id="phone" type="tel" ref="phoneInput1" class="form-control"
+                                maxlength="10" placeholder="(201) 555-0123" aria-label=""
+                                aria-describedby="basic-addon1" required>
+
                         </div>
                         <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Email" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> City </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="City" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.email" type="text" class="form-control" placeholder="Email"
+                                aria-label="Username" aria-describedby="basic-addon1" required >
                         </div>
                         <label class=" label-form"> State </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="State" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <select v-model="data.stateId" class="form-control" @change="fetchCities(data.stateId)">
+                                <option value="" key="" selected>-- select a state --</option>
+                                <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
                         </div>
-                        <label class=" label-form"> Event Date </label>
+                        <label class=" label-form"> City </label>
+                        <div class="input-group mb-3">
+                            <select v-model="data.cityId" class="form-control" :disabled="cities.length === 0">
+                                <option value="" key="" selected>-- select a city --</option>
+                                <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
+                        </div>
+                        <label class=" label-form"> Party date </label>
+                        <div class="input-group mb-3" >
+                                <input class="form-control" type="date" v-model="data.orderDate"
+                                    required />
+                        </div>
+                        <!-- <label class=" label-form"> Event Date </label>
                         <div class="input-group mb-3">
                             <input name="date" type="date" class="form-control mt-2 py-3 text-start text gray-inp "
                                 required="">
-                        </div>
-                        <label class=" label-form"> Would you like to communicate by email or phone? </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Phone Number
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Email
-                            </label>
-                        </div>
-                        <label class="label-form"> Type of service provided </label>
-                        <div class="input-group mb-3 checkbox">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckA-Z">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    A - Z
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="me" checked>
-                                <label class="form-check-label" for="me">
-                                    DJ
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="otherServicesCheckbox"
-                                    checked>
-                                <label class="form-check-label" for="otherServicesCheckbox">
-                                    Other services
-                                </label>
-                            </div>
-                        </div>
-                        <div id="otherServicesTextarea">
-                            <label class=" label-form">Enter other services you want</label>
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                        </div> -->
+                        <label class=" label-form"> Would you like to communicate by ? </label>
+
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
                             </div>
                         </div>
 
+                        <label class="label-form">Select the type of service provided</label>
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="rad" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            </div>
+                        </div>
+                        <!-- Textarea for "Other services" -->
+                        <div v-if="this.showOtherServiceText">
+                            <label class="label-form">Please specify other services:</label>
+                            <textarea class="form-control" v-model="data.otherService" rows="3"></textarea>
+                        </div>
+
+                        <div v-for="(question, index) in this.weddingQuestion" :key="question.id">
+                            <label class="label-form">{{ question.questionName }}</label>
+
+                            <div class="input-group mb-3" v-if="question.questionAnswerType === 'text'">
+                                <textarea class="form-control" type="text" v-model="userAnswers[question.id]"
+                                    :required="question.required"></textarea>
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'number'">
+                                <input class="form-control" type="number" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'date'">
+                                <input class="form-control" type="date" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'checkbox'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input name="amr" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + answer.id" :value="answer.answerName"
+                                        @change="handleCheckboxChange(question.id, answer.answerName, $event)" />
+                                    <label :for="'checkbox-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'radio'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input class="form-check-input" type="radio" :name="'radio-' + question.id"
+                                        :id="'radio-' + answer.id" :value="answer.answerName"
+                                        v-model="userAnswers[question.id]" :required="question.required" />
+                                    <label :for="'radio-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div v-if="question.required && !userAnswers[question.id]">
+                                <span class="text-danger">This question is required.</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" v-on:click="weddingOrderCreate()" class="btn btn-primary">Send order</button>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="engagement_parties" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Engagement Parties</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Engagement Party</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="" method="">
                         <label class=" label-form"> Name </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.name" type="text" class="form-control" placeholder="Username"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <label class=" label-form"> Nickname </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.nickName" type="text" class="form-control" placeholder="Nickname"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
-                        <label class=" label-form"> Phone Number </label>
+                        <label class=" label-form"> Mobile </label>
                         <div class="input-group mb-3">
-                            <input id="phone" type="tel" class="form-control" placeholder="(201) 555-0123"
-                                maxlength="10" aria-label="" aria-describedby="basic-addon1">
+                            <input v-model="data.mobile" id="phone" type="tel" ref="phoneInput2" class="form-control"
+                                maxlength="10" placeholder="(201) 555-0123" aria-label=""
+                                aria-describedby="basic-addon1" required>
+
                         </div>
-                        <label class=" label-form"> email </label>
+                        <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> City </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.email" type="text" class="form-control" placeholder="Email"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <label class=" label-form"> State </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <select v-model="data.stateId" class="form-control" @change="fetchCities(data.stateId)">
+                                <option value="" key="" selected>-- select a state --</option>
+                                <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
                         </div>
-                        <label class=" label-form"> Event Date </label>
+                        <label class=" label-form"> City </label>
                         <div class="input-group mb-3">
-                            <input name="date" type="date" class="form-control mt-2 py-3 text-start text gray-inp "
-                                required="">
+                            <select v-model="data.cityId" class="form-control" :disabled="cities.length === 0">
+                                <option value="" key="" selected>-- select a city --</option>
+                                <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
                         </div>
-                        <label class=" label-form"> Would you like to communicate by email or phone? </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Phone Number
-                            </label>
+                        <label class=" label-form"> Party date </label>
+                        <div class="input-group mb-3" >
+                                <input class="form-control" type="date" v-model="data.orderDate"
+                                    required />
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Email
-                            </label>
-                        </div>
-                        <label class="label-form"> Type of service provided </label>
-                        <div class="input-group mb-3 checkbox">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    A - Z
-                                </label>
-                            </div>
+                      
+                        <label class=" label-form"> Would you like to communicate by ? </label>
 
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    DJ
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="otherServicesCheckbox2"
-                                    checked>
-                                <label class="form-check-label" for="flexCheckChecked2">
-                                    Other services
-                                </label>
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
                             </div>
                         </div>
 
-                        <div id="">
-                            <label class=" label-form">Enter other services you want</label>
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                        <label class="label-form">Select the type of service provided</label>
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="rad" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
                             </div>
                         </div>
-
-                        <label class=" label-form"> Event location </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                home
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Wedding hall
-                            </label>
+                        <!-- Textarea for "Other services" -->
+                        <div v-if="this.showOtherServiceText">
+                            <label class="label-form">Please specify other services:</label>
+                            <textarea class="form-control" v-model="data.otherService" rows="3"></textarea>
                         </div>
 
+                        <div v-for="(question, index) in this.engagementQuestion" :key="question.id">
+                            <label class="label-form">{{ question.questionName }}</label>
 
+                            <div class="input-group mb-3" v-if="question.questionAnswerType === 'text'">
+                                <textarea class="form-control" type="text" v-model="userAnswers[question.id]"
+                                    :required="question.required"></textarea>
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'number'">
+                                <input class="form-control" type="number" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'date'">
+                                <input class="form-control" type="date" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'checkbox'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input name="amr" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + answer.id" :value="answer.answerName"
+                                        @change="handleCheckboxChange(question.id, answer.answerName, $event)" />
+                                    <label :for="'checkbox-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'radio'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input class="form-check-input" type="radio" :name="'radio-' + question.id"
+                                        :id="'radio-' + answer.id" :value="answer.answerName"
+                                        v-model="userAnswers[question.id]" :required="question.required" />
+                                    <label :for="'radio-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div v-if="question.required && !userAnswers[question.id]">
+                                <span class="text-danger">This question is required.</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" v-on:click="engagementOrderCreate()" class="btn btn-primary">Send
+                        order</button>
                 </div>
             </div>
         </div>
     </div>
+
+
     <div class="modal fade" id="birthday_parties" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Birthday Parties </h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Birthday Party </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="" method="">
                         <label class=" label-form"> Name </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.name" type="text" class="form-control" placeholder="Username"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <label class=" label-form"> Nickname </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nickname" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.nickName" type="text" class="form-control" placeholder="Nickname"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
-                        <label class=" label-form"> Phone Number </label>
+                        <label class=" label-form"> Mobile </label>
                         <div class="input-group mb-3">
-                            <input id="phone" type="tel" class="form-control" maxlength="10"
-                                placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1">
+                            <input v-model="data.mobile" id="phone" type="tel" ref="phoneInput3" class="form-control"
+                                maxlength="10" placeholder="(201) 555-0123" aria-label=""
+                                aria-describedby="basic-addon1" required>
+
                         </div>
                         <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Email" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> City </label>
-                        <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="City" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.email" type="text" class="form-control" placeholder="Email"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <label class=" label-form"> State </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="State" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <select v-model="data.stateId" class="form-control" @change="fetchCities(data.stateId)">
+                                <option value="" key="" selected>-- select a state --</option>
+                                <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
                         </div>
-                        <label class=" label-form"> Event Date </label>
+                        <label class=" label-form"> City </label>
                         <div class="input-group mb-3">
-                            <input name="date" type="date" class="form-control mt-2 py-3 text-start text gray-inp "
-                                required="">
+                            <select v-model="data.cityId" class="form-control" :disabled="cities.length === 0">
+                                <option value="" key="" selected>-- select a city --</option>
+                                <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
                         </div>
-                        <label class=" label-form"> Would you like to communicate by email or phone? </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Phone Number
-                            </label>
+                        <label class=" label-form"> Party date </label>
+                        <div class="input-group mb-3" >
+                                <input class="form-control" type="date" v-model="data.orderDate"
+                                    required />
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Email
-                            </label>
-                        </div>
-                        <label class="label-form"> Type of service provided </label>
-                        <div class="input-group mb-3 checkbox">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckA-Z">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    A - Z
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckdj" checked>
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    DJ
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="otherServicesCheckbox"
-                                    checked>
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    Other services
-                                </label>
-                            </div>
-                        </div>
-                        <div id="otherServicesTextarea">
-                            <label class=" label-form">Enter other services you want</label>
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                       
+                        <label class=" label-form"> Would you like to communicate by ? </label>
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
                             </div>
                         </div>
 
-                        <label class=" label-form"> Are you booking the person for yourself or someone else? </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="radioMe">
-                            <label class="form-check-label" for="radioMe">
-                                Me
-                            </label>
+                        <label class="label-form">Select the type of service provided</label>
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="rad" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="radioSomeoneElse"
-                                checked>
-                            <label class="form-check-label" for="radioSomeoneElse">
-                                Someone else
-                            </label>
+                        <!-- Textarea for "Other services" -->
+                        <div v-if="this.showOtherServiceText">
+                            <label class="label-form">Please specify other services:</label>
+                            <textarea class="form-control" v-model="data.otherService" rows="3"></textarea>
                         </div>
-                        <div id="someoneElseTextarea">
-                            <label class=" label-form">Enter other services you want</label>
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
+
+                        <label class="label-form">Are you booking the party for yourself or someone else?</label>
+                        <div class="mb-3">
+                            <div class="form-check" key="1">
+                                <input class="form-check-input" type="radio" name="bookfor" 
+                                id="1" value="1"  v-model="birthdayBookingFor" >
+                                <label class="form-check-label" for="1"> My self </label>
+                            </div>
+                            <div class="form-check" key="1">
+                                <input class="form-check-input" type="radio" name="bookfor" 
+                                id="2" value="2"  v-model="birthdayBookingFor" >
+                                <label class="form-check-label" for="2"> Someone else </label>
+                            </div>
+                        </div>
+
+                        <div v-if="this.birthdayBookingFor == 2" >
+                            <label class="label-form">Birthday owner's name</label>
+                            <input v-model="data.birthdayOwnerName" type="text" class="form-control" placeholder="Birthday owner's name"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <label v-if="this.birthdayBookingFor == 2" class="label-form">What is his age group?</label>
+                        <div  class="mb-3" v-if="this.birthdayBookingFor == 2" >
+                            <div class="form-check" >
+                                <input class="form-check-input" type="radio" name="ageGroup" 
+                                id="11" value="11"  v-model="birthdayAgeGroup" >
+                                <label class="form-check-label" for="11"> Child </label>
+                            </div>
+                            <div class="form-check" v-on:click="deleteChildrenService()" >
+                                <input class="form-check-input" type="radio" name="ageGroup" 
+                                id="22" value="22"  v-model="birthdayAgeGroup" >
+                                <label class="form-check-label" for="22" > Adult </label>
+                            </div>
+                        </div>
+
+                        <label v-if="this.birthdayAgeGroup == 11" class="label-form">Services provided to children</label>
+                        <div v-if="this.birthdayAgeGroup == 11" class="mb-3">
+                            <div class="form-check" v-for="service in this.getChildrenServicesData" :key="service.id">
+                                    <input name="childrenService" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + service.id" :value="service.id"
+                                        v-model="childrenServices" />
+                                    <label :for="'checkbox-' + service.id">{{ service.name }}</label>
+                            </div>
+                        </div>
+
+                        <div v-for="(question, index) in this.birthdayQuestion" :key="question.id">
+                            <label class="label-form">{{ question.questionName }}</label>
+
+                            <div class="input-group mb-3" v-if="question.questionAnswerType === 'text'">
+                                <textarea class="form-control" type="text" v-model="userAnswers[question.id]"
+                                    :required="question.required"></textarea>
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'number'">
+                                <input class="form-control" type="number" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'date'">
+                                <input class="form-control" type="date" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'checkbox'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input name="amr" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + answer.id" :value="answer.answerName"
+                                        @change="handleCheckboxChange(question.id, answer.answerName, $event)" />
+                                    <label :for="'checkbox-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'radio'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input class="form-check-input" type="radio" :name="'radio-' + question.id"
+                                        :id="'radio-' + answer.id" :value="answer.answerName"
+                                        v-model="userAnswers[question.id]" :required="question.required" />
+                                    <label :for="'radio-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div v-if="question.required && !userAnswers[question.id]">
+                                <span class="text-danger">This question is required.</span>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" v-on:click="birthdayOrderCreate()" class="btn btn-primary">Send order</button>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="graduation_party" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Graduation Party </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="">
+                        <label class=" label-form"> Name </label>
+                        <div class="input-group mb-3">
+                            <input v-model="data.name" type="text" class="form-control" placeholder="Username"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <label class=" label-form"> Nickname </label>
+                        <div class="input-group mb-3">
+                            <input v-model="data.nickName" type="text" class="form-control" placeholder="Nickname"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <label class=" label-form"> Mobile </label>
+                        <div class="input-group mb-3">
+                            <input v-model="data.mobile" id="phone" type="tel" ref="phoneInput4" class="form-control"
+                                maxlength="10" placeholder="(201) 555-0123" aria-label=""
+                                aria-describedby="basic-addon1" required>
+
+                        </div>
+                        <label class=" label-form"> Email </label>
+                        <div class="input-group mb-3">
+                            <input v-model="data.email" type="text" class="form-control" placeholder="Email"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <label class=" label-form"> State </label>
+                        <div class="input-group mb-3">
+                            <select v-model="data.stateId" class="form-control" @change="fetchCities(data.stateId)">
+                                <option value="" key="" selected>-- select a state --</option>
+                                <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
+                        </div>
+                        <label class=" label-form"> City </label>
+                        <div class="input-group mb-3">
+                            <select v-model="data.cityId" class="form-control" :disabled="cities.length === 0">
+                                <option value="" key="" selected>-- select a city --</option>
+                                <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
+                        </div>
+                        <label class=" label-form"> Party date </label>
+                        <div class="input-group mb-3" >
+                                <input class="form-control" type="date" v-model="data.orderDate"
+                                    required />
+                        </div>
+                      
+                        <label class=" label-form"> Would you like to communicate by ? </label>
+
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            </div>
+                        </div>
+
+                        <label class="label-form">Select the type of service provided</label>
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="rad" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            </div>
+                        </div>
+                        <!-- Textarea for "Other services" -->
+                        <div v-if="this.showOtherServiceText">
+                            <label class="label-form">Please specify other services:</label>
+                            <textarea class="form-control" v-model="data.otherService" rows="3"></textarea>
+                        </div>
+
+                        <div v-for="(question, index) in this.graduationQuestion" :key="question.id">
+                            <label class="label-form">{{ question.questionName }}</label>
+                            <div class="input-group mb-3" v-if="question.questionAnswerType === 'text'">
+                                <textarea class="form-control" type="text" v-model="userAnswers[question.id]"
+                                    :required="question.required"></textarea>
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'number'">
+                                <input class="form-control" type="number" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'date'">
+                                <input class="form-control" type="date" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'checkbox'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input name="amr" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + answer.id" :value="answer.answerName"
+                                        @change="handleCheckboxChange(question.id, answer.answerName, $event)" />
+                                    <label :for="'checkbox-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'radio'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input class="form-check-input" type="radio" :name="'radio-' + question.id"
+                                        :id="'radio-' + answer.id" :value="answer.answerName"
+                                        v-model="userAnswers[question.id]" :required="question.required" />
+                                    <label :for="'radio-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div v-if="question.required && !userAnswers[question.id]">
+                                <span class="text-danger">This question is required.</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" v-on:click="graduationOrderCreate()" class="btn btn-primary">Send
+                        order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="modal fade" id="special_occasions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -962,376 +1933,125 @@ export default {
                     <form action="" method="">
                         <label class=" label-form"> Name </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.name" type="text" class="form-control" placeholder="Username"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <label class=" label-form"> Nickname </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nickname" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.nickName" type="text" class="form-control" placeholder="Nickname"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
-                        <label class=" label-form"> Phone Number </label>
+                        <label class=" label-form"> Mobile </label>
                         <div class="input-group mb-3">
-                            <input id="phone" type="tel" class="form-control" maxlength="10"
-                                placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1">
+                            <input v-model="data.mobile" id="phone" type="tel" ref="phoneInput5" class="form-control"
+                                maxlength="10" placeholder="(201) 555-0123" aria-label=""
+                                aria-describedby="basic-addon1" required>
+
                         </div>
                         <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Email" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> City </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="City" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="data.email" type="text" class="form-control" placeholder="Email"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <label class=" label-form"> State </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="State" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <select v-model="data.stateId" class="form-control" @change="fetchCities(data.stateId)">
+                                <option value="" key="" selected>-- select a state --</option>
+                                <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
                         </div>
-                        <label class=" label-form"> Event Date </label>
+                        <label class=" label-form"> City </label>
                         <div class="input-group mb-3">
-                            <input name="date" type="date" class="form-control mt-2 py-3 text-start text gray-inp "
-                                required="">
+                            <select v-model="data.cityId" class="form-control" :disabled="cities.length === 0">
+                                <option value="" key="" selected>-- select a city --</option>
+                                <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
+                                    {{ item[0] }}
+                                </option>
+                            </select>
                         </div>
-                        <label class=" label-form"> Would you like to communicate by email or phone? </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Phone Number
-                            </label>
+                        <label class=" label-form"> Party date </label>
+                        <div class="input-group mb-3" >
+                                <input class="form-control" type="date" v-model="data.orderDate"
+                                    required />
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Email
-                            </label>
-                        </div>
-                        <label class="label-form"> Type of service provided </label>
-                        <div class="input-group mb-3 checkbox">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckA-Z">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    A - Z
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="me" checked>
-                                <label class="form-check-label" for="me">
-                                    DJ
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="" checked>
-                                <label class="form-check-label" for="">
-                                    Other services
-                                </label>
-                            </div>
-                        </div>a
-                        <div id="#">
-                            <label class=" label-form">Enter other services you want</label>
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                       
+                        <label class=" label-form"> Would you like to communicate by ? </label>
+
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
                             </div>
                         </div>
 
+                        <label class="label-form">Select the type of service provided</label>
+                        <div class="mb-3">
+                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                <input class="form-check-input" type="radio" name="rad" 
+                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            </div>
+                        </div>
+                        <!-- Textarea for "Other services" -->
+                        <div v-if="this.showOtherServiceText">
+                            <label class="label-form">Please specify other services:</label>
+                            <textarea class="form-control" v-model="data.otherService" rows="3"></textarea>
+                        </div>
+
+                        <div v-for="(question, index) in this.specialQuestion" :key="question.id">
+                            <label class="label-form">{{ question.questionName }}</label>
+
+                            <div class="input-group mb-3" v-if="question.questionAnswerType === 'text'">
+                                <textarea class="form-control" type="text" v-model="userAnswers[question.id]"
+                                    :required="question.required"></textarea>
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'number'">
+                                <input class="form-control" type="number" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class="input-group mb-3" v-else-if="question.questionAnswerType === 'date'">
+                                <input class="form-control" type="date" v-model="userAnswers[question.id]"
+                                    :required="question.required" />
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'checkbox'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input name="amr" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + answer.id" :value="answer.answerName"
+                                        @change="handleCheckboxChange(question.id, answer.answerName, $event)" />
+                                    <label :for="'checkbox-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div class=" mb-3" v-else-if="question.questionAnswerType === 'radio'">
+                                <div class="form-check" v-for="answer in question.answers" :key="answer.id">
+                                    <input class="form-check-input" type="radio" :name="'radio-' + question.id"
+                                        :id="'radio-' + answer.id" :value="answer.answerName"
+                                        v-model="userAnswers[question.id]" :required="question.required" />
+                                    <label :for="'radio-' + answer.id">{{ answer.answerName }}</label>
+                                </div>
+                            </div>
+
+                            <div v-if="question.required && !userAnswers[question.id]">
+                                <span class="text-danger">This question is required.</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" v-on:click="specialOrderCreate()" class="btn btn-primary">Send order</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="equipmentreservation" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Equipment Reservation</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="" method="">
-                        <label class=" label-form"> Name </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Nickname </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nickname" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Phone Number </label>
-                        <div class="input-group mb-3">
-                            <input id="phone" type="tel" class="form-control" maxlength="10"
-                                placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Email </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Email" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> City </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="City" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> State </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="State" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Event Date </label>
-                        <div class="input-group mb-3">
-                            <input name="date" type="date" class="form-control mt-2 py-3 text-start text gray-inp "
-                                required="">
-                        </div>
-                        <label class=" label-form"> Would you like to communicate by email or phone? </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Phone Number
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Email
-                            </label>
-                        </div>
-                        <label class="label-form"> Type of service provided </label>
-                        <div class="input-group mb-3 checkbox">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckA-Z">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    A - Z
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="me" checked>
-                                <label class="form-check-label" for="me">
-                                    DJ
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="" checked>
-                                <label class="form-check-label" for="">
-                                    Other services
-                                </label>
-                            </div>
-                        </div>a
-                        <div id="#">
-                            <label class=" label-form">Enter other services you want</label>
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
-                            </div>
-                        </div>
 
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="othersection" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Other Section</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="" method="">
-                        <label class=" label-form"> Name </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Nickname </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nickname" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Phone Number </label>
-                        <div class="input-group mb-3">
-                            <input id="phone" type="tel" class="form-control" maxlength="10"
-                                placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Email </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Email" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> City </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="City" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> State </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="State" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Event Date </label>
-                        <div class="input-group mb-3">
-                            <input name="date" type="date" class="form-control mt-2 py-3 text-start text gray-inp "
-                                required="">
-                        </div>
-                        <label class=" label-form"> Would you like to communicate by email or phone? </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Phone Number
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Email
-                            </label>
-                        </div>
-                        <label class="label-form"> Type of service provided </label>
-                        <div class="input-group mb-3 checkbox">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckA-Z">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    A - Z
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="me" checked>
-                                <label class="form-check-label" for="me">
-                                    DJ
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="" checked>
-                                <label class="form-check-label" for="">
-                                    Other services
-                                </label>
-                            </div>
-                        </div>a
-                        <div id="#">
-                            <label class=" label-form">Enter other services you want</label>
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
-                            </div>
-                        </div>
 
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="work_with" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Work with Yalla Party</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="" method="">
-                        <label class=" label-form"> Name </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Nickname </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nickname" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Phone Number </label>
-                        <div class="input-group mb-3">
-                            <input id="phone" type="tel" class="form-control" maxlength="10"
-                                placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Email </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Email" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> City </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="City" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> State </label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="State" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Event Date </label>
-                        <div class="input-group mb-3">
-                            <input name="date" type="date" class="form-control mt-2 py-3 text-start text gray-inp "
-                                required="">
-                        </div>
-                        <label class=" label-form"> Would you like to communicate by email or phone? </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Phone Number
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Email
-                            </label>
-                        </div>
-                        <label class="label-form"> Type of service provided </label>
-                        <div class="input-group mb-3 checkbox">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckA-Z">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    A - Z
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="me" checked>
-                                <label class="form-check-label" for="me">
-                                    DJ
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="" checked>
-                                <label class="form-check-label" for="">
-                                    Other services
-                                </label>
-                            </div>
-                        </div>a
-                        <div id="#">
-                            <label class=" label-form">Enter other services you want</label>
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </template>
 

@@ -8,9 +8,8 @@
   <title>Yalla Party</title>
 
   <link rel="stylesheet" href="./src/assets/fonts/stylesheet.css" />
-  <!-- cdn for mobile input  -->
+  <link rel="stylesheet" type="text/css" href="jquery.fancybox.min.css">
 
-  <!-- font awesome files -->
   <link rel="stylesheet" href="./src/assets/css/all.css" />
   <link rel="stylesheet" href="./src/assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="./src/assets/css/slick.css" />
@@ -21,6 +20,7 @@
   <link rel="stylesheet" href="./src/assets/css/line-awesome.min.css" />
   <link rel="stylesheet" href="./src/assets/css/fontawesome.min.css" />
   <link rel="stylesheet" href="./src/assets/css/font_awesome_eye.css">
+  <link rel="stylesheet" href="./src/assets/css/fancy.css" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/css/intlTelInput.css">
   <!-- link font -->
@@ -42,10 +42,19 @@
   <script src="./js/jquery.min.js"></script>
   <script src="./js/all.min.js"></script>
   <script src="./js/fontawesome.min.js"></script>
+
   <script src="./js/bootstrap.bundle.min.js"></script>
   <script src="./js/slick.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/intlTelInput.min.js"></script>
+  <script src="./js/lib/fancy.js"></script>
 
+  <script>
+    Fancybox.bind('#gallery a', {
+      groupAll: true,
+    });
+  </script>
+
+<!-- 
   <script>
     const togglePassword = document.querySelectorAll('.togglePassword');
     const password = document.querySelectorAll('.id_password');
@@ -59,16 +68,16 @@
         // toggle the eye slash icon
         this.classList.toggle('fa-eye-slash');
       })}}
-  </script>
-  <script>
+  </script> -->
+  <!-- <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
       initialCountry: "us",
       strictMode: true,
       utilsScript: "/intl-tel-input/js/utils.js?1727952657388"
     });
-  </script>
-<script>
+  </script> -->
+<!-- <script>
   document.getElementById('otherServicesCheckbox').addEventListener('change', function() {
     var textarea = document.getElementById('otherServicesTextarea');
     
@@ -79,14 +88,13 @@
       textarea.style.display = 'none'; // Hide textarea
     }
   });
-</script>
-<script>
+</script> -->
+<!-- <script>
   // Function to handle radio button change
   function handleBookingForChange() {
     var radioMe = document.getElementById('radioMe');
     var radioSomeoneElse = document.getElementById('radioSomeoneElse');
     var textarea = document.getElementById('someoneElseTextarea');
-    
     // Show textarea if "Someone else" is selected, otherwise hide it
     if (radioSomeoneElse.checked) {
       textarea.style.display = 'block'; // Show textarea
@@ -97,7 +105,7 @@
   // Add event listeners to both radio buttons
   document.getElementById('radioMe').addEventListener('change', handleBookingForChange);
   document.getElementById('radioSomeoneElse').addEventListener('change', handleBookingForChange);
-</script>
+</script> -->
 
   <script type="module" src="/src/main.js"></script>
 </body>

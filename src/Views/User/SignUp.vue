@@ -2,6 +2,7 @@
 import { ElLoading } from 'element-plus';
 import { RouterView } from 'vue-router';
 import { mapState, mapGetters, mapActions } from "vuex";
+import axios from "axios";
 
 
 export default {
@@ -15,64 +16,108 @@ export default {
 
     data() {
         return {
-            user: {
+            data: {
+                id: 0,
+                name: "",
+                nickName: "",
                 email: "",
+                mobile: "",
+                stateId: "",
+                cityId: "",
+                address: "",
                 password: "",
+                confirmPassword: "",
+                userTypeCFK: 0,
+                zipCode: ""
             },
+
+            states: [], // Will hold the list of states
+            cities: [], // Will hold the list of cities for the selected state
         }
     },
     created() {
-        localStorage.clear();
+        this.fetchStates();
+
+        //localStorage.clear();
     },
 
+    mounted() {
+        // Initialize intl-tel-input on the input element
+        this.iti = window.intlTelInput(this.$refs.phoneInput, {
+            initialCountry: "us",
+            strictMode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+    },
+    beforeUnmount() {
+        // Properly destroy the instance when the component is unmounted
+        if (this.iti) {
+            this.iti.destroy();
+        }
+    },
 
     computed: {
         //...mapState("cart", ["cart"]),
     },
 
     methods: {
-        ...mapActions("Users", ["getLogin"]),
-        getLoginfunc() {
+        ...mapActions("Users", ["CustomerSignUp"]),
+        getSignUpfunc() {
 
             if (this.checkValidation()) {
 
-                // const loading = ElLoading.service({
-                // 	lock: true,
-                // 	background: 'rgba(0, 0, 0, 0.7)',
-                // 	text: "",
-                // });
-                this.$router.push('/main');
-                // this.getLogin(this.user).then(Response => {
-                // 	console.log(Response);
-                // 	this.$moshaToast('Login Success', {
-                // 		hideProgressBar: 'false',
-                // 		showIcon: 'true',
-                // 		swipeClose: 'true',
-                // 		type: 'success',
-                // 		timeout: 3000,
-                // 	});
-                // 	loading.close();
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+                });
+
+                this.CustomerSignUp(this.data).then(Response => {
+                    console.log(Response);
+                    this.$moshaToast('Login Success', {
+                        hideProgressBar: 'false',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'success',
+                        timeout: 3000,
+                    });
 
 
-                // }).catch(error => {
+                    localStorage.setItem('customerName', JSON.parse(JSON.stringify(Response.name)));
+                    localStorage.setItem('customerNickName', JSON.parse(JSON.stringify(Response.nickName)));
 
-                // 	this.$moshaToast(error.response.data.message, {
-                // 		hideProgressBar: 'false',
-                // 		position: 'top-center',
-                // 		showIcon: 'true',
-                // 		swipeClose: 'true',
-                // 		type: 'warning',
-                // 		timeout: 3000,
-                // 	});
-                // 	loading.close();
-                // });
+                    localStorage.setItem("token", JSON.stringify(Response.token));
+                    Response.token = "";
+                    localStorage.setItem('id', JSON.parse(JSON.stringify(Response.id)));
+                    localStorage.setItem('email', JSON.parse(JSON.stringify(Response.email)));
+                    localStorage.setItem('parentId', JSON.parse(JSON.stringify(Response.parentId)));
+                    localStorage.setItem('userTypeId', JSON.parse(JSON.stringify(Response.userTypeId)));
+                    localStorage.setItem('typeName', JSON.parse(JSON.stringify(Response.typeName)));
+
+                    console.log("Register data : ", Response);
+                    loading.close();
+                    this.$router.push({ name: 'main' });
+
+
+                }).catch(error => {
+
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
             }
 
         },
 
         checkValidation() {
-            if (this.user.email.trim() == '') {
-                this.$moshaToast("أدخل الإيميل", {
+            if (this.data.name.trim() == '') {
+                this.$moshaToast("enter name", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -81,10 +126,20 @@ export default {
                     timeout: 3000,
                 });
                 this.$refs.email.focus();
-                return;
-            }
-            if (this.user.password.trim() == '') {
-                this.$moshaToast("أدخل كلمة المرور", {
+                return false;
+            } else if (this.data.nickName.trim() == '') {
+                this.$moshaToast("enter nickname", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.nickName.focus();
+                return false;
+            } else if (this.data.email.trim() == '') {
+                this.$moshaToast("enter email", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -93,10 +148,115 @@ export default {
                     timeout: 3000,
                 });
                 this.$refs.password.focus();
-                return;
+                return false;
+            } else if (this.data.mobile.trim() == '') {
+                this.$moshaToast("enter mobile", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.stateId.trim() == '') {
+                this.$moshaToast("select state", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.cityId.trim() == '') {
+                this.$moshaToast("select city", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.zipCode.trim() == '') {
+                this.$moshaToast("enter zip code", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.password.trim() == '') {
+                this.$moshaToast("enter password", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.confirmPassword.trim() == '') {
+                this.$moshaToast("enter confirmPassword", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.password != this.data.confirmPassword) {
+                this.$moshaToast("confirm password not equal password", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
             }
             return true;
-        }
+        },
+
+        // Fetch the states from the API
+        async fetchStates() {
+            try {
+                const response = await axios.get("https://api.census.gov/data/2020/dec/pl?get=NAME&for=state:*", {
+                    withCredentials: false,
+                });
+                // API returns the first element as headers, so we slice it off
+                this.states = response.data;
+                console.log("this.states : ", this.states);
+            } catch (error) {
+                console.error("Error fetching states:", error);
+            }
+        },
+
+        // Fetch cities based on the selected state
+        async fetchCities(stateId) {
+            try {
+                const response = await axios.get(
+                    `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`, {
+                    withCredentials: false,
+                });
+                this.cities = response.data;
+                console.log(this.cities);
+            } catch (error) {
+                console.error("Error fetching cities:", error);
+            }
+        },
     },
 }
 </script>
@@ -121,34 +281,67 @@ export default {
                                 <form class="mt-4">
                                     <label class="text">Name</label>
                                     <br>
-                                    <input name="name" type="text"
+                                    <input v-model="data.name" ref="name" name="name" type="text"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp " placeholder="Name"
                                         required>
                                     <label class="text">Nickname</label>
                                     <br>
-                                    <input name="nickname" type="text"
+                                    <input v-model="data.nickName" ref="nickName" name="nickname" type="text"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
                                         placeholder="Nickname" required>
                                     <label class="text">Email</label>
                                     <br>
-                                    <input name="email" type="email"
+                                    <input v-model="data.email" ref="email" name="email" type="email"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
                                         placeholder="email" required>
 
+                                    <label class="text">Mobile</label>
+                                    <br>
+                                    <input v-model="data.mobile" name="mobile" id="phone" type="tel" ref="phoneInput"
+                                        class="form-control my-3 py-3 text-start gray_text gray-inp " maxlength="10"
+                                        placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
+                                        required>
+
+
+
+
+                                    <label class="text">State</label>
+                                    <br>
+                                    <select v-model="data.stateId"
+                                        class="form-control my-3 py-3 text-start gray_text gray-inp"
+                                        @change="fetchCities(data.stateId)">
+                                        <option value="" key="" selected>-- select a state --</option>
+                                        <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
+                                            {{ item[0] }}
+                                        </option>
+                                    </select>
+
+                                    <label class="text">City</label>
+                                    <br>
+                                    <select v-model="data.cityId"
+                                        class="form-control  my-3 py-3 text-start gray_text gray-inp"
+                                        :disabled="cities.length === 0">
+                                        <option value="" key="" selected>-- select a city --</option>
+                                        <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
+                                            {{ item[0] }}
+                                        </option>
+                                    </select>
+
+
                                     <label class="text">Zip Code</label>
                                     <br>
-                                    <input name="zipCode" type="text"
+                                    <input v-model="data.zipCode" ref="zipCdoe" name="zipCode" type="text"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
                                         placeholder="Zip Code" required>
-                                    <label class="text">Company Address</label>
+                                    <!-- <label class="text">Company Address</label>
                                     <br>
                                     <input name="companyAddress" type="text"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                        placeholder="Company Address" required>
+                                        placeholder="Company Address" required> -->
                                     <div class="password-container">
                                         <label class="text">Password</label>
                                         <br>
-                                        <input type="password"
+                                        <input v-model="data.password" ref="password" type="password"
                                             class="form-control my-3 py-3 gray_text gray-inp id_password"
                                             autocomplete="current-password" placeholder="password" required>
                                         <i class="far fa-eye togglePassword"></i>
@@ -156,14 +349,14 @@ export default {
                                     <div class="password-container">
                                         <label class="text">Confirm Password</label>
                                         <br>
-                                        <input type="Password"
+                                        <input v-model="data.confirmPassword" ref="confirmPassword" type="Password"
                                             class="form-control my-3 py-3 gray_text gray-inp id_password"
                                             autocomplete="current-password" placeholder="Confirm Password" required>
                                         <i class="far fa-eye togglePassword"></i>
                                     </div>
 
-                                    <input type="submit" class=" btn_submit_1 form-control mt-4 mb-3 py-3"
-                                        value="Register">
+                                    <input v-on:click="getSignUpfunc" class=" btn_submit_1 form-control mt-4 mb-3 py-3"
+                                        value="SignUp">
                                 </form>
                             </div>
                         </div>

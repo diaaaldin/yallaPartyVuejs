@@ -4,7 +4,8 @@ import getters from "./getters";
 import actions from "./actions";
 import mutations from "./mutations";
 import Users from "./modules/Users/index";
-import Services from "./modules/Services/index";
+import Code from "./modules/Code/index";
+import Orders from "./modules/Orders/index";
 
 import Vuex from "vuex";
 import createPersistedState from 'vuex-persistedstate';
@@ -25,12 +26,13 @@ const store = new Vuex.Store({
     
      modules :{
       Users,
-      Services,
+      Code,
+      Orders
 
      },
      plugins: [
         createPersistedState({
-          paths: ['Users','Services'], 
+          paths: ['Users','Code','Orders'], 
         })
       ],
 });

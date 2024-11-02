@@ -26,16 +26,45 @@ export default {
 
     computed: {
         // ...mapGetters("Services", ["getStatisticsData"]),
-
+        GetUserName() {
+            const name = this.getUserLoginName;// just for loud this function again when name change
+            let userName = localStorage.getItem("customerName");
+            if (userName == null) {
+                return "";
+            } else {
+                return userName;
+            }
+        },
+   
     },
     methods: {
         // ...mapActions("Services", ["GetStatistics"]),
-
         goToProfileFunc(){
             this.$router.push({ name: 'profileProfile' });
+            // if (!this.isTokenValid()) {
+            //     this.$router.push({ name: 'login' });
+            // } else {
+            //     let Id = parseInt(localStorage.getItem("id"));
+            //     this.UserProfileInfo(Id).then(Response => {
+            //         this.$router.push({ name: 'profileProfile' });
+            //     })
+            // }
         },
-        logOutFunc(){
+
+        isTokenValid() {
+            const token = localStorage.getItem('token');
+            if (!token) return false;
+            // Example: check token expiration
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const currentTime = Math.floor(Date.now() / 1000);
+            return payload.exp > currentTime;
+        },
+
+        logoutFunc(){
+            localStorage.clear();
             this.$router.push({ name: 'main' });
+            //window.location.reload();
+            /// refresh page
         }
     }
 };
@@ -77,7 +106,8 @@ export default {
                         </li>
                     </ul>
 
-                    <ul class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
+                    <ul v-if="GetUserName == ''" 
+                        class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item login">
                         
                                 <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn" > LOGIN </router-link>
@@ -90,7 +120,7 @@ export default {
                         </li>
                     </ul>
 
-                    <ul class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
+                    <ul v-else class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item dropdown ms-2">
                             <a href="log_in.html" class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
                                 id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -105,7 +135,7 @@ export default {
                                             fill="#0B3D74"></path>
                                     </svg>
                                 </span>
-                                Ahmad Mahmood
+                                {{ GetUserName }}
                             </a>
                             <ul class="dropdown-menu user-ul" aria-labelledby="navbarDropdown">
                                 <li class="profile">
@@ -127,7 +157,7 @@ export default {
                                         Profile</a>
                                 </li>
                                 <li class="log-out">
-                                    <a class="dropdown-item" v-on:click="logOutFunc()">
+                                    <a class="dropdown-item" v-on:click="logoutFunc()">
                                         <span>
                                             <svg width="24" height="24" viewBox="0 0 17 13" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">

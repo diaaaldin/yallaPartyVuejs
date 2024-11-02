@@ -21,12 +21,19 @@ export default {
   created() {
     // Call the function from the store directly when the component is created
     // this.GetStatistics();
-
+    console.log("this.getProfileData : " , this.getProfileData);
   },
 
   computed: {
-    // ...mapGetters("Services", ["getStatisticsData"]),
+    ...mapGetters("Users", ["getProfileData"]),
 
+userImage() {
+    const imageUrl = this.getProfileData && this.getProfileData.image
+        ? this.getProfileData.image
+        : "/img/person1.jpg";
+    console.log("Computed image URL:", imageUrl);
+    return imageUrl;
+}
   },
   methods: {
     // ...mapActions("Services", ["GetStatistics"]),
@@ -44,10 +51,10 @@ export default {
         <div class="d-flex justify-content-between align-items-center py-2">
           <div class="justify-content-start d-flex">
             <div class="d-flex align-items-center ">
-              <img src="/img/person1.jpg" class="img-fluid hero-profile-pic1" alt="profile pic">
+              <img :src="userImage" class="img-fluid hero-profile-pic1" alt="profile pic">
               <div class="d-flex flex-column">
 
-                <router-link to="/profile" class="list_link ms-2" style="color: black">Ahmad Mahmood</router-link>
+                <router-link to="/profile" class="list_link ms-2" style="color: black">{{ this.getProfileData.name }}</router-link>
 
                 <div class=" align-items-center d-flex ms-2">
                   <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,7 +76,7 @@ export default {
             <div class="d-block d-lg-none">
               <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
                 aria-controls="collapseExample">
-                <i class="fa-sharp fa-solid fa-bars" style="color: var(--second-color);"></i>
+                <i class="fa fa-bars" style="color: var(--second-color);"></i>
               </a>
             </div>
           </div>
@@ -108,6 +115,28 @@ export default {
             </div>
           </div>
         </li>
+        <li class="list-group-item " :class="{ active: $route.path === '/myevents' }">
+          <div class="d-flex justify-content-between align-items-center py-2">
+            <div class="justify-content-start  d-flex">
+              <div class="d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 448 512">
+                              <path d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48L0 160l0-48C0 85.5 21.5 64 48 64l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm64 80l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 400l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z"/>
+                            </svg>
+                <router-link to="/myevents" class="list_link ms-2"> My Events </router-link>
+              </div>
+            </div>
+            <div class="justify-content-end  d-flex">
+              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                width="20" height="20" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m9 5 7 7-7 7"></path>
+              </svg>
+
+
+            </div>
+          </div>
+        </li>
+
         <li class="list-group-item " :class="{ active: $route.path === '/orders' }">
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">

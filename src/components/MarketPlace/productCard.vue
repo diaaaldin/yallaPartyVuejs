@@ -45,7 +45,7 @@ export default {
 };
 </script>
 <template>
-    <div class="col-12 col-lg-3 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100" data-aos-duration="700">
+    <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100" data-aos-duration="700">
         <a href="" style="color:black;">
             <div class="card custom_card">
                 <img v-on:click="toProductFunc()" src="/img/pr2.jpg" class="card-img-top index-img-card" alt="...">

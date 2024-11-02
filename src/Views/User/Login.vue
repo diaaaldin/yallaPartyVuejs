@@ -19,6 +19,12 @@ export default {
 				email: "",
 				password: "",
 			},
+
+			newPassword: {
+				email: ""
+			},
+			isPasswordVisible: false,
+
 		}
 	},
 	created() {
@@ -27,45 +33,50 @@ export default {
 
 
 	computed: {
-		//...mapState("cart", ["cart"]),
+
 	},
 
 	methods: {
-		...mapActions("Users", ["getLogin"]),
+		...mapActions("Users", ["GetLogin"]),
 		getLoginfunc() {
 
 			if (this.checkValidation()) {
 
-				// const loading = ElLoading.service({
-				// 	lock: true,
-				// 	background: 'rgba(0, 0, 0, 0.7)',
-				// 	text: "",
-				// });
-				this.$router.push('/main');
-				// this.getLogin(this.user).then(Response => {
-				// 	console.log(Response);
-				// 	this.$moshaToast('Login Success', {
-				// 		hideProgressBar: 'false',
-				// 		showIcon: 'true',
-				// 		swipeClose: 'true',
-				// 		type: 'success',
-				// 		timeout: 3000,
-				// 	});
-				// 	loading.close();
+				const loading = ElLoading.service({
+					lock: true,
+					background: 'rgba(0, 0, 0, 0.7)',
+					text: "",
+				});
 
+				this.GetLogin(this.user).then(Response => {
+					console.log(Response);
+					this.$moshaToast('Login Success', {
+						hideProgressBar: 'false',
+						showIcon: 'true',
+						swipeClose: 'true',
+						type: 'success',
+						timeout: 3000,
+					});
+					loading.close();
+					console.log("login responce : ", Response);
 
-				// }).catch(error => {
-
-				// 	this.$moshaToast(error.response.data.message, {
-				// 		hideProgressBar: 'false',
-				// 		position: 'top-center',
-				// 		showIcon: 'true',
-				// 		swipeClose: 'true',
-				// 		type: 'warning',
-				// 		timeout: 3000,
-				// 	});
-				// 	loading.close();
-				// });
+					if (Response.typeName == "Customer") {
+						this.$router.push({ name: 'main' });
+					} else {
+						// for dashbourd
+						window.location.href = 'http://localhost:5173'; // Replace with the actual URL
+					}
+				}).catch(error => {
+					this.$moshaToast(error.response.data.message, {
+						hideProgressBar: 'false',
+						position: 'top-center',
+						showIcon: 'true',
+						swipeClose: 'true',
+						type: 'warning',
+						timeout: 3000,
+					});
+					loading.close();
+				});
 			}
 
 		},
@@ -96,7 +107,16 @@ export default {
 				return;
 			}
 			return true;
-		}
+		},
+
+		getNewPasswordFunc() {
+
+		},
+
+		togglePasswordVisibility() {
+			this.isPasswordVisible = !this.isPasswordVisible;
+			console.log("this.isPasswordVisible : " , this.isPasswordVisible);
+		},
 	},
 }
 </script>
@@ -124,17 +144,23 @@ export default {
 								<form class="mt-4">
 									<label class="text">Email</label>
 									<br>
-									<input name="email" type="email" dir="ltr"
+									<input @keypress.enter="getLoginfunc()" name="email" type="email" dir="ltr"
+										v-model="user.email"
 										class="form-control my-3 py-3 text-start gray_text gray-inp "
 										placeholder="email" required>
 
 									<div class="password-container">
 										<label class="text">Password</label>
 										<br>
-										<input type="password"
+										<input @keypress.enter="getLoginfunc()"
+											:type="isPasswordVisible ? 'text' : 'password'" v-model="user.password"
 											class="form-control my-3 py-3 gray_text gray-inp id_password"
-											autocomplete="current-password" placeholder="password" required>
-										<i class="far fa-eye togglePassword"></i>
+											autocomplete="current-password" placeholder="password" required />
+										<a v-on:click="togglePasswordVisibility">
+											<i :class="isPasswordVisible ? 'far fa-eye-slash togglePassword' : 'far fa-eye togglePassword'"></i>
+											<!-- <i class="far fa-eye-slash togglePassword"></i> -->
+										</a>
+										
 									</div>
 
 									<div class="d-flex justify-content-end">
@@ -142,7 +168,8 @@ export default {
 											class="text text-login forgot-password">forgot your password?</a>
 									</div>
 
-									<input type="submit" class=" btn_submit_1 form-control mt-3 py-3" value="Login">
+									<input v-on:click="getLoginfunc()" class=" btn_submit_1 form-control mt-3 py-3"
+										value="Login">
 								</form>
 								<router-link to="/signUp" class="text text-login">Create Account</router-link>
 
@@ -160,7 +187,7 @@ export default {
 
 		</div>
 	</div>
-	
+
 	<div class="modal fade" id="forgot_password" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -173,19 +200,18 @@ export default {
 						<label class=" label-form"> Send to email </label>
 						<div class="input-group mb-3">
 							<input type="email" class="form-control" placeholder="Email" aria-label="Email"
-								aria-describedby="basic-addon1">
+								aria-describedby="basic-addon1" v-model="newPassword.email">
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Send Password</button>
+					<button type="button" class="btn btn-primary" v-on:click="getNewPasswordFunc()">Send
+						Password</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

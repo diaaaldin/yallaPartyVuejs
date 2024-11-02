@@ -6,6 +6,7 @@ import VueAxios from 'vue-axios';
 import store from '../store/index';
 import moshaToast from 'mosha-vue-toastify'
 import 'mosha-vue-toastify/dist/style.css'
+import 'cropperjs/dist/cropper.css';
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 

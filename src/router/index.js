@@ -5,6 +5,7 @@ import signUp from '../Views/User/SignUp.vue'
 import main from '../Views/Main.vue'
 import profile from '../Views/Profile.vue'
 import profileProfile from '../Views/Profile/profile.vue'
+import myevents from '../Views/Profile/myEvents.vue'
 import profileOrders from '../Views/Profile/orders.vue'
 import profileChangePassword from '../Views/Profile/changePassword.vue'
 import profileFavorit from '../Views/Profile/favorit.vue'
@@ -15,6 +16,7 @@ import marketPlace from '../Views/MarketPlace.vue'
 import product from '../Views/Product.vue'
 import store from '../Views/Store.vue'
 import bookStore from '../Views/BookStore.vue'
+import aboutus from '../Views/AboutUs.vue'
 
 
 
@@ -34,7 +36,11 @@ const routes = [
         name: "signUp",
         component: signUp
     },
-
+    {
+        path: '/aboutus',
+        name: "aboutus",
+        component: aboutus
+    },
     {
         path: '/events',
         name: "events",
@@ -77,6 +83,11 @@ const routes = [
                 component: profileProfile
             },
             {
+                path: '/myevents',
+                name: "myevents",
+                component: myevents
+            },
+            {
                 path: '/orders',
                 name: "profileOrders",
                 component: profileOrders
@@ -101,13 +112,13 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
       // to scroll to the top if any route happen
-      scrollBehavior(to, from, savedPosition) {
-        if (savedPosition) {
-            return savedPosition;
-        } else {
-            return { left: 0, top: 0 }; // Always scroll to the top
-        }
-    }
+    //   scrollBehavior(to, from, savedPosition) {
+    //     if (savedPosition) {
+    //         return savedPosition;
+    //     } else {
+    //         return { left: 0, top: 0 }; // Always scroll to the top
+    //     }
+    // }
 });
 
 export default router 

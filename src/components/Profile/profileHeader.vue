@@ -35,12 +35,12 @@ export default {
 };
 </script>
 <template>
-    <div class="header-title text-center">
+     <div class="header-title mini">
         <div class="breadcrumb-outer">
             <div class="container">
-                <div class="breadcrumb-content text-center">
-                    <h5 class="theme mb-0">Yalla Party</h5>
-                    <h1 class="mb-0 white">Profile</h1>
+                <div class="breadcrumb-content">
+                    <!-- <h5 class="theme mb-0">Yalla Party</h5> -->
+                    <span class="sub-hero-title">Profile</span>
                 </div>
             </div>
         </div>
