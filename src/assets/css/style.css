@@ -2946,6 +2946,7 @@ footer > .copy-write{
   }
   .social-links ul li {
     display: inline-block !important;
+    margin-right: 7px;
   }
 .social-links ul li a {
     background: #ffffff;
