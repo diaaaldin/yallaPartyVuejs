@@ -78,6 +78,41 @@ export default {
                     <img src="/img/YallaPartyLogo2.png" width="65" alt="" />
                 </router-link>
 
+                <div class="navigation">
+                    <input type="checkbox" class="navigation__checkbox" id="nav-toggle">
+                    <label for="nav-toggle" class="navigation__button">
+                      <span class="navigation__icon" aria-label="toggle navigation menu"></span>
+                    </label>
+                    <!-- <div class="navigation__background"></div> -->
+              
+                    <nav class="navigation__nav" role="navigation">
+                            <label for="nav-toggle" class="navigation__button">
+                                <i class="fa fa-arrow-left" style="color: #de147f;font-size: 18px;margin-top: 15px;"></i>
+                            </label>
+                            <ul class="navigation__list">
+                                <li class="navigation__item">
+                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Login Business </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Create Event </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Create Product </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="" class="navigation__link"> Create Store </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="" class="navigation__link"> Create Company </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="" class="navigation__link"> Be a partner </a>
+                                </li>
+                            </ul>
+                    </nav>
+                    
+                </div>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -122,7 +157,7 @@ export default {
 
                     <ul v-else class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item dropdown ms-2">
-                            <a href="log_in.html" class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
+                            <a href="" class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
                                 id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -139,7 +174,7 @@ export default {
                             </a>
                             <ul class="dropdown-menu user-ul" aria-labelledby="navbarDropdown">
                                 <li class="profile">
-                                    <a class="dropdown-item" v-on:click="goToProfileFunc()">
+                                    <a href="" class="dropdown-item" v-on:click="goToProfileFunc()">
                                         <span>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -157,7 +192,7 @@ export default {
                                         Profile</a>
                                 </li>
                                 <li class="log-out">
-                                    <a class="dropdown-item" v-on:click="logoutFunc()">
+                                    <a href="" class="dropdown-item" v-on:click="logoutFunc()">
                                         <span>
                                             <svg width="24" height="24" viewBox="0 0 17 13" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">

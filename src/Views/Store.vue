@@ -111,9 +111,8 @@ export default {
         <div class="breadcrumb-outer search add">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h5 class="theme mb-0">yalla Party</h5>
+                    <h5 class="theme mb-0">Yalla Party</h5>
                     <h1 class="white">Store</h1>
-                    <router-link to="/login">Create Product <i class="fab fa fa-plus"></i></router-link>
                 </div>
             </div>
         </div>

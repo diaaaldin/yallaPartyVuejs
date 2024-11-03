@@ -474,29 +474,29 @@ export default {
                 return false;
             }
 
-            // else if (this.data.stateId.trim() == '') {
-            //     this.$moshaToast("select state", {
-            //         hideProgressBar: 'false',
-            //         position: 'top-center',
-            //         showIcon: 'true',
-            //         swipeClose: 'true',
-            //         type: 'warning',
-            //         timeout: 3000,
-            //     });
-            //     this.$refs.password.focus();
-            //     return false;
-            // } else if (this.data.cityId.trim() == '') {
-            //     this.$moshaToast("select city", {
-            //         hideProgressBar: 'false',
-            //         position: 'top-center',
-            //         showIcon: 'true',
-            //         swipeClose: 'true',
-            //         type: 'warning',
-            //         timeout: 3000,
-            //     });
-            //     this.$refs.password.focus();
-            //     return false;
-            // }
+            else if (this.data.stateId.trim() == '') {
+                this.$moshaToast("select state", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.cityId.trim() == '') {
+                this.$moshaToast("select city", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            }
 
             else if (this.data.orderDate == null) {
                 this.$moshaToast("enter party date", {
@@ -783,6 +783,7 @@ export default {
                     <router-link to="/" class="navbar-brand">
                         <img src="/img/WhiteYallaPartyLogo.png" width="110" alt="" />
                     </router-link>
+                    
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -826,7 +827,7 @@ export default {
                         <ul v-else
                             class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                             <li class="nav-item dropdown ms-2">
-                                <a href="log_in.html"
+                                <a href=""
                                     class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
                                     id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span>
@@ -844,7 +845,7 @@ export default {
                                 </a>
                                 <ul class="dropdown-menu user-ul" aria-labelledby="navbarDropdown">
                                     <li class="profile">
-                                        <a class="dropdown-item" v-on:click="goToProfileFunc()">
+                                        <a href="" class="dropdown-item" v-on:click="goToProfileFunc()">
                                             <span>
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -863,7 +864,7 @@ export default {
                                         </a>
                                     </li>
                                     <li class="log-out">
-                                        <a class="dropdown-item" v-on:click="logoutFunc()">
+                                        <a  href="" class="dropdown-item" v-on:click="logoutFunc()">
                                             <span>
                                                 <svg width="24" height="24" viewBox="0 0 17 13" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">

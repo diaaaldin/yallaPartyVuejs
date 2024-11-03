@@ -279,29 +279,29 @@ export default {
           this.$refs.password.focus();
           return false;
         }
-        // else if (this.data.stateId.trim() == '') {
-        //   this.$moshaToast("select state", {
-        //     hideProgressBar: 'false',
-        //     position: 'top-center',
-        //     showIcon: 'true',
-        //     swipeClose: 'true',
-        //     type: 'warning',
-        //     timeout: 3000,
-        //   });
-        //   this.$refs.password.focus();
-        //   return false;
-        // } else if (this.data.cityId.trim() == '') {
-        //   this.$moshaToast("select city", {
-        //     hideProgressBar: 'false',
-        //     position: 'top-center',
-        //     showIcon: 'true',
-        //     swipeClose: 'true',
-        //     type: 'warning',
-        //     timeout: 3000,
-        //   });
-        //   this.$refs.password.focus();
-        //   return false;
-        // }
+        else if (this.data.stateId.trim() == '') {
+          this.$moshaToast("select state", {
+            hideProgressBar: 'false',
+            position: 'top-center',
+            showIcon: 'true',
+            swipeClose: 'true',
+            type: 'warning',
+            timeout: 3000,
+          });
+          this.$refs.password.focus();
+          return false;
+        } else if (this.data.cityId.trim() == '') {
+          this.$moshaToast("select city", {
+            hideProgressBar: 'false',
+            position: 'top-center',
+            showIcon: 'true',
+            swipeClose: 'true',
+            type: 'warning',
+            timeout: 3000,
+          });
+          this.$refs.password.focus();
+          return false;
+        }
         else if (this.data.comunicationMethods == 0) {
           this.$moshaToast("select comunication method", {
             hideProgressBar: 'false',
@@ -362,29 +362,29 @@ export default {
           return false;
         }
 
-        // else if (this.data.stateId.trim() == '') {
-        //   this.$moshaToast("select state", {
-        //     hideProgressBar: 'false',
-        //     position: 'top-center',
-        //     showIcon: 'true',
-        //     swipeClose: 'true',
-        //     type: 'warning',
-        //     timeout: 3000,
-        //   });
-        //   this.$refs.password.focus();
-        //   return false;
-        // } else if (this.data.cityId.trim() == '') {
-        //   this.$moshaToast("select city", {
-        //     hideProgressBar: 'false',
-        //     position: 'top-center',
-        //     showIcon: 'true',
-        //     swipeClose: 'true',
-        //     type: 'warning',
-        //     timeout: 3000,
-        //   });
-        //   this.$refs.password.focus();
-        //   return false;
-        // }
+        else if (this.data.stateId.trim() == '') {
+          this.$moshaToast("select state", {
+            hideProgressBar: 'false',
+            position: 'top-center',
+            showIcon: 'true',
+            swipeClose: 'true',
+            type: 'warning',
+            timeout: 3000,
+          });
+          this.$refs.password.focus();
+          return false;
+        } else if (this.data.cityId.trim() == '') {
+          this.$moshaToast("select city", {
+            hideProgressBar: 'false',
+            position: 'top-center',
+            showIcon: 'true',
+            swipeClose: 'true',
+            type: 'warning',
+            timeout: 3000,
+          });
+          this.$refs.password.focus();
+          return false;
+        }
 
         else if (this.data.orderDate == null) {
           this.$moshaToast("enter party date", {
