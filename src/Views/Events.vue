@@ -49,9 +49,6 @@ export default {
                 <div class="breadcrumb-content text-center">
                     <h5 class="theme mb-0">Yalla Party</h5>
                     <h1 class="mb-5 white">Eevents</h1>
-
-                    <router-link to="/login">Create Event <i class="fab fa fa-plus"></i></router-link>
-
                 </div>
             </div>
         </div>
