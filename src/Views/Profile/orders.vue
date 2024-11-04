@@ -123,8 +123,8 @@ export default {
   computed: {
     ...mapGetters("Code", ["getQuestionsData", "getComunicationMethodsData", "getOrderServicesData", "getChildrenServicesData"]),
     ...mapGetters("Orders", ["getOrdersData"]),
-
   },
+
   methods: {
     ...mapActions("Code", ["GetQuestionsData", "GetComunicationMethods", "GetOrderServices", "GetChildrenServices"]),
     ...mapActions("Orders", ["GetOrders", "UpdateOrder", "DeleteOrder"]),
@@ -158,7 +158,6 @@ export default {
     },
 
     initFunc() {
-
       const loading = ElLoading.service({
         lock: true,
         background: 'rgba(0, 0, 0, 0.7)',
