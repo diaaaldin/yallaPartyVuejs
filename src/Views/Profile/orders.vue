@@ -739,7 +739,7 @@ export default {
 <template>
 
   <!-- right side container -->
-  <div class="col-12 col-lg-9">
+  <div class="col-12 col-lg-9 order">
     <div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
       <table class="table text-center">
         <thead>

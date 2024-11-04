@@ -783,7 +783,40 @@ export default {
                     <router-link to="/" class="navbar-brand">
                         <img src="/img/WhiteYallaPartyLogo.png" width="110" alt="" />
                     </router-link>
+                    <div class="navigation">
+                    <input type="checkbox" class="navigation__checkbox" id="nav-toggle">
+                    <label for="nav-toggle" class="navigation__button">
+                      <span class="navigation__icon" aria-label="toggle navigation menu"></span>
+                    </label>
+                    <!-- <div class="navigation__background"></div> -->
+              
+                    <nav class="navigation__nav" role="navigation">
+                            <label for="nav-toggle" class="navigation__button">
+                                <i class="fa fa-arrow-left" style="color: #de147f;font-size: 18px;margin-top: 15px;"></i>
+                            </label>
+                            <ul class="navigation__list">
+                                <li class="navigation__item">
+                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Login Business </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Create Event </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Create Product </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="" class="navigation__link"> Create Store </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="" class="navigation__link"> Create Company </a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="" class="navigation__link"> Be a partner </a>
+                                </li>
+                            </ul>
+                    </nav>
                     
+                </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -1292,20 +1325,19 @@ export default {
                                     <div class="row side-images">
                                         <div class=" col-12 col-md-6 col-lg-6 mt-lg-5">
                                             <div class="d-flex flex-column mt-lg-5 right-side-images">
-                                                <img class="img-fluid my-2" src="/img/wedding.jpg" alt="">
-                                                <img class="img-fluid my-2" src="/img/pr11.jpg" alt="">
-                                                <img class="img-fluid my-2" src="/img/pr3.jpg" alt="">
+                                                <!-- <img class="img-fluid my-2" src="/img/wedding.jpg" alt=""> -->
+                                                <div class="image my-2"><img class="img-fluid" src="/img/wedding.jpg" alt=""></div>
+                                                <div class="image my-2"><img class="img-fluid" src="/img/pr11.jpg" alt=""></div>
+                                                <div class="image my-2"><img class="img-fluid" src="/img/pr3.jpg" alt=""></div>
+                                                
                                             </div>
                                         </div>
                                         <div class=" col-12 col-md-6 col-lg-6">
                                             <div class="d-flex flex-column  left-side-images ">
-                                                <img class="img-fluid my-2 w-100" src="/img/pr1.jpg" alt=""
-                                                    style="object-fit: contain;">
-                                                <img class="img-fluid my-2 w-100" src="/img/pr14.jpg" alt=""
-                                                    style="object-fit: contain;">
-
-                                                <img class="img-fluid my-2 w-100" src="/img/pr13.jpg" alt=""
-                                                    style="object-fit: contain;">
+                                                <div class="image my-2"><img class="img-fluid w-100" src="/img/pr1.jpg" alt="" style="object-fit: contain;"></div>
+                                                <div class="image my-2"><img class="img-fluid w-100" src="/img/pr14.jpg" alt="" style="object-fit: contain;"></div>
+                                                <div class="image my-2"><img class="img-fluid w-100" src="/img/pr13.jpg" alt="" style="object-fit: contain;"></div>
+                                                
                                             </div>
 
                                         </div>

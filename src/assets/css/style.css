@@ -470,7 +470,7 @@ body{
 }
 /****************** End Header **********************/
 
-/************* Card***************/
+/************* Card ***************/
 .cards .card-pop{
     
 }
@@ -480,11 +480,11 @@ body{
     border-radius: 16px;
     padding: 25px;
     cursor: pointer;
+    transition: all 0.4s ease-in-out;
 }
 .cards .card-pop .a1:hover{
     box-shadow:  0 20px 20px rgba(0, 0, 0, 0.15);
     transform: scale(1.001);
-    transition: all 0.4s ease-in-out;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     transform: translateY(-10px);
@@ -511,9 +511,38 @@ margin-top: -25px;
 color: var(--second-color);
 }
 
-.cards .side-images img{
+/* .cards .side-images img{
+    border-radius: 16px;
+} */
+.cards .side-images .image{
+    position: relative;
+    overflow: hidden;
     border-radius: 16px;
 }
+.cards .side-images .image::before{
+    content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: rgb(255 255 255 / 20%);
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: 2;
+}
+.cards .side-images .image:hover::before{
+    animation: flashing 0.7s;
+}
+.cards .side-images .image img{
+    border-radius: 16px;
+    max-width: 100%;
+    transition: var(--main-transition);
+}
+
+.cards .side-images .image:hover img {
+    transform: rotate(5deg) scale(1.1);
+  }
 /*******************book-product********************/
 .book-product{
 color: white;
@@ -617,11 +646,14 @@ display: none;
 .navigation .navigation__checkbox {
     display: none;
 }
-
-.navigation .navigation__button {
-    position: absolute;
+.header-div.second .navigation .navigation__button {
     top: 20px;
     left: 190px;
+}
+.header-div .navigation .navigation__button {
+    position: absolute;
+    top: 47px;
+    left: 230px;
     height: 50px;
     width: 50px;
     text-align: center;
@@ -633,17 +665,18 @@ display: none;
     cursor: pointer;
     /* border: 1px solid #f501933b; */
 }
+
 .navigation .navigation__button:focus{
 
 }
-@media screen  and (min-width: 768px) {
+/* @media screen  and (min-width: 768px) {
     .navigation .navigation__button {
         top: 20px;
-    left: 190px;
-    height: 50px;
-    width: 50px;
+        left: 80px;
+        height: 50px;
+        width: 50px;
     }
-}
+} */
 
 .navigation .navigation__background {
     position: fixed;
@@ -815,17 +848,22 @@ display: none;
     padding-right: 5px;
 }
 @media screen and (min-width: 768px) {
-    .navigation .navigation__nav .navigation__button {
+    .header-div .navigation .navigation__nav .navigation__button {
         left: 80%;
-  }
+    }
 }
 @media screen and (max-width: 992px) {
     .navigation .navigation__checkbox:checked ~ .navigation__nav {
         width: 50%;
     }
-    .navigation .navigation__button {
+    .header-div.second .navigation .navigation__button {
         left: 143px;}
-    .navigation .navigation__nav .navigation__button {
+    .header-div .navigation .navigation__button {
+        left: 180px;}
+        .header-div .navigation .navigation__nav .navigation__button {
+            left: 80%;
+      }
+        .header-div.second .navigation .navigation__nav .navigation__button {
             left: 80%;
       }
 }
@@ -833,17 +871,23 @@ display: none;
     .navigation .navigation__checkbox:checked ~ .navigation__nav {
         width: 100%;
     }
-    .navigation .navigation__button {
+    .header-div.second .navigation .navigation__button {
         left: 90px;}
+    .header-div .navigation .navigation__button {
+        left: 125px;
+        top: 50px;
+        height: 45px;
+        width: 45px;
+    }
     .navigation .navigation__icon {
-        margin-top: 24px;
+        margin-top: 22px;
     }
     .navigation .navigation__icon, .navigation .navigation__icon::before, .navigation .navigation__icon::after {
         width: 24px;
       }
-    .navigation .navigation__nav .navigation__button {
+    /* .navigation .navigation__nav .navigation__button {
         left: 80%;
-  }
+  } */
 }
 
 
@@ -1336,10 +1380,10 @@ margin: 10px 5px 0 0;
    
     fill: #fff;
 }
-.profile.order .white_card{
+.profile .order .white_card{
     overflow-x: auto;
 }
-.profile.order .table {
+.profile .order .table {
     border-collapse: separate;
     border-spacing: 0 8px;
     margin-bottom: 0;
@@ -1388,6 +1432,7 @@ margin: 10px 5px 0 0;
   }
   .profile .table > tbody > tr > td .fa-trash{
     background-color: #e50202cf;
+    margin-right: 5px;
   }
   .profile .table > tbody > tr > td .fa-pen-to-square{
     background-color: var(--main-color);
