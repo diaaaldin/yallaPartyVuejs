@@ -301,10 +301,6 @@ export default {
                                         class="form-control my-3 py-3 text-start gray_text gray-inp " maxlength="10"
                                         placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
                                         required>
-
-
-
-
                                     <label class="text">State</label>
                                     <br>
                                     <select v-model="data.stateId"

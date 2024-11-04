@@ -114,7 +114,6 @@ export default {
     created() {
         this.fetchStates();
 
-
     },
 
     computed: {
@@ -827,8 +826,7 @@ export default {
                         <ul v-else
                             class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                             <li class="nav-item dropdown ms-2">
-                                <a href=""
-                                    class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
+                                <a href="" class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
                                     id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span>
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -845,7 +843,7 @@ export default {
                                 </a>
                                 <ul class="dropdown-menu user-ul" aria-labelledby="navbarDropdown">
                                     <li class="profile">
-                                        <a href="" class="dropdown-item" v-on:click="goToProfileFunc()">
+                                        <a class="dropdown-item" v-on:click="goToProfileFunc()">
                                             <span>
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -1330,8 +1328,8 @@ export default {
                                         nobis voluptate unde.
                                     </span>
                                     <div class="my-4">
-                                        <router-link to="/signUp" type="button" class="home-btn p-2"> Create Account
-                                        </router-link>
+                                        <a href="http://localhost:5174/partnersignup" type="button" class="home-btn p-2"> Create Account
+                                        </a>
                                     </div>
 
                                 </div>
