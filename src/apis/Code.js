@@ -5,12 +5,7 @@ const END_POINT = 'Code';
 export default {
 
     GetCodeItems(parent1 , parent2) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin" : "*" },
             params: {
                 parent1: parent1,
                 parent2: parent2,
@@ -21,7 +16,12 @@ export default {
     },
 
     GetQuestionsData() {
-        return Api.get(`${END_POINT}/GetQuestionsData` );
+        let config = {
+            params: {
+               
+            },
+        };
+        return Api.get(`${END_POINT}/GetQuestionsData` ,config );
     },
 
     CreateCode(data){
