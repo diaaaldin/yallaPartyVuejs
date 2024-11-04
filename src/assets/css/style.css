@@ -260,6 +260,7 @@ body{
 }
 .header-div .navbar .dropdown-menu .profile{
     margin: 0;
+    cursor: pointer;
 }
 .header-div .navbar .dropdown-menu .profile svg{
     margin: 0 3px 0 -2px;
@@ -627,8 +628,10 @@ display: none;
     background-color: #fff;
     border-radius: 50%;
     z-index: 200;
-    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2); */
+    box-shadow: 0 1rem 3rem rgba(255, 83, 184, 0.52);
     cursor: pointer;
+    /* border: 1px solid #f501933b; */
 }
 .navigation .navigation__button:focus{
 
@@ -878,7 +881,7 @@ display: none;
 
 }
 .header-title .breadcrumb-outer.events {
-    padding-top: 110px;
+    padding-top: 140px;
   }
 /* .events .see-more .show-more-btn {
     background-color: var(--second-color);
@@ -2946,6 +2949,7 @@ footer > .copy-write{
   }
   .social-links ul li {
     display: inline-block !important;
+    margin-right: 7px;
   }
 .social-links ul li a {
     background: #ffffff;
@@ -3471,7 +3475,7 @@ height: 184px}
         padding: 14px 203px 0 0px;
       }
       .header-title .breadcrumb-outer.events {
-        padding-top: 80px;
+        padding-top: 120px;
       }
       .header-title .breadcrumb-outer.campany{
         padding-top: 120px;
@@ -3534,7 +3538,7 @@ height: 184px}
         border-radius: 0;
       }
       .header-title .breadcrumb-outer.events {
-        padding-top: 50px;
+        padding-top: 90px;
       }
       .header-title .breadcrumb-outer.events h1{
         margin-bottom: 30px !important ;
