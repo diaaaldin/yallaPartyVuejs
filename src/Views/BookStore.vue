@@ -61,7 +61,7 @@ export default {
     <pageNav></pageNav>
 
     <div class="header-title text-center">
-        <div class="breadcrumb-outer search">
+        <div class="breadcrumb-outer search add">
             <div class="container">
                 <div class="breadcrumb-content text-center">
                     <h5 class="theme mb-0">Yalla Party</h5>
@@ -69,7 +69,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-between search_input">
+        <div class="d-flex justify-content-between mt-5 search_input">
             <div class="input-group">
                 <input type="text" placeholder="Search..." class="form-control search_input-tab  p-3 search">
                 <button class="input-group-text search_icon-tab"><i class="fas fa-search"></i>
