@@ -124,6 +124,11 @@ export default {
             this.data.orderType = 23;
             this.saveJobApplicationAnswers();
 
+            const countryData = this.iti.getSelectedCountryData();
+			const countryCode = countryData.dialCode;
+			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+			this.data.mobile = fullPhoneNumber;
+
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
                     lock: true,

@@ -819,7 +819,7 @@ export default {
             </div>
             <label class=" label-form"> Mobile </label>
             <div class="input-group mb-3">
-              <input v-model="data.mobile" id="phone" type="tel" ref="phoneInput" class="form-control" maxlength="10"
+              <input v-model="data.mobile" id="phone" type="tel" ref="phoneInput"  class="form-control" maxlength="10"
                 placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1" required>
 
             </div>

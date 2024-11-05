@@ -192,7 +192,11 @@ export default {
         weddingOrderCreate() {
             this.data.orderType = 17;
             this.saveWeddingAnswers();
-            console.log("this.data : ",this.data);
+            const countryData = this.iti.getSelectedCountryData();
+			const countryCode = countryData.dialCode;
+			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+			this.data.mobile = fullPhoneNumber;
+
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
                     lock: true,
@@ -229,6 +233,10 @@ export default {
         engagementOrderCreate() {
             this.data.orderType = 18;
             this.saveEngagementAnswers();
+            const countryData = this.iti2.getSelectedCountryData();
+			const countryCode = countryData.dialCode;
+			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+			this.data.mobile = fullPhoneNumber;
 
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
@@ -267,8 +275,12 @@ export default {
             this.data.orderType = 19;
             this.data.childrenServices = this.convertSelectedChildrenServicesToString();
             this.saveBirthdayAnswers();
+            const countryData = this.iti3.getSelectedCountryData();
+			const countryCode = countryData.dialCode;
+			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+			this.data.mobile = fullPhoneNumber;
 
-            console.log("data : ", this.data);
+
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
                     lock: true,
@@ -306,7 +318,11 @@ export default {
             this.data.orderType = 20;
             this.saveGraduationAnswers();
 
-            console.log("data : ", this.data);
+            const countryData = this.iti4.getSelectedCountryData();
+			const countryCode = countryData.dialCode;
+			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+			this.data.mobile = fullPhoneNumber;
+
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
                     lock: true,
@@ -344,7 +360,11 @@ export default {
             this.data.orderType = 21;
             this.saveSpecialAnswers();
 
-            console.log("data : ", this.data);
+            const countryData = this.iti5.getSelectedCountryData();
+			const countryCode = countryData.dialCode;
+			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+			this.data.mobile = fullPhoneNumber;
+
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
                     lock: true,
@@ -1650,7 +1670,6 @@ export default {
         </div>
     </div>
 
-
     <div class="modal fade" id="birthday_parties" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1822,7 +1841,6 @@ export default {
         </div>
     </div>
 
-
     <div class="modal fade" id="graduation_party" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1951,7 +1969,6 @@ export default {
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="special_occasions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
