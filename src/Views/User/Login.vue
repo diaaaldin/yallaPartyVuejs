@@ -168,8 +168,9 @@ export default {
 											class="text text-login forgot-password">forgot your password?</a>
 									</div>
 
-									<input v-on:click="getLoginfunc()" class=" btn_submit_1 form-control mt-3 py-3"
-										value="Login">
+									<button v-on:click="getLoginfunc()" class="btn_submit_1 form-control mt-3 py-3"value="Login">
+										Login
+									</button>
 								</form>
 								<router-link to="/signUp" class="text text-login">Create Account</router-link>
 

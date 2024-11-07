@@ -76,9 +76,7 @@ export default {
 
                 <router-link to="/" class="navbar-brand">
                     <img src="/img/YallaPartyLogo2.png" width="65" alt="" />
-                </router-link>
-
-                <div class="navigation">
+                    <div class="navigation">
                     <input type="checkbox" class="navigation__checkbox" id="nav-toggle">
                     <label for="nav-toggle" class="navigation__button">
                       <span class="navigation__icon" aria-label="toggle navigation menu"></span>
@@ -112,6 +110,9 @@ export default {
                     </nav>
                     
                 </div>
+                </router-link>
+
+                
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

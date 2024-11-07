@@ -351,8 +351,8 @@ export default {
                                         <i class="far fa-eye togglePassword"></i>
                                     </div>
 
-                                    <input v-on:click="getSignUpfunc" class=" btn_submit_1 form-control mt-4 mb-3 py-3"
-                                        value="SignUp">
+                                    <button v-on:click="getSignUpfunc" class=" btn_submit_1 form-control mt-4 mb-3 py-3"
+                                        value="SignUp">SignUp</button>
                                 </form>
                             </div>
                         </div>

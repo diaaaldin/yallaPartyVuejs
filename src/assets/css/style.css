@@ -441,7 +441,7 @@ body{
     background: transparent;
     position: relative;
     z-index: 1;
-    padding-top: 130px;
+    padding-top: 140px;
   }
 .header-title.mini .breadcrumb-outer{
     padding-top: 28px;
@@ -642,13 +642,17 @@ display: none;
 
 
 /************* Start navigation overlay **************/
-
+.navbar-brand{
+    position: relative;
+}
 .navigation .navigation__checkbox {
     display: none;
 }
 .header-div.second .navigation .navigation__button {
-    top: 20px;
-    left: 190px;
+    /* top: 20px;
+    left: 190px; */
+    top: 5px;
+    left: 80px;
 }
 .header-div .navigation .navigation__button {
     position: absolute;
@@ -856,8 +860,7 @@ display: none;
     .navigation .navigation__checkbox:checked ~ .navigation__nav {
         width: 50%;
     }
-    .header-div.second .navigation .navigation__button {
-        left: 143px;}
+    
     .header-div .navigation .navigation__button {
         left: 180px;}
         .header-div .navigation .navigation__nav .navigation__button {
@@ -871,8 +874,7 @@ display: none;
     .navigation .navigation__checkbox:checked ~ .navigation__nav {
         width: 100%;
     }
-    .header-div.second .navigation .navigation__button {
-        left: 90px;}
+   
     .header-div .navigation .navigation__button {
         left: 125px;
         top: 50px;
@@ -1012,6 +1014,7 @@ display: none;
 .events .card-events .image{
     position: relative;
     overflow: hidden;
+    border-radius: 12px;
 }
 
 .events .card-events .image::before {
