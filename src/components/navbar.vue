@@ -91,22 +91,22 @@ export default {
                             </label>
                             <ul class="navigation__list">
                                 <li class="navigation__item">
-                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Login Business </a>
+                                    <a href="http://dash.yallaparty.net/login" class="navigation__link"> Login Business </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Create Event </a>
+                                    <a href="http://dash.yallaparty.net/companylogin" class="navigation__link"> Create Event </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Create Product </a>
+                                    <a href="http://dash.yallaparty.net/storelogin" class="navigation__link"> Create Product </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="" class="navigation__link"> Create Store </a>
+                                    <a href="http://dash.yallaparty.net/storesignup" class="navigation__link"> Create Store </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="" class="navigation__link"> Create Company </a>
+                                    <a href="http://dash.yallaparty.net/companysignup" class="navigation__link"> Create Company </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="" class="navigation__link"> Be a partner </a>
+                                    <a href="http://dash.yallaparty.net/partnersignup" class="navigation__link"> Be a partner </a>
                                 </li>
                             </ul>
                     </nav>

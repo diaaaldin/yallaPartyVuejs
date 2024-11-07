@@ -19,10 +19,10 @@ export default {
                 mobile: "",
                 stateId: "",
                 cityId: "",
-                orderDate : null,
+                orderDate: null,
                 comunicationMethods: 0,
                 service: 0,
-                otherService:"",
+                otherService: "",
                 moreInfo: "",
                 questionData: [],
                 birthdayOwnerName: "",
@@ -34,9 +34,9 @@ export default {
 
             selectedService: '', // To store the selected service
             showOtherServiceText: false,
-            birthdayBookingFor : 0,
-            birthdayAgeGroup : 0,
-            childrenServices:[],
+            birthdayBookingFor: 0,
+            birthdayAgeGroup: 0,
+            childrenServices: [],
 
             weddingQuestion: [],
             engagementQuestion: [],
@@ -86,7 +86,7 @@ export default {
         });
 
         this.organizeQuestions();
-        console.log("this.getChildrenServicesData : ",this.getChildrenServicesData);
+        console.log("this.getChildrenServicesData : ", this.getChildrenServicesData);
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
@@ -117,7 +117,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters("Code", ["getQuestionsData", "getComunicationMethodsData", "getOrderServicesData" ,"getChildrenServicesData"]),
+        ...mapGetters("Code", ["getQuestionsData", "getComunicationMethodsData", "getOrderServicesData", "getChildrenServicesData"]),
 
         GetUserName() {
             let userName = localStorage.getItem("customerName");
@@ -131,7 +131,7 @@ export default {
     },
 
     methods: {
-        ...mapActions("Code", ["GetQuestionsData", "GetComunicationMethods", "GetOrderServices" , "GetChildrenServices"]),
+        ...mapActions("Code", ["GetQuestionsData", "GetComunicationMethods", "GetOrderServices", "GetChildrenServices"]),
         ...mapActions("Orders", ["CreateOrder"]),
         ...mapActions("Users", ["CustomerProfileInfo"]),
 
@@ -193,9 +193,9 @@ export default {
             this.data.orderType = 17;
             this.saveWeddingAnswers();
             const countryData = this.iti.getSelectedCountryData();
-			const countryCode = countryData.dialCode;
-			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
-			this.data.mobile = fullPhoneNumber;
+            const countryCode = countryData.dialCode;
+            const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+            this.data.mobile = fullPhoneNumber;
 
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
@@ -234,9 +234,9 @@ export default {
             this.data.orderType = 18;
             this.saveEngagementAnswers();
             const countryData = this.iti2.getSelectedCountryData();
-			const countryCode = countryData.dialCode;
-			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
-			this.data.mobile = fullPhoneNumber;
+            const countryCode = countryData.dialCode;
+            const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+            this.data.mobile = fullPhoneNumber;
 
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
@@ -276,9 +276,9 @@ export default {
             this.data.childrenServices = this.convertSelectedChildrenServicesToString();
             this.saveBirthdayAnswers();
             const countryData = this.iti3.getSelectedCountryData();
-			const countryCode = countryData.dialCode;
-			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
-			this.data.mobile = fullPhoneNumber;
+            const countryCode = countryData.dialCode;
+            const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+            this.data.mobile = fullPhoneNumber;
 
 
             if (this.checkValidation()) {
@@ -319,9 +319,9 @@ export default {
             this.saveGraduationAnswers();
 
             const countryData = this.iti4.getSelectedCountryData();
-			const countryCode = countryData.dialCode;
-			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
-			this.data.mobile = fullPhoneNumber;
+            const countryCode = countryData.dialCode;
+            const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+            this.data.mobile = fullPhoneNumber;
 
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
@@ -361,9 +361,9 @@ export default {
             this.saveSpecialAnswers();
 
             const countryData = this.iti5.getSelectedCountryData();
-			const countryCode = countryData.dialCode;
-			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
-			this.data.mobile = fullPhoneNumber;
+            const countryCode = countryData.dialCode;
+            const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+            this.data.mobile = fullPhoneNumber;
 
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
@@ -551,7 +551,7 @@ export default {
             this.birthdayQuestion = [];
             this.graduationQuestion = [];
             this.specialQuestion = [];
-            this.jobApplicationQuestion=[];
+            this.jobApplicationQuestion = [];
 
             // Iterate over questions and filter based on orderType
             for (const question of this.getQuestionsData) {
@@ -715,7 +715,7 @@ export default {
             if (selectedUser) {
                 if (selectedUser.name.toLowerCase().includes('other')) {
                     this.showOtherServiceText = true;
-                }else{
+                } else {
                     this.data.otherService = '';
                     this.showOtherServiceText = false;
                 }
@@ -727,7 +727,7 @@ export default {
 
         deleteChildrenService() {
             // If "Other services" is selected, clear the textarea
-           this.childrenServices = [];
+            this.childrenServices = [];
         },
 
         getCommaSeparatedAnswers(questionId) {
@@ -766,7 +766,7 @@ export default {
         },
 
         clearData() {
-                this.data.id = 0,
+            this.data.id = 0,
                 this.data.orderType = 0,
                 this.data.name = "",
                 this.data.nickName = "",
@@ -784,7 +784,7 @@ export default {
                 this.data.totalPrice = 0
         },
 
-        convertSelectedChildrenServicesToString(){
+        convertSelectedChildrenServicesToString() {
             return this.childrenServices.join(', ');
         }
 
@@ -802,40 +802,41 @@ export default {
                     <router-link to="/" class="navbar-brand">
                         <img src="/img/WhiteYallaPartyLogo.png" width="110" alt="" />
                     </router-link>
-                    <div class="navigation">
-                    <input type="checkbox" class="navigation__checkbox" id="nav-toggle">
-                    <label for="nav-toggle" class="navigation__button">
-                      <span class="navigation__icon" aria-label="toggle navigation menu"></span>
-                    </label>
-                    <!-- <div class="navigation__background"></div> -->
-              
-                    <nav class="navigation__nav" role="navigation">
+
+                    <!-- <div class="navigation">
+                        <input type="checkbox" class="navigation__checkbox" id="nav-toggle">
+                        <label for="nav-toggle" class="navigation__button">
+                            <span class="navigation__icon" aria-label="toggle navigation menu"></span>
+                        </label>
+                        <div class="navigation__background"></div>
+                        <nav class="navigation__nav" role="navigation">
                             <label for="nav-toggle" class="navigation__button">
                                 <i class="fa fa-arrow-left" style="color: #de147f;font-size: 18px;margin-top: 15px;"></i>
                             </label>
                             <ul class="navigation__list">
                                 <li class="navigation__item">
-                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Login Business </a>
+                                    <a href="http://dash.yallaparty.net/login" class="navigation__link"> Login Business </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Create Event </a>
+                                    <a href="http://dash.yallaparty.net/companylogin" class="navigation__link"> Create Event </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="https://dash.yallaparty.net/login" class="navigation__link"> Create Product </a>
+                                    <a href="http://dash.yallaparty.net/storelogin" class="navigation__link"> Create Product </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="" class="navigation__link"> Create Store </a>
+                                    <a href="http://dash.yallaparty.net/storesignup" class="navigation__link"> Create Store </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="" class="navigation__link"> Create Company </a>
+                                    <a href="http://dash.yallaparty.net/companysignup" class="navigation__link"> Create Company </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="" class="navigation__link"> Be a partner </a>
+                                    <a href="http://dash.yallaparty.net/partnersignup" class="navigation__link"> Be a partner </a>
                                 </li>
                             </ul>
-                    </nav>
+                         </nav>
+                    </div> -->
+
                     
-                </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -896,7 +897,7 @@ export default {
                                 </a>
                                 <ul class="dropdown-menu user-ul" aria-labelledby="navbarDropdown">
                                     <li class="profile">
-                                        <a  class="dropdown-item" v-on:click="goToProfileFunc()">
+                                        <a class="dropdown-item" v-on:click="goToProfileFunc()">
                                             <span>
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -915,7 +916,7 @@ export default {
                                         </a>
                                     </li>
                                     <li class="log-out">
-                                        <a  href="" class="dropdown-item" v-on:click="logoutFunc()">
+                                        <a href="" class="dropdown-item" v-on:click="logoutFunc()">
                                             <span>
                                                 <svg width="24" height="24" viewBox="0 0 17 13" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -965,7 +966,8 @@ export default {
                                 <div class="col-lg-7 col-md-12 col-sm-12">
                                     <!--      start card link               -->
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#wedding_party">
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal"
+                                            data-bs-target="#wedding_party">
                                             <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-lg-1 col-md-1 col-sm-1 px-0">
@@ -1027,7 +1029,8 @@ export default {
                                         </div>
                                     </div>
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#engagement_parties">
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal"
+                                            data-bs-target="#engagement_parties">
                                             <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
@@ -1089,7 +1092,8 @@ export default {
                                         </div>
                                     </div>
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#birthday_parties">
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal"
+                                            data-bs-target="#birthday_parties">
                                             <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
@@ -1151,7 +1155,8 @@ export default {
                                         </div>
                                     </div>
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#graduation_party">
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal"
+                                            data-bs-target="#graduation_party">
                                             <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
@@ -1213,7 +1218,8 @@ export default {
                                         </div>
                                     </div>
                                     <div class="card-pop col-md-12 py-3 mt-3">
-                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal" data-bs-target="#special_occasions">
+                                        <div v-on:click="clearData()" class="a1" data-bs-toggle="modal"
+                                            data-bs-target="#special_occasions">
                                             <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
@@ -1344,18 +1350,24 @@ export default {
                                         <div class=" col-12 col-md-6 col-lg-6 mt-lg-5">
                                             <div class="d-flex flex-column mt-lg-5 right-side-images">
                                                 <!-- <img class="img-fluid my-2" src="/img/wedding.jpg" alt=""> -->
-                                                <div class="image my-2"><img class="img-fluid" src="/img/wedding.jpg" alt=""></div>
-                                                <div class="image my-2"><img class="img-fluid" src="/img/pr11.jpg" alt=""></div>
-                                                <div class="image my-2"><img class="img-fluid" src="/img/pr3.jpg" alt=""></div>
-                                                
+                                                <div class="image my-2"><img class="img-fluid" src="/img/wedding.jpg"
+                                                        alt=""></div>
+                                                <div class="image my-2"><img class="img-fluid" src="/img/pr11.jpg"
+                                                        alt=""></div>
+                                                <div class="image my-2"><img class="img-fluid" src="/img/pr3.jpg"
+                                                        alt=""></div>
+
                                             </div>
                                         </div>
                                         <div class=" col-12 col-md-6 col-lg-6">
                                             <div class="d-flex flex-column  left-side-images ">
-                                                <div class="image my-2"><img class="img-fluid w-100" src="/img/pr1.jpg" alt="" style="object-fit: contain;"></div>
-                                                <div class="image my-2"><img class="img-fluid w-100" src="/img/pr14.jpg" alt="" style="object-fit: contain;"></div>
-                                                <div class="image my-2"><img class="img-fluid w-100" src="/img/pr13.jpg" alt="" style="object-fit: contain;"></div>
-                                                
+                                                <div class="image my-2"><img class="img-fluid w-100" src="/img/pr1.jpg"
+                                                        alt="" style="object-fit: contain;"></div>
+                                                <div class="image my-2"><img class="img-fluid w-100" src="/img/pr14.jpg"
+                                                        alt="" style="object-fit: contain;"></div>
+                                                <div class="image my-2"><img class="img-fluid w-100" src="/img/pr13.jpg"
+                                                        alt="" style="object-fit: contain;"></div>
+
                                             </div>
 
                                         </div>
@@ -1377,10 +1389,10 @@ export default {
                                     <span class="sub-index-title mb-3 mb-lg-0 my-lg-4">
                                         Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                                         Officia maxime ipsam et sit, quisquam, iste eum voluptatibus
-                                        nobis voluptate unde.
-                                    </span>
+                                        nobis voluptate unde. </span>
                                     <div class="my-4">
-                                        <a href="http://localhost:5174/partnersignup" type="button" class="home-btn p-2"> Create Account
+                                        <a href="http://dash.yallaparty.net/partnersignup" type="button"
+                                            class="home-btn p-2"> Create Account
                                         </a>
                                     </div>
 
@@ -1418,12 +1430,12 @@ export default {
                         <label class=" label-form"> Name </label>
                         <div class="input-group mb-3">
                             <input v-model="data.name" type="text" class="form-control" placeholder="Username"
-                                aria-label="Username" aria-describedby="basic-addon1" required >
+                                aria-label="Username" aria-describedby="basic-addon1" required>
                         </div>
                         <label class=" label-form"> Nickname </label>
                         <div class="input-group mb-3">
                             <input v-model="data.nickName" type="text" class="form-control" placeholder="Nickname"
-                                aria-label="Username" aria-describedby="basic-addon1" required >
+                                aria-label="Username" aria-describedby="basic-addon1" required>
                         </div>
                         <label class=" label-form"> Mobile </label>
                         <div class="input-group mb-3">
@@ -1435,7 +1447,7 @@ export default {
                         <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
                             <input v-model="data.email" type="text" class="form-control" placeholder="Email"
-                                aria-label="Username" aria-describedby="basic-addon1" required >
+                                aria-label="Username" aria-describedby="basic-addon1" required>
                         </div>
                         <label class=" label-form"> State </label>
                         <div class="input-group mb-3">
@@ -1456,9 +1468,8 @@ export default {
                             </select>
                         </div>
                         <label class=" label-form"> Party date </label>
-                        <div class="input-group mb-3" >
-                                <input class="form-control" type="date" v-model="data.orderDate"
-                                    required />
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="date" v-model="data.orderDate" required />
                         </div>
                         <!-- <label class=" label-form"> Event Date </label>
                         <div class="input-group mb-3">
@@ -1468,19 +1479,22 @@ export default {
                         <label class=" label-form"> Would you like to communicate by ? </label>
 
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData"
+                                :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.comunicationMethods">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
                         <!-- Textarea for "Other services" -->
@@ -1590,27 +1604,29 @@ export default {
                             </select>
                         </div>
                         <label class=" label-form"> Party date </label>
-                        <div class="input-group mb-3" >
-                                <input class="form-control" type="date" v-model="data.orderDate"
-                                    required />
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="date" v-model="data.orderDate" required />
                         </div>
-                      
+
                         <label class=" label-form"> Would you like to communicate by ? </label>
 
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData"
+                                :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.comunicationMethods">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
                         <!-- Textarea for "Other services" -->
@@ -1720,26 +1736,28 @@ export default {
                             </select>
                         </div>
                         <label class=" label-form"> Party date </label>
-                        <div class="input-group mb-3" >
-                                <input class="form-control" type="date" v-model="data.orderDate"
-                                    required />
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="date" v-model="data.orderDate" required />
                         </div>
-                       
+
                         <label class=" label-form"> Would you like to communicate by ? </label>
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData"
+                                :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.comunicationMethods">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
                         <!-- Textarea for "Other services" -->
@@ -1751,43 +1769,44 @@ export default {
                         <label class="label-form">Are you booking the party for yourself or someone else?</label>
                         <div class="mb-3">
                             <div class="form-check" key="1">
-                                <input class="form-check-input" type="radio" name="bookfor" 
-                                id="1" value="1"  v-model="birthdayBookingFor" >
+                                <input class="form-check-input" type="radio" name="bookfor" id="1" value="1"
+                                    v-model="birthdayBookingFor">
                                 <label class="form-check-label" for="1"> My self </label>
                             </div>
                             <div class="form-check" key="1">
-                                <input class="form-check-input" type="radio" name="bookfor" 
-                                id="2" value="2"  v-model="birthdayBookingFor" >
+                                <input class="form-check-input" type="radio" name="bookfor" id="2" value="2"
+                                    v-model="birthdayBookingFor">
                                 <label class="form-check-label" for="2"> Someone else </label>
                             </div>
                         </div>
 
-                        <div v-if="this.birthdayBookingFor == 2" >
+                        <div v-if="this.birthdayBookingFor == 2">
                             <label class="label-form">Birthday owner's name</label>
-                            <input v-model="data.birthdayOwnerName" type="text" class="form-control" placeholder="Birthday owner's name"
-                            aria-label="Username" aria-describedby="basic-addon1">
+                            <input v-model="data.birthdayOwnerName" type="text" class="form-control"
+                                placeholder="Birthday owner's name" aria-label="Username"
+                                aria-describedby="basic-addon1">
                         </div>
                         <label v-if="this.birthdayBookingFor == 2" class="label-form">What is his age group?</label>
-                        <div  class="mb-3" v-if="this.birthdayBookingFor == 2" >
-                            <div class="form-check" >
-                                <input class="form-check-input" type="radio" name="ageGroup" 
-                                id="11" value="11"  v-model="birthdayAgeGroup" >
+                        <div class="mb-3" v-if="this.birthdayBookingFor == 2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ageGroup" id="11" value="11"
+                                    v-model="birthdayAgeGroup">
                                 <label class="form-check-label" for="11"> Child </label>
                             </div>
-                            <div class="form-check" v-on:click="deleteChildrenService()" >
-                                <input class="form-check-input" type="radio" name="ageGroup" 
-                                id="22" value="22"  v-model="birthdayAgeGroup" >
-                                <label class="form-check-label" for="22" > Adult </label>
+                            <div class="form-check" v-on:click="deleteChildrenService()">
+                                <input class="form-check-input" type="radio" name="ageGroup" id="22" value="22"
+                                    v-model="birthdayAgeGroup">
+                                <label class="form-check-label" for="22"> Adult </label>
                             </div>
                         </div>
 
-                        <label v-if="this.birthdayAgeGroup == 11" class="label-form">Services provided to children</label>
+                        <label v-if="this.birthdayAgeGroup == 11" class="label-form">Services provided to
+                            children</label>
                         <div v-if="this.birthdayAgeGroup == 11" class="mb-3">
                             <div class="form-check" v-for="service in this.getChildrenServicesData" :key="service.id">
-                                    <input name="childrenService" class="form-check-input" type="checkbox"
-                                        :id="'checkbox-' + service.id" :value="service.id"
-                                        v-model="childrenServices" />
-                                    <label :for="'checkbox-' + service.id">{{ service.name }}</label>
+                                <input name="childrenService" class="form-check-input" type="checkbox"
+                                    :id="'checkbox-' + service.id" :value="service.id" v-model="childrenServices" />
+                                <label :for="'checkbox-' + service.id">{{ service.name }}</label>
                             </div>
                         </div>
 
@@ -1891,27 +1910,29 @@ export default {
                             </select>
                         </div>
                         <label class=" label-form"> Party date </label>
-                        <div class="input-group mb-3" >
-                                <input class="form-control" type="date" v-model="data.orderDate"
-                                    required />
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="date" v-model="data.orderDate" required />
                         </div>
-                      
+
                         <label class=" label-form"> Would you like to communicate by ? </label>
 
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData"
+                                :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.comunicationMethods">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
                         <!-- Textarea for "Other services" -->
@@ -2020,27 +2041,29 @@ export default {
                             </select>
                         </div>
                         <label class=" label-form"> Party date </label>
-                        <div class="input-group mb-3" >
-                                <input class="form-control" type="date" v-model="data.orderDate"
-                                    required />
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="date" v-model="data.orderDate" required />
                         </div>
-                       
+
                         <label class=" label-form"> Would you like to communicate by ? </label>
 
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData"
+                                :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.comunicationMethods">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
                         <!-- Textarea for "Other services" -->
