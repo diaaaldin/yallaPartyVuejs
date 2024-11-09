@@ -313,7 +313,8 @@ body{
 .header-div .panner .sub-index-title{
     color: white;
     font-weight: 300;
-    padding: 0 120px 45px 120px;
+    padding: 0 75px 35px 75px;
+    font-size: 20px;
 }
 .header-div .panner a{
     border-radius: 20px;
@@ -487,7 +488,7 @@ body{
     transform: scale(1.001);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    transform: translateY(-10px);
+    transform: translateY(-9px);
 }
 .cards .card-pop .a1::before {
     content: "";
@@ -505,10 +506,24 @@ body{
     width: 100%;
   
   }
+  .cards .card-pop .a1 .name-card{
+    margin-top: 20px;
+  
+  }
+  .cards .card-pop .a1 .name-card .text {
+    color: var(--second-color);
+    transition: var(--main-transition);
+  }
+  .cards .card-pop .a1:hover .name-card .text {
+    color: var(--main-color);
+  }
  
-.cards .card-pop .feather-plus-square{
-margin-top: -25px;
-color: var(--second-color);
+.cards .card-pop .a1 .feather-plus-square{
+    color: var(--second-color);
+    transition: var(--main-transition);
+}
+.cards .card-pop .a1:hover .feather-plus-square{
+    color: var(--main-color);
 }
 
 /* .cards .side-images img{
@@ -2026,11 +2041,11 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
 }
 /******************************* start style about us page   *******************************************************/
+/* url('/img/wd3.jpg'); */
+
 .ul_about{
     position: relative;
-    list-style-image: url(../img/icons/next-arrow.svg);
-    
-
+    list-style-image: url('/img/icons/next-arrow.svg');
 }
 
 .item_about_us{
@@ -2942,6 +2957,9 @@ input:checked + .slider_lang:before {
     font-weight: 400;
     line-height: 1.5rem;
 }
+footer .services .text_footer{
+    cursor: pointer;
+}
 footer .services .text_footer:hover{
     padding-left: 8px;
     font-weight: 600;
@@ -2954,6 +2972,30 @@ footer .services .text_footer:hover{
     line-height: 2.5rem;
     transition: all 0.4s ease-in-out;
 }
+#contact_with{
+    text-decoration: none;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+  }
+ .contact-footer{
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+/*.contact-footer:hover{
+    animation: swing 1s ease;
+} */
+.swing {
+    animation: swing 1s ease;
+  }
+@keyframes swing {
+    0% { transform: rotate(0deg); }
+    20% { transform: rotate(15deg); }
+    40% { transform: rotate(-10deg); }
+    60% { transform: rotate(5deg); }
+    80% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+  }
 footer a{
     text-decoration: none;
 
