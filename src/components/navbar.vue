@@ -35,11 +35,11 @@ export default {
                 return userName;
             }
         },
-   
+
     },
     methods: {
         // ...mapActions("Services", ["GetStatistics"]),
-        goToProfileFunc(){
+        goToProfileFunc() {
             this.$router.push({ name: 'profileProfile' });
             // if (!this.isTokenValid()) {
             //     this.$router.push({ name: 'login' });
@@ -60,7 +60,7 @@ export default {
             return payload.exp > currentTime;
         },
 
-        logoutFunc(){
+        logoutFunc() {
             localStorage.clear();
             this.$router.push({ name: 'main' });
             //window.location.reload();
@@ -74,45 +74,56 @@ export default {
         <nav class="navbar navbar-expand-lg navbar-expand-lg pt-3">
             <div class="container">
 
-                <router-link to="/" class="navbar-brand">
-                    <img src="/img/YallaPartyLogo2.png" width="65" alt="" />
+
+                <div class="navbar-brand">
+
+                    <router-link to="/">
+                        <img src="/img/YallaPartyLogo2.png" width="65" alt="" />
+                    </router-link>
+
                     <div class="navigation">
-                    <input type="checkbox" class="navigation__checkbox" id="nav-toggle">
-                    <label for="nav-toggle" class="navigation__button">
-                      <span class="navigation__icon" aria-label="toggle navigation menu"></span>
-                    </label>
-                    <!-- <div class="navigation__background"></div> -->
-              
-                    <nav class="navigation__nav" role="navigation">
+                        <input type="checkbox" class="navigation__checkbox" id="nav-toggle">
+                        <label for="nav-toggle" class="navigation__button">
+                            <span class="navigation__icon" aria-label="toggle navigation menu"></span>
+                        </label>
+                        <!-- <div class="navigation__background"></div> -->
+
+                        <nav class="navigation__nav" role="navigation">
                             <label for="nav-toggle" class="navigation__button">
-                                <i class="fa fa-arrow-left" style="color: #de147f;font-size: 18px;margin-top: 15px;"></i>
+                                <i class="fa fa-arrow-left"
+                                    style="color: #de147f;font-size: 18px;margin-top: 15px;"></i>
                             </label>
                             <ul class="navigation__list">
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/login" class="navigation__link"> Login Business </a>
+                                    <a href="http://dash.yallaparty.net/login" class="navigation__link"> Login Business
+                                    </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/companylogin" class="navigation__link"> Create Event </a>
+                                    <a href="http://dash.yallaparty.net/companylogin" class="navigation__link"> Create
+                                        Event </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/storelogin" class="navigation__link"> Create Product </a>
+                                    <a href="http://dash.yallaparty.net/storelogin" class="navigation__link"> Create
+                                        Product </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/storesignup" class="navigation__link"> Create Store </a>
+                                    <a href="http://dash.yallaparty.net/storesignup" class="navigation__link"> Create
+                                        Store </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/companysignup" class="navigation__link"> Create Company </a>
+                                    <a href="http://dash.yallaparty.net/companysignup" class="navigation__link"> Create
+                                        Company </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/partnersignup" class="navigation__link"> Be a partner </a>
+                                    <a href="http://dash.yallaparty.net/partnersignup" class="navigation__link"> Be a
+                                        partner </a>
                                 </li>
                             </ul>
-                    </nav>
-                    
-                </div>
-                </router-link>
+                        </nav>
 
-                
+                    </div>
+                </div>
+
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -129,34 +140,41 @@ export default {
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav align-items-center mb-2 mb-lg-0 gradiant_nav">
                         <li class="nav-item">
-                            <router-link to="/" class="nav-link" :class="{ active: $route.path === '/' }" > HOME </router-link>
+                            <router-link to="/" class="nav-link" :class="{ active: $route.path === '/' }"> HOME
+                            </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/events"  class="nav-link" :class="{ active: $route.path === '/events' }" > EVENT </router-link>
+                            <router-link to="/events" class="nav-link" :class="{ active: $route.path === '/events' }">
+                                EVENT </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/productStore" class="nav-link" :class="{ active: $route.path === '/productStore' }"> STORE </router-link>
+                            <router-link to="/productStore" class="nav-link"
+                                :class="{ active: $route.path === '/productStore' }"> STORE </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/bookStore" class="nav-link" :class="{ active: $route.path === '/bookStore' }"> BOOKSTORE </router-link>
+                            <router-link to="/bookStore" class="nav-link"
+                                :class="{ active: $route.path === '/bookStore' }"> TOOLS </router-link>
                         </li>
                     </ul>
 
-                    <ul v-if="GetUserName == ''" 
+                    <ul v-if="GetUserName == ''"
                         class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item login">
-                        
-                                <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn" > LOGIN </router-link>
-                    
+
+                            <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> LOGIN
+                            </router-link>
+
                         </li>
                         <li class="nav-item sign-up">
-                            
-                                <router-link to="/signUp" class="px-3 py-2 align-items-center d-flex login-btn" > SIGN UP </router-link>
+
+                            <router-link to="/signUp" class="px-3 py-2 align-items-center d-flex login-btn"> SIGN UP
+                            </router-link>
 
                         </li>
                     </ul>
 
-                    <ul v-else class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
+                    <ul v-else
+                        class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item dropdown ms-2">
                             <a href="" class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
                                 id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

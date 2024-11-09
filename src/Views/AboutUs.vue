@@ -61,16 +61,20 @@ export default {
                     <div class="me-3">
                         <div class="ms-4">
                             <h2 class="title mb-0">About Us</h2>
-                            <p class="text mt-5" >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur blanditiis autem fugiat accusamus porro dolor, voluptates dolorum, laborum nisi.</p>
+                            <p class="text mt-5" >Yalla Party is your go-to platform for booking events of all sizes, including weddings, engagements, birthdays, and graduation parties. We strive to connect users with businesses that provide everything needed for unforgettable celebrations, offering a marketplace where they can showcase and sell their services.
+
+Our platform also empowers DJs by allowing them to create and promote their events, making it easy for them to sell tickets directly to their audience through Yalla Party. Currently serving the DC, MD, and VA areas, we have exciting plans to expand to other states, fostering community engagement and celebration.
+
+We are always looking for partnerships with businesses and individuals who share our vision of creating memorable experiences. Join us in bringing people together and celebrating life's special moments!</p>
                         </div>
-                        <ul class="ul_about mt-3 ">
+                        <!-- <ul class="ul_about mt-3 ">
                             <li class="item_about_us py-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur blanditiis autem fugiat accusamus porro dolor.</li>
                             <li class="item_about_us py-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur blanditiis autem fugiat accusamus porro dolor.</li>
                             <li class="item_about_us py-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur blanditiis autem fugiat accusamus porro dolor.</li>
                             <li class="item_about_us py-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur blanditiis autem fugiat accusamus porro dolor.</li>
                             <li class="item_about_us py-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur blanditiis autem fugiat accusamus porro dolor.</li>
                             <li class="item_about_us py-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur blanditiis autem fugiat accusamus porro dolor.</li>
-                        </ul>
+                        </ul> -->
                     </div>
                   </div>
                   <div class="col-12 col-lg-6 img-about-us">

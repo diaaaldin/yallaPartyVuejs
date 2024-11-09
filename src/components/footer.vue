@@ -372,9 +372,7 @@ export default {
                             <img src="/img/WhiteYallaPartyLogo.png" alt="" width="70" class="img-fluid" />
                         </div>
                         <p class="text_footer_hero">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro,
-                            vitae voluptates nesciunt hic a eveniet aliquid iure aut fugit
-                            aliquam co.
+                            Yalla Party is a subsidiary of Yalla Party LLC, registered in the state of Maryland, United States of America.
                         </p>
                     </div>
                 </div>
@@ -420,11 +418,11 @@ export default {
                 <div class="col-lg-3 col-md-3 info">
                     <div class="d-flex flex-column flex-lg-column justify-content-between">
                      <p class="text_footer_hero">
-                        1616 Broadway NY, New York United States of America
+                        Capitol Heights, MD USA
                      </p>
                      <a href="#">
                         <i class="fa fa-phone white fs-4"></i>
-                        <span class="text_footer"> 955 444 1245 </span>
+                        <span class="text_footer"> 202 455 9004 </span>
                     </a>
                      <a href="#">
                         <i class="fa fa-envelope white fs-4"></i>

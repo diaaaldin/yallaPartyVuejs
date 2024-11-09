@@ -862,7 +862,7 @@ export default {
                                 <router-link to="/productStore" class="nav-link ">STORE</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link to="/bookStore" class="nav-link ">BOOKSTORE</router-link>
+                                <router-link to="/bookStore" class="nav-link ">TOOLS</router-link>
                             </li>
                         </ul>
 
@@ -940,13 +940,11 @@ export default {
 
             <div class="container">
                 <div class="panner text-center">
-                    <p>Big Event 2024</p>
-                    <h2 class="panner-title">book with Yalla Party</h2>
+                    <!-- <p>Big Event 2024</p> -->
+                    <h2 class="panner-title">Yalla Party</h2>
                     <p class="sub-index-title">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic est
-                        illo architecto repellat maxime minima iusto! Aut deleniti tempora,
-                        iste nobis a voluptate saepe dicta voluptatem odit, adipisci
-                        laboriosam similique?
+                        Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.
+                        <br>For DJs, Yalla Party is a place to create and promote events, making it easy to sell tickets directly through us. Currently available in DC, MD, VA, PA, NJ and NY—with plans to expand soon! 
                     </p>
                     <a href="#card">Book Us</a>
                 </div>
@@ -986,7 +984,7 @@ export default {
                                                             class="d-flex justify-content-between align-items-center mt-2">
                                                             <div
                                                                 class="d-flex justify-content-start align-items-center">
-                                                                <svg width="14" height="14" viewBox="0 0 14 14"
+                                                                <!-- <svg width="14" height="14" viewBox="0 0 14 14"
                                                                     fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <g clip-path="url(#clip0_2_7145)">
                                                                         <path
@@ -1002,10 +1000,9 @@ export default {
                                                                             </rect>
                                                                         </clipPath>
                                                                     </defs>
-                                                                </svg>
+                                                                </svg> -->
 
-                                                                <span class="gray_text ms-1"> Lorem ipsum dolor sit amet
-                                                                    consectetur adipisicing elit.</span>
+                                                                <span class="gray_text ms-1"> </span>
                                                             </div>
                                                             <div
                                                                 class="d-flex justify-content-end align-items-center gap-2">
@@ -1387,9 +1384,7 @@ export default {
                                 <div class="d-flex justify-content-start flex-column">
                                     <h2 class="text-hero mt-4 mt-lg-3 mb-lg-2">Be a partner</h2>
                                     <span class="sub-index-title mb-3 mb-lg-0 my-lg-4">
-                                        Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                                        Officia maxime ipsam et sit, quisquam, iste eum voluptatibus
-                                        nobis voluptate unde. </span>
+                                        We are looking to extend Yalla Party to other states. Be our partner! </span>
                                     <div class="my-4">
                                         <a href="http://dash.yallaparty.net/partnersignup" type="button"
                                             class="home-btn p-2"> Create Account

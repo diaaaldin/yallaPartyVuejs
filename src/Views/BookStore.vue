@@ -65,7 +65,7 @@ export default {
             <div class="container">
                 <div class="breadcrumb-content text-center">
                     <h5 class="theme mb-0">Yalla Party</h5>
-                    <h1 class="white">Book Store</h1>
+                    <h1 class="white">TOOLS</h1>
                 </div>
             </div>
         </div>

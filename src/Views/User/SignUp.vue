@@ -268,10 +268,12 @@ export default {
                 <div class="row row-login register">
                     <div class="col-12 col-lg-8">
                         <div class="img">
-                            <img src="/img/YallaPartyLogo2.png" alt="">
+                            <router-link to="/">
+                                <img src="/img/YallaPartyLogo2.png" alt="">
+                            </router-link>
                         </div>
                         <div class="text-center">
-                            <h2 class="title_log">Register</h2>
+                            <h2 class="title_log">Sign Up</h2>
                             <div>
                                 <p class="gray_text"> Welcome to the Yalla Party </p>
                             </div>
@@ -351,8 +353,8 @@ export default {
                                         <i class="far fa-eye togglePassword"></i>
                                     </div>
 
-                                    <button v-on:click="getSignUpfunc" class=" btn_submit_1 form-control mt-4 mb-3 py-3"
-                                        value="SignUp">SignUp</button>
+                                    <button type="button" v-on:click="getSignUpfunc" class=" btn_submit_1 form-control mt-4 mb-3 py-3"
+                                        value="SignUp">Sign Up</button>
                                 </form>
                             </div>
                         </div>

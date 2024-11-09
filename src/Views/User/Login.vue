@@ -23,14 +23,14 @@ export default {
 			newPassword: {
 				email: ""
 			},
-			isPasswordVisible: false,
 
+			isPasswordVisible: false,
 		}
 	},
+
 	created() {
 		localStorage.clear();
 	},
-
 
 	computed: {
 
@@ -39,9 +39,7 @@ export default {
 	methods: {
 		...mapActions("Users", ["GetLogin"]),
 		getLoginfunc() {
-
 			if (this.checkValidation()) {
-
 				const loading = ElLoading.service({
 					lock: true,
 					background: 'rgba(0, 0, 0, 0.7)',
@@ -49,7 +47,6 @@ export default {
 				});
 
 				this.GetLogin(this.user).then(Response => {
-					console.log(Response);
 					this.$moshaToast('Login Success', {
 						hideProgressBar: 'false',
 						showIcon: 'true',
@@ -59,12 +56,8 @@ export default {
 					});
 					loading.close();
 					console.log("login responce : ", Response);
-
 					if (Response.typeName == "Customer") {
 						this.$router.push({ name: 'main' });
-					} else {
-						// for dashbourd
-						window.location.href = 'http://localhost:5173'; // Replace with the actual URL
 					}
 				}).catch(error => {
 					this.$moshaToast(error.response.data.message, {
@@ -129,7 +122,9 @@ export default {
 
 					<div class="col-12 col-lg-8">
 						<div class="img">
+							<router-link to="/">
 							<img src="/img/YallaPartyLogo2.png" alt="">
+							</router-link>
 						</div>
 						<div class="text-center">
 							<h2 class="title_log">Login</h2>
@@ -168,10 +163,11 @@ export default {
 											class="text text-login forgot-password">forgot your password?</a>
 									</div>
 
-									<button v-on:click="getLoginfunc()" class="btn_submit_1 form-control mt-3 py-3"value="Login">
+									<button type="button" v-on:click="getLoginfunc()" class="btn_submit_1 form-control mt-3 py-3" value="Login">
 										Login
 									</button>
 								</form>
+
 								<router-link to="/signUp" class="text text-login">Create Account</router-link>
 
 							</div>
