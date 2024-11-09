@@ -42,7 +42,8 @@ export default {
             questions: [ /* your questions array */],
             questionAnswers: {}, // For storing answers to text, radio, and date questions
             selectedAnswers: {}, // For storing checkbox selections
-            questionData: [] // This will hold the final structured data
+            questionData: [], // This will hold the final structured data
+            isSwinging: false, // Controls the swing class
         }
     },
     components: {
@@ -119,7 +120,9 @@ export default {
                 console.error("Error fetching cities:", error);
             }
         },
-
+        applySwing() {
+            this.isSwinging = true; // Apply swing class
+        },
         jobApplicationCreate() {
             this.data.orderType = 23;
             this.saveJobApplicationAnswers();
@@ -399,7 +402,7 @@ export default {
                             <span class="text_footer">About Us</span>
                         </router-link>
 
-                        <a href="#">
+                        <a id="contact_with" @click="applySwing">
                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
                               </svg> 
@@ -420,13 +423,15 @@ export default {
                      <p class="text_footer_hero">
                         Capitol Heights, MD USA
                      </p>
-                     <a href="#">
+                     <a>
                         <i class="fa fa-phone white fs-4"></i>
-                        <span class="text_footer"> 202 455 9004 </span>
+                        <span class="text_footer contact-footer" :class="{ swing: isSwinging }"
+                        @animationend="isSwinging = false"> 202 455 9004 </span>
                     </a>
-                     <a href="#">
+                     <a>
                         <i class="fa fa-envelope white fs-4"></i>
-                        <span class="text_footer"> info@yallaparty.com</span>
+                        <span class="text_footer contact-footer" :class="{ swing: isSwinging }"
+                        @animationend="isSwinging = false"> info@yallaparty.com</span>
                     </a>
                     </div>
                 </div>
