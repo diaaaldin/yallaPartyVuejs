@@ -75,6 +75,7 @@ export default {
                 <button class="input-group-text search_icon-tab"><i class="fas fa-search"></i>
                 </button>
             </div>
+            
             <div class="custom-select" :class="{ open: isOpen === true }" ref="customSelect">
                 <div class="selected-option"  @click="toggleDropdown()">{{ selectedOption }}</div>
                 <ul class="options-list">

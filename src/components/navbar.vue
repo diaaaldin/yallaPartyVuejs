@@ -35,7 +35,6 @@ export default {
                 return userName;
             }
         },
-
     },
     methods: {
         // ...mapActions("Services", ["GetStatistics"]),
@@ -65,7 +64,8 @@ export default {
             this.$router.push({ name: 'main' });
             //window.location.reload();
             /// refresh page
-        }
+        },
+        
     }
 };
 </script>
