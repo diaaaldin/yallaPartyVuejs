@@ -13,6 +13,17 @@ export default {
         return Api.get(`${END_POINT}/GetEvent`, config);
     },
 
+    GetCustomerEventsGuests() {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        };
+        return Api.get(`${END_POINT}/GetCustomerEventsGuests`, config);
+    },
+
     GetEvents(exceptionIds,statusId, companyEmail, companyName, page, pageSize) {
         let config = {
             params: {
@@ -38,6 +49,35 @@ export default {
         return Api.get(`${END_POINT}/GetEventsForShow`, config);
     },
 
+    GetEventGuests(id ,statusId) {
+        
+        let config = {
+            params: {
+                id: id,
+                statusId: statusId,
+            },
+        };
+        return Api.get(`${END_POINT}/GetEventGuests`, config);
+    },
+
+    BuyTicketOperation(data) {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        };
+        // let config = {
+        //     headers: {
+        //         'Authorization': token,
+        //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
+        //       },
+        // };
+        const responce = Api.post(`${END_POINT}/BuyTicketOperation`, data, config);
+        return responce;
+    },
+    
     CreateEvent(data) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
@@ -70,6 +110,18 @@ export default {
         return responce;
     },
 
+    GuestStatusChange(data) {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        };
+
+        const responce = Api.put(`${END_POINT}/GuestStatusChange`, data, config);
+        return responce;
+    },
 
     DeleteEvent(id) {
         let token = localStorage.getItem("token")

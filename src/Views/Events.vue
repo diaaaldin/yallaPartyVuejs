@@ -55,8 +55,7 @@ export default {
             this.GetEventsForShow(this.dataSearch).then(Response => {
                 loading.close();
                 
-                console.log("Response :" ,Response);
-                console.log("getEventsData :" , this.getEventsData);
+                
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
                     hideProgressBar: 'false',

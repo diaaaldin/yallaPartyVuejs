@@ -5,3 +5,7 @@ export const getEventsData = (state) => {
 export const getEventData = (state) => {
     return state.EventData;
 }
+
+export const getEventGuestsData = (state) => {
+    return state.EventGuestData;
+}

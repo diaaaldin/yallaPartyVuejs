@@ -1,5 +1,6 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+import { ElLoading } from 'element-plus';
 import axios from "axios";
 
 import pageNav from '@/components/navbar.vue';
@@ -10,12 +11,14 @@ export default {
         return {
 
             buyTicketData:{
+                sessionId : "",
                 ticketId : 0,
                 name : "",
-                nickName : "",
                 mobile : "",
                 email : "",
+                paymentMethod : 0,
             },
+
             TicketSelectName : "",
             cities: []
         };
@@ -27,10 +30,6 @@ export default {
             strictMode: true,
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
         });
-
-        console.log("this.getQuestionsData : ",this.getQuestionsData);
-
-        this.organizeQuestions();
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
@@ -68,7 +67,19 @@ export default {
         ...mapGetters("Events", ["getEventsData", "getEventData"]),
     },
 
-    methods: {
+    methods: {      
+        ...mapActions("Events", ["BuyTicketOperation", "GetEvent",]),
+
+        clearData(){
+           this.buyTicketData.sessionId = "";
+           this.buyTicketData.ticketId = 0;
+           this.buyTicketData.name = "";
+           this.buyTicketData.mobile = "";
+           this.buyTicketData.email = "";
+           this.buyTicketData.paymentMethod = 0;
+
+           this.TicketSelectName = "";
+        },
         formatDate(dateTime) {
             if (!dateTime) return '';
             return new Date(dateTime).toISOString().split('T')[0];
@@ -106,17 +117,15 @@ export default {
         },
 
         selectTicketToBuy(id){
-            this.TicketSelectName = "";
-            console.log("id :", id);
+            this.clearData();
+            
             const selectedTicket = this.getEventData.ticketsInfo.find(x => x.id === id);
-            console.log("selectedOrder :", selectedOrder);
             if (selectedTicket) {
                 this.buyTicketData.ticketId = selectedTicket.id;
                 this.TicketSelectName = selectedTicket.ticketTypeName;
-              
             }
-            this.buyTicketData.id == id
         },
+
         selectItemForDelete(id) {
             console.log("id :", id);
             const selectedOrder = this.getOrdersData.orders.data.find(x => x.id === id);
@@ -132,7 +141,7 @@ export default {
         buyTicket() {
             const countryData = this.iti.getSelectedCountryData();
 			const countryCode = countryData.dialCode;
-			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+			const fullPhoneNumber = `+${countryCode}${this.buyTicketData.mobile}`;
 			this.buyTicketData.mobile = fullPhoneNumber;
 
             if (this.checkValidation()) {
@@ -142,18 +151,16 @@ export default {
                     text: "",
                 });
 
-                this.CreateOrder(this.data).then(Response => {
-                    console.log(Response);
-                    this.$moshaToast('Send order success', {
+                this.BuyTicketOperation(this.buyTicketData).then(Response => {
+                    this.$moshaToast('Buy ticket success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
                         swipeClose: 'true',
                         type: 'success',
                         timeout: 3000,
                     });
-
                     loading.close();
-                    $('#job-application').modal('hide');
+                    $('#tickets_vip').modal('hide');
                 }).catch(error => {
                     this.$moshaToast(error.response.data.message, {
                         hideProgressBar: 'false',
@@ -169,8 +176,8 @@ export default {
         },
 
         checkValidation() {
-            if (this.data.orderType == 0) {
-                this.$moshaToast("there are error comunicate with site manager", {
+            if (this.buyTicketData.ticketId == 0) {
+                this.$moshaToast("there are error with select ticket contact with site manager", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -180,19 +187,19 @@ export default {
                 });
                 this.$refs.email.focus();
                 return false;
-            } else if (this.data.name.trim() == '') {
+            } else if (this.buyTicketData.sessionId.trim() == '' && this.buyTicketData.paymentMethod == 2) {
+                this.$moshaToast("you are not pay", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.email.focus();
+                return false;
+            } else if (this.buyTicketData.name.trim() == '') {
                 this.$moshaToast("enter name", {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                this.$refs.email.focus();
-                return false;
-            } else if (this.data.nickName.trim() == '') {
-                this.$moshaToast("enter nickname", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -202,8 +209,8 @@ export default {
                 });
                 this.$refs.nickName.focus();
                 return false;
-            } else if (this.data.email.trim() == '') {
-                this.$moshaToast("enter email", {
+            } else if (this.buyTicketData.mobile.trim() == '') {
+                this.$moshaToast("enter mobile", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -213,8 +220,8 @@ export default {
                 });
                 this.$refs.password.focus();
                 return false;
-            } else if (this.data.mobile.trim() == '') {
-                this.$moshaToast("enter mobile", {
+            } else if (this.buyTicketData.email.trim() == '') {
+                this.$moshaToast("enter email", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -226,32 +233,8 @@ export default {
                 return false;
             }
 
-            else if (this.data.stateId.trim() == '') {
-                this.$moshaToast("select state", {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                this.$refs.password.focus();
-                return false;
-            } else if (this.data.cityId.trim() == '') {
-                this.$moshaToast("select city", {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                this.$refs.password.focus();
-                return false;
-            }
-            
-            else if (this.data.comunicationMethods == 0) {
-                this.$moshaToast("select comunication method", {
+            else if (this.buyTicketData.paymentMethod == 0) {
+                this.$moshaToast("select payment method", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -532,11 +515,27 @@ export default {
                             <input v-model="buyTicketData.email" type="email" class="form-control" placeholder="Email" aria-label="Username"
                                 aria-describedby="basic-addon1">
                         </div>
+
+                        <label class=" label-form"> Payment Method </label>
+                        <div class="input-group mb-3">
+                            <div class="mb-3">
+                            <div class="form-check" key="1">
+                                <input class="form-check-input" type="radio" name="bookfor" id="1" value="1"
+                                    v-model="buyTicketData.paymentMethod">
+                                <label class="form-check-label" for="1"> My Points </label>
+                            </div>
+                            <div class="form-check" key="1">
+                                <input class="form-check-input" type="radio" name="bookfor" id="2" value="2"
+                                    v-model="buyTicketData.paymentMethod">
+                                <label class="form-check-label" for="2"> Cash </label>
+                            </div>
+                        </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" v-on:click="buyTicket()" class="btn btn-primary">Buy now</button>
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 <script>
-//import { mapState, mapGetters, mapActions } from "vuex";
+import { ElLoading } from 'element-plus';
+import { mapState, mapGetters, mapActions } from "vuex";
 import event from '@/components/Event/eventCard.vue';
 
 export default {
@@ -21,16 +22,38 @@ export default {
 
   created() {
     // Call the function from the store directly when the component is created
-
+    this.initFunc();
   },
 
   computed: {
-    //...mapGetters(),
-    //...mapGetters(),
+    ...mapGetters("Events", ["getEventsData", "getEventData"]),
+
 
   },
   methods: {
-    //...mapActions(),
+    ...mapActions("Events", ["GetCustomerEventsGuests", "GetEvent",]),
+
+initFunc() {
+    const loading = ElLoading.service({
+        lock: true,
+        background: 'rgba(0, 0, 0, 0.7)',
+        text: "",
+    });
+    this.GetCustomerEventsGuests().then(Response => {
+        console.log("my event data : ",Response);
+        loading.close();        
+    }).catch(error => {
+        this.$moshaToast(error.response.data.message, {
+            hideProgressBar: 'false',
+            position: 'top-center',
+            showIcon: 'true',
+            swipeClose: 'true',
+            type: 'warning',
+            timeout: 3000,
+        });
+        loading.close();
+    });
+},
 
   }
 };
@@ -42,10 +65,7 @@ export default {
               <div class="row">
                   <div class="col-12 col-lg-12 col-md-12">
                       <div class="all mt-3 mt-lg-0 white_card">
-                            <event></event>
-                            <event></event>
-                            <event></event>
-                            <event></event>
+                            <event v-for="item in getEventsData" :event='item'></event>                       
                         </div>
                    </div>
                </div>

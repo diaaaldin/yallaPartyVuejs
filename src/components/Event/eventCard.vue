@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import { ElLoading } from 'element-plus';
 import { mapState, mapGetters, mapActions } from "vuex";
 
 
@@ -48,13 +49,19 @@ export default {
         ...mapActions("Events", ["GetEventsForShow", "GetEvent",]),
 
         goToEventFunc() {
-            //this.$router.push({ name: 'event' });
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
             this.GetEvent(this.event.id).then(Response => {
-                console.log("Response : ", Response);
+                loading.close();
 				this.$router.push({ name: "event", params: { slug: Response.slug } });
 			}).catch(error => {
+                loading.close();
 				Swal.fire(error.response.data.message);
 			});
+            loading.close();
         },
 
         async fetchSearchCities(stateId) {
@@ -93,7 +100,7 @@ export default {
 <template>
     <div class="row gray-inp fav-card card-events">
         <div class="col-12 col-lg-4 col-md-12 px-0">
-            <div class="d-flex h-100 w-100 image">
+            <div class="d-flex h-100 w-100 image" @click="goToEventFunc()">
                 <img class="img-fluid fav-img w-100" :src="event.imagePath">
             </div>
         </div>
