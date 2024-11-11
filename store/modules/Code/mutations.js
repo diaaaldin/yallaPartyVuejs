@@ -2,6 +2,9 @@ export const SET_QUESTIONS_DATA = (state , data ) => {
     state.QuestionsData = data;
 }
 
+export const SET_STATES_DATA = (state , data ) => {
+    state.statesData = data;
+}
 
 export const SET_CODES_DATA = (state , data ) => {
     state.CodesData = data;

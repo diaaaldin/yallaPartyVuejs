@@ -1,5 +1,7 @@
 <script>
-//import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
+import axios from "axios";
+
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
@@ -7,36 +9,266 @@ export default {
     data() {
         return {
 
-        }
+            buyTicketData:{
+                ticketId : 0,
+                name : "",
+                nickName : "",
+                mobile : "",
+                email : "",
+            },
+            TicketSelectName : "",
+            cities: []
+        };
     },
     mounted() {
+        // Initialize intl-tel-input on the input element
+        this.iti = window.intlTelInput(this.$refs.phoneInput, {
+            initialCountry: "us",
+            strictMode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
 
+        console.log("this.getQuestionsData : ",this.getQuestionsData);
+
+        this.organizeQuestions();
+    },
+    beforeUnmount() {
+        // Properly destroy the instance when the component is unmounted
+        if (this.iti) {
+            this.iti.destroy();
+        }
     },
     components: {
         pageNav,
         pageFooter
     },
 
-    emits: {
+    emits: {},
 
+    async created() {
+        // Fetch cities based on initial stateId if available
+        console.log("this.getEventData :" ,this.getEventData);
+        if (this.getEventData.stateId) {
+            await this.fetchSearchCities(this.getEventData.stateId);
+        }
     },
-
-    created() {
-        // Call the function from the store directly when the component is created
-
+    watch: {
+        // Watch for changes in the event prop's stateId
+        "getEventData.stateId": {
+            immediate: true,
+            handler(newStateId) {
+                if (newStateId) {
+                    this.fetchSearchCities(newStateId);
+                }
+            }
+        }
     },
 
     computed: {
-        //...mapGetters(),
-        //...mapGetters(),
-
+        ...mapGetters("Events", ["getEventsData", "getEventData"]),
     },
-    methods: {
-        //...mapActions(),
 
+    methods: {
+        formatDate(dateTime) {
+            if (!dateTime) return '';
+            return new Date(dateTime).toISOString().split('T')[0];
+        },
+        formatTime(dateTime) {
+            if (!dateTime) return '';
+            const date = new Date(dateTime);
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+        },
+
+        // Fetch cities for the given stateId
+        async fetchSearchCities(stateId) {
+            console.log("Fetching cities for stateId:", stateId);
+            try {
+                const response = await axios.get(
+                    `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`, {
+                    withCredentials: false
+                });
+                console.log("Cities data fetched:", response.data);  // Log the raw data to check structure
+                this.cities = response.data;
+            } catch (error) {
+                console.error("Error fetching cities:", error);
+            }
+        
+        },
+
+        // Get city name by city ID (index 2 in the data array)
+        getCityName(cityId) {
+            console.log("City ID in getCityName:", cityId);  // Log the ID to debug
+            console.log("Cites:", this.cities);  // Log the ID to debug
+            const selectedCity = this.cities.find(x => x[2] === cityId);  // Assuming cityId is at index 2
+            return selectedCity ? selectedCity[0] : "City not found";  // Return city name or a default message
+        },
+
+        selectTicketToBuy(id){
+            this.TicketSelectName = "";
+            console.log("id :", id);
+            const selectedTicket = this.getEventData.ticketsInfo.find(x => x.id === id);
+            console.log("selectedOrder :", selectedOrder);
+            if (selectedTicket) {
+                this.buyTicketData.ticketId = selectedTicket.id;
+                this.TicketSelectName = selectedTicket.ticketTypeName;
+              
+            }
+            this.buyTicketData.id == id
+        },
+        selectItemForDelete(id) {
+            console.log("id :", id);
+            const selectedOrder = this.getOrdersData.orders.data.find(x => x.id === id);
+            console.log("selectedOrder :", selectedOrder);
+
+            if (selectedOrder) {
+                this.data.id = selectedOrder.id;
+                this.dataStatus.id = selectedOrder.id;
+            }
+
+        },
+
+        buyTicket() {
+            const countryData = this.iti.getSelectedCountryData();
+			const countryCode = countryData.dialCode;
+			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+			this.buyTicketData.mobile = fullPhoneNumber;
+
+            if (this.checkValidation()) {
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+                });
+
+                this.CreateOrder(this.data).then(Response => {
+                    console.log(Response);
+                    this.$moshaToast('Send order success', {
+                        hideProgressBar: 'false',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'success',
+                        timeout: 3000,
+                    });
+
+                    loading.close();
+                    $('#job-application').modal('hide');
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
+            }
+        },
+
+        checkValidation() {
+            if (this.data.orderType == 0) {
+                this.$moshaToast("there are error comunicate with site manager", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.email.focus();
+                return false;
+            } else if (this.data.name.trim() == '') {
+                this.$moshaToast("enter name", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.email.focus();
+                return false;
+            } else if (this.data.nickName.trim() == '') {
+                this.$moshaToast("enter nickname", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.nickName.focus();
+                return false;
+            } else if (this.data.email.trim() == '') {
+                this.$moshaToast("enter email", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.mobile.trim() == '') {
+                this.$moshaToast("enter mobile", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            }
+
+            else if (this.data.stateId.trim() == '') {
+                this.$moshaToast("select state", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.data.cityId.trim() == '') {
+                this.$moshaToast("select city", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            }
+            
+            else if (this.data.comunicationMethods == 0) {
+                this.$moshaToast("select comunication method", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            }
+
+            return true;
+        },
     }
 };
 </script>
+
 <template>
     <pageNav></pageNav>
 
@@ -45,7 +277,7 @@ export default {
             <div class="container">
                 <div class="breadcrumb-content text-center">
                     <h1 class="mb-0 white">Details Eevent</h1>
-                    <h2 class="theme mb-0 pt-3 name-event">Name Event</h2>
+                    <h2 class="theme mb-0 pt-3 name-event">{{ getEventData.title }}</h2>
                 </div>
             </div>
         </div>
@@ -60,13 +292,11 @@ export default {
                         <div class="gray-inp  px-4 py-3">
                             <p class="text mb-3 mt-2 description-text-title">
                                 <img src="/img/heart_icon.png" alt="" width="30" class="" />
-
                                 Event Description
                             </p>
-                            <p class="description-text-gray"> Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                                Non cumque odio, sapiente fugiat voluptas voluptatibus fugit aliquid obcaecati explicabo
-                                dolorum eaque similique laborum architecto ipsa vero. Quasi cumque sint ducimus.</p>
-                            <ul class="ps-0">
+                            <p v-html="getEventData.description" class="description-text-gray"> </p>
+
+                            <!-- <ul class="ps-0">
                                 <li class="li_blue"> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non
                                     cumque odio, sapiente fugiat </li>
                                 <li class="li_blue"> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non
@@ -76,7 +306,7 @@ export default {
                                 <li class="li_blue"> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non
                                     cumque odio, sapiente fugiat </li>
                             </ul>
-                           
+                            -->
                             <!-- <div class="d-flex mb-2">
                                 <p class="text mb-1 mt-2 description-text-title">
                                     <svg class="svg-inline--fa fa-building fa-w-14 fa-fw" aria-hidden="true"
@@ -146,7 +376,7 @@ export default {
 
                                 </div>
                             </div> -->
-                        
+
                         </div>
 
                         <div class="gray-inp mt-3 tickets px-4 py-3">
@@ -172,21 +402,15 @@ export default {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Normal</td>
-                                        <td><span class="availabe">Availabe</span></td>
-                                        <td>20$</td>
+                                    <tr v-for="(item, index) in getEventData.ticketsInfo" :key="index">
+                                        <td>{{ item.ticketTypeName }}</td>
                                         <td>
-                                            <a class="book-now" data-bs-toggle="modal" data-bs-target="#tickets_vip">
-                                                Book Now </a>
+                                            <span v-if="item.ticketAllNum > item.ticketBookNum " class="availabe"> Availabe </span>
+                                            <span v-else-if="item.ticketAllNum <= item.ticketBookNum " class="not-availabe">Not Availabe</span>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>VIP</td>
-                                        <td><span class="not-availabe">Not Availabe</span></td>
-                                        <td>40$</td>
-                                        <td>
-                                            <a class="book-now" data-bs-toggle="modal" data-bs-target="#tickets_vip">
+                                        <td>{{ item.price }} $</td>
+                                        <td >
+                                            <a v-if="item.ticketAllNum > item.ticketBookNum" v-on:click="selectTicketToBuy(item.id)" class="book-now" data-bs-toggle="modal" data-bs-target="#tickets_vip">
                                                 Book Now </a>
                                         </td>
                                     </tr>
@@ -200,49 +424,15 @@ export default {
                 <div class="col-md-5">
                     <div class="title-event">
                         <div class="img-title">
-                            <img src="/img/pr6.jpg" class="img-fluid" alt="">
+                            <img :src="getEventData.imagePath" class="img-fluid" alt="">
                         </div>
                         <div class="details-event-card row  align-items-center mx-0">
                             <div class="col-lg-12 ">
                                 <div class="d-flex align-items-center mt-3 mt-lg-0 a1">
                                     <img src="/img/icons/event-svgrepo-com.svg" alt="" width="24" class="me-2" />
-                                    <span class="text"> Name Event name</span>
+                                    <span class="text">{{ getEventData.title }}</span>
                                 </div>
 
-                            </div>
-                            <div class="col-md-12">
-                                <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
-                                    <svg class="svg-inline--fa fa-calendar-alt fa-w-14 fa-fw me-2"
-                                        style="margin-left: -3px;" width="24" height="24" aria-hidden="true"
-                                        focusable="false" data-prefix="far" data-icon="calendar-alt" role="img"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-                                        <path fill="currentColor"
-                                            d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z">
-                                        </path>
-                                    </svg>
-
-                                    <span class="text"> 17/12/2024 </span>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
-                                    <svg class="svg-inline--fa fa-map-marked-alt fa-w-18 fa-1x me-2" aria-hidden="true"
-                                        width="24" height="24" focusable="false" data-prefix="fas"
-                                        data-icon="map-marked-alt" role="img" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 576 512" data-fa-i2svg="">
-                                        <path fill="currentColor"
-                                            d="M288 0c-69.59 0-126 56.41-126 126 0 56.26 82.35 158.8 113.9 196.02 6.39 7.54 17.82 7.54 24.2 0C331.65 284.8 414 182.26 414 126 414 56.41 357.59 0 288 0zm0 168c-23.2 0-42-18.8-42-42s18.8-42 42-42 42 18.8 42 42-18.8 42-42 42zM20.12 215.95A32.006 32.006 0 0 0 0 245.66v250.32c0 11.32 11.43 19.06 21.94 14.86L160 448V214.92c-8.84-15.98-16.07-31.54-21.25-46.42L20.12 215.95zM288 359.67c-14.07 0-27.38-6.18-36.51-16.96-19.66-23.2-40.57-49.62-59.49-76.72v182l192 64V266c-18.92 27.09-39.82 53.52-59.49 76.72-9.13 10.77-22.44 16.95-36.51 16.95zm266.06-198.51L416 224v288l139.88-55.95A31.996 31.996 0 0 0 576 426.34V176.02c0-11.32-11.43-19.06-21.94-14.86z">
-                                        </path>
-                                    </svg>
-                                    <span class="text"> Broadway NY, New York </span>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
-                                    <img src="/img/icons/city-svgrepo-com.svg" alt="" width="24" class="me-2" />
-
-                                    <span class="text"> City </span>
-                                </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
@@ -255,10 +445,51 @@ export default {
 
                                         </path>
                                     </svg>
-
-                                    <span class="text"> Nickname </span>
+                                    <span class="text"> {{ getEventData.companyName }} </span>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
+                                    <svg class="svg-inline--fa fa-calendar-alt fa-w-14 fa-fw me-2"
+                                        style="margin-left: -3px;" width="24" height="24" aria-hidden="true"
+                                        focusable="false" data-prefix="far" data-icon="calendar-alt" role="img"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
+                                        <path fill="currentColor"
+                                            d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z">
+                                        </path>
+                                    </svg>
+
+                                    <span class="text"> {{ formatDate(getEventData.date) }} </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
+                                    <img src="/img/icons/city-svgrepo-com.svg" alt="" width="24" class="me-2" />
+
+                                    <span class="text"> {{ formatTime(getEventData.date) }} </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
+                                    <svg class="svg-inline--fa fa-map-marked-alt fa-w-18 fa-1x me-2" aria-hidden="true"
+                                        width="24" height="24" focusable="false" data-prefix="fas"
+                                        data-icon="map-marked-alt" role="img" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 576 512" data-fa-i2svg="">
+                                        <path fill="currentColor"
+                                            d="M288 0c-69.59 0-126 56.41-126 126 0 56.26 82.35 158.8 113.9 196.02 6.39 7.54 17.82 7.54 24.2 0C331.65 284.8 414 182.26 414 126 414 56.41 357.59 0 288 0zm0 168c-23.2 0-42-18.8-42-42s18.8-42 42-42 42 18.8 42 42-18.8 42-42 42zM20.12 215.95A32.006 32.006 0 0 0 0 245.66v250.32c0 11.32 11.43 19.06 21.94 14.86L160 448V214.92c-8.84-15.98-16.07-31.54-21.25-46.42L20.12 215.95zM288 359.67c-14.07 0-27.38-6.18-36.51-16.96-19.66-23.2-40.57-49.62-59.49-76.72v182l192 64V266c-18.92 27.09-39.82 53.52-59.49 76.72-9.13 10.77-22.44 16.95-36.51 16.95zm266.06-198.51L416 224v288l139.88-55.95A31.996 31.996 0 0 0 576 426.34V176.02c0-11.32-11.43-19.06-21.94-14.86z">
+                                        </path>
+                                    </svg>
+                                    <span class="text"> {{ getCityName(getEventData.cityId) }} </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
+                                    <img src="/img/icons/city-svgrepo-com.svg" alt="" width="24" class="me-2" />
+                                    <span class="text" style="white-space: pre-line;"> {{ getEventData.address }} </span>
+                                </div>
+                            </div>
+
+                        
 
                         </div>
                     </div>
@@ -276,29 +507,29 @@ export default {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tickets Vip</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Tickets {{ TicketSelectName }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="" method="">
+
                         <label class=" label-form"> Name </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                            <input v-model="buyTicketData.name" type="text" class="form-control" placeholder="Username" aria-label="Username"
                                 aria-describedby="basic-addon1">
                         </div>
-                        <label class=" label-form"> Nickname </label>
+
+                        <label class=" label-form"> Mobile </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nickname" aria-label="Username"
-                                aria-describedby="basic-addon1">
+
+                                <input v-model="buyTicketData.mobile" id="phone" type="tel" ref="phoneInput" class="form-control"
+                                maxlength="10" placeholder="(201) 555-0123" aria-label=""
+                                aria-describedby="basic-addon1" required>
                         </div>
-                        <label class=" label-form"> Phone Number </label>
-                        <div class="input-group mb-3">
-                            <input id="phone" type="tel" class="form-control" maxlength="10"
-                                placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1">
-                        </div>
+
                         <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Email" aria-label="Username"
+                            <input v-model="buyTicketData.email" type="email" class="form-control" placeholder="Email" aria-label="Username"
                                 aria-describedby="basic-addon1">
                         </div>
                     </form>

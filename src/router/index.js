@@ -47,7 +47,7 @@ const routes = [
         component: events
     },
     {
-        path: '/event',
+        path: '/event/:slug',
         name: "event",
         component: event
     },

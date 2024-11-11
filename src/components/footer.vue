@@ -69,7 +69,7 @@ export default {
     },
 
     created() {
-        this.fetchStates();
+        this.GetStates();
         this.GetQuestionsData();
         this.GetComunicationMethods();
         this.GetOrderServices();
@@ -77,7 +77,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters("Code", ["getQuestionsData", "getComunicationMethodsData", "getOrderServicesData" ,"getChildrenServicesData"]),
+        ...mapGetters("Code", ["getQuestionsData","getStatesData", "getComunicationMethodsData", "getOrderServicesData" ,"getChildrenServicesData"]),
 
         GetUserName() {
             let userName = localStorage.getItem("customerName");
@@ -90,22 +90,22 @@ export default {
     },
 
     methods: {
-        ...mapActions("Code", ["GetQuestionsData", "GetComunicationMethods", "GetOrderServices" , "GetChildrenServices"]),
+        ...mapActions("Code", ["GetQuestionsData","GetStates", "GetComunicationMethods", "GetOrderServices" , "GetChildrenServices"]),
         ...mapActions("Orders", ["CreateOrder"]),
 
 
-        // Fetch the states from the API
-        async fetchStates() {
-            try {
-                const response = await axios.get("https://api.census.gov/data/2020/dec/pl?get=NAME&for=state:*", {
-                    withCredentials: false,
-                });
-                // API returns the first element as headers, so we slice it off
-                this.states = response.data;
-            } catch (error) {
-                console.error("Error fetching states:", error);
-            }
-        },
+        // // Fetch the states from the API
+        // async fetchStates() {
+        //     try {
+        //         const response = await axios.get("https://api.census.gov/data/2020/dec/pl?get=NAME&for=state:*", {
+        //             withCredentials: false,
+        //         });
+        //         // API returns the first element as headers, so we slice it off
+        //         this.states = response.data;
+        //     } catch (error) {
+        //         console.error("Error fetching states:", error);
+        //     }
+        // },
 
         // Fetch cities based on the selected state
         async fetchCities(stateId) {
@@ -495,7 +495,7 @@ export default {
                         <div class="input-group mb-3">
                             <select v-model="data.stateId" class="form-control" @change="fetchCities(data.stateId)">
                                 <option value="" key="" selected>-- select a state --</option>
-                                <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
+                                <option v-for="item in getStatesData" :key="parseInt(item[1])" :value="item[1]">
                                     {{ item[0] }}
                                 </option>
                             </select>

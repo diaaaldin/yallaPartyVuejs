@@ -3,6 +3,8 @@ export default{
     CodesData:null,
     CodeData:null,
 
+    statesData:null,
+
     QuestionsData:null,
 
     OrderTypesData:null,

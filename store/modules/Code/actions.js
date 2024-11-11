@@ -1,5 +1,22 @@
-import Code from "../../../src/apis/Code";
+import Code from "@/apis/Code";
+import axios from 'axios';
 
+export const GetStates = async ({ commit }) => {
+    try {
+        const response = await axios.get("https://api.census.gov/data/2020/dec/pl?get=NAME&for=state:*", {
+            withCredentials: false,
+        });
+        // Remove headers from response data (first element) and get the actual states data
+        const statesData = response.data.slice(1); // Skip the first element (headers)
+        // Commit the states data to the Vuex store
+        commit('SET_STATES_DATA', statesData);
+        // Return the processed states data
+        return statesData;
+    } catch (error) {
+        console.error("Error fetching states:", error);
+        throw error;
+    }
+};
 
 export const GetQuestionsData = ({ commit, dispatch }) => {
     return Code.GetQuestionsData().then(function (response) {

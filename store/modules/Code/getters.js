@@ -2,6 +2,10 @@ export const getQuestionsData = (state) => {
     return state.QuestionsData;
 }
 
+export const getStatesData = (state) => {
+    return state.statesData;
+}
+
 export const getCodesData = (state) => {
     return state.CodesData;
 }

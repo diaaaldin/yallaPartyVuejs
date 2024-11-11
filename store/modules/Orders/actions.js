@@ -1,4 +1,4 @@
-import Order from "../../../src/apis/Orders";
+import Order from "@/apis/Orders";
 
 
 export const GetOrder = ({ commit, dispatch },id) => {

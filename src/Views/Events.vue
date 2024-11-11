@@ -1,5 +1,10 @@
 <script>
-//import { mapState, mapGetters, mapActions } from "vuex";
+import { RouterView } from 'vue-router';
+import { ElLoading } from 'element-plus';
+
+import { mapState, mapGetters, mapActions } from "vuex";
+import axios from "axios";
+
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 import eventCard from '@/components/Event/eventCard.vue';
@@ -8,6 +13,11 @@ export default {
     data() {
         return {
 
+            dataSearch: {
+                exceptionIds: [],
+                page: 1,
+                pageSize: 5
+            },
         }
     },
     mounted() {
@@ -25,17 +35,40 @@ export default {
 
     created() {
         // Call the function from the store directly when the component is created
-
+        this.initFunc();
     },
 
     computed: {
-        //...mapGetters(),
-        //...mapGetters(),
+        ...mapGetters("Events", ["getEventsData", "getEventData"]),
 
     },
     methods: {
         //...mapActions(),
+        ...mapActions("Events", ["GetEventsForShow", "GetEvent",]),
 
+        initFunc() {
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+            this.GetEventsForShow(this.dataSearch).then(Response => {
+                loading.close();
+                
+                console.log("Response :" ,Response);
+                console.log("getEventsData :" , this.getEventsData);
+            }).catch(error => {
+                this.$moshaToast(error.response.data.message, {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                loading.close();
+            });
+        },
     }
 };
 </script>
@@ -58,12 +91,7 @@ export default {
             <div class="row">
                 <div class="col-12 col-lg-9 col-md-12">
                     <div class="all mt-3 mt-lg-0 white_card py-4">
-                       <eventCard></eventCard>
-                       <eventCard></eventCard>
-                       <eventCard></eventCard>
-                       <eventCard></eventCard>
-                       <eventCard></eventCard>
-                       
+                       <eventCard v-for="item in getEventsData.events.data" :event='item' ></eventCard>                       
                     </div>
                 </div>
                 <div class="row justify-content-center see-more">

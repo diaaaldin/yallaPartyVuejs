@@ -6,6 +6,7 @@ import mutations from "./mutations";
 import Users from "./modules/Users/index";
 import Code from "./modules/Code/index";
 import Orders from "./modules/Orders/index";
+import Events from "./modules/Events/index";
 
 import Vuex from "vuex";
 import createPersistedState from 'vuex-persistedstate';
@@ -27,12 +28,13 @@ const store = new Vuex.Store({
      modules :{
       Users,
       Code,
-      Orders
+      Orders,
+      Events
 
      },
      plugins: [
         createPersistedState({
-          paths: ['Users','Code','Orders'], 
+          paths: ['Users','Code','Orders','Events'], 
         })
       ],
 });
