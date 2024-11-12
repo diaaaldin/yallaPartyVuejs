@@ -434,7 +434,7 @@ export default {
                             <div class="col-md-12">
                                 <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
                                     <svg class="svg-inline--fa fa-calendar-alt fa-w-14 fa-fw me-2"
-                                        style="margin-left: -3px;" width="24" height="24" aria-hidden="true"
+                                        style="" width="24" height="24" aria-hidden="true"
                                         focusable="false" data-prefix="far" data-icon="calendar-alt" role="img"
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
                                         <path fill="currentColor"
@@ -447,7 +447,7 @@ export default {
                             </div>
                             <div class="col-md-12">
                                 <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
-                                    <img src="/img/icons/city-svgrepo-com.svg" alt="" width="24" class="me-2" />
+                                    <img src="/img/icons/time-second.svg" alt="" width="24" class="me-2" />
 
                                     <span class="text"> {{ formatTime(getEventData.date) }} </span>
                                 </div>
@@ -467,7 +467,7 @@ export default {
                             </div>
                             <div class="col-md-12">
                                 <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
-                                    <img src="/img/icons/city-svgrepo-com.svg" alt="" width="24" class="me-2" />
+                                    <img src="/img/icons/city-svgrepo-com.svg" alt="" width="24" class="me-2 last" />
                                     <span class="text" style="white-space: pre-line;"> {{ getEventData.address }} </span>
                                 </div>
                             </div>

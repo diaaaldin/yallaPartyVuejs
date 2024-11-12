@@ -985,6 +985,7 @@ display: none;
     padding: 8px;
     /* color: #fff; */
     transition: .3s all ease-in-out;
+    cursor: pointer;
 }
 .card-events .go svg{
     width: 20px;
@@ -1030,6 +1031,7 @@ display: none;
     position: relative;
     overflow: hidden;
     border-radius: 12px;
+    cursor: pointer;
 }
 
 .events .card-events .image::before {
@@ -1080,7 +1082,9 @@ display: none;
 .title-event .details-event-card .a1{
     padding: 22px 0 0px 0;
     font-size: 25px;
-
+}
+.title-event .details-event-card .a1 .last{
+    margin-top: -50px;
 }
 .title-event .details-event-card .a1 .text{
     color: #615f61;
@@ -1088,6 +1092,9 @@ display: none;
 }
 .event-details .details-event-card  svg path{
     fill: var(--second-color);
+}
+.event-details .details-event-card svg , .event-details .details-event-card  img{
+    width: 24px;
 }
 /* .event-details .img-title{
     margin: 0 auto;
