@@ -375,7 +375,8 @@ export default {
                                     Tickets
                                 </p>
                             </div>
-                            <table class="table text-center">
+                            <div class="main-scrollx">
+                                <table class="table text-center scrollx">
                                 <thead>
                                     <tr>
                                         <th scope="col">Type</th>
@@ -399,6 +400,7 @@ export default {
                                     </tr>
                                 </tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
 

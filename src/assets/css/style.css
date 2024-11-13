@@ -1480,10 +1480,10 @@ margin: 10px 5px 0 0;
     border: 1px solid var(--main-color);
     background-color: var(--main-color);
   }
-/************** End profile******************/
+/************** End profile ******************/
 
 
-/************** Start campany******************/
+/************** Start campany ******************/
 .campany{
 
 }
@@ -2134,7 +2134,6 @@ input::-webkit-inner-spin-button {
 
 /************  start style login page 1 *******************/
 .password-container{
-
     position: relative;
 }
 
@@ -2164,7 +2163,6 @@ input::-webkit-inner-spin-button {
     outline: none;
     box-shadow: none;
     border: 1px solid var(--main-color);
-
 }
 .tab-title{
     font-size: 14px;
@@ -2641,6 +2639,7 @@ input[type="file"]{
     height: 78px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
 }
 .hero-profile-pic1{
     width: 50px;
@@ -3370,8 +3369,8 @@ footer > .copy-write{
 }
 .prov-acco{
     overflow-x: hidden;
-overflow-y: scroll;
-height: 220px;
+    overflow-y: scroll;
+    height: 220px;
 }
 .radio-provider-inp:checked +.radio-provider-label{
     color: var(--main-color);
@@ -3470,7 +3469,8 @@ height: 220px;
 .wallet-all-provider {
     overflow-y: scroll;
     overflow-x: hidden;
-height: 184px}
+    height: 184px;
+    }
 
 
 /*******************  media query   ***************************************/
@@ -3704,6 +3704,19 @@ height: 184px}
       .img-about-us .a2{
         padding: 60px !important;
       }
+      .event-details .title-event{
+        margin-top: 20px;
+      }
+
+
+      .tickets .main-scrollx{
+		overflow-x: auto;
+		width: 100%;
+	  }
+	  .tickets .main-scrollx .scrollx{
+		/* display: flex; */
+		min-width: 362px;
+	    }
 }
 
 @media (max-width: 767px){
