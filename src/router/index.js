@@ -12,6 +12,8 @@ import profileFavorit from '../Views/Profile/favorit.vue'
 
 import events from '../Views/Events.vue'
 import event from '../Views/EventDetails.vue'
+import teckitsuccess from '../Views/Checkout/TeckitBuySuccess.vue'
+import teckitfail from '../Views/Checkout/TeckitBuyFail.vue'
 import marketPlace from '../Views/MarketPlace.vue'
 import product from '../Views/Product.vue'
 import store from '../Views/Store.vue'
@@ -52,9 +54,15 @@ const routes = [
         component: event
     },
     {
-        path: '/productStore',
-        name: "store",
-        component: store
+        path: '/teckitfail',
+        name: "teckitfail",
+        component: teckitfail
+    },
+    {
+        path: '/teckitsuccess',
+        name: "teckitsuccess",
+        component: teckitsuccess,
+        props: route => ({ sessionId: route.query.sessionId }) // Pass sessionId as a prop
     },
     {
         path: '/bookStore',

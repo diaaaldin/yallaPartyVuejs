@@ -9,17 +9,32 @@ import pageFooter from '@/components/footer.vue';
 export default {
     data() {
         return {
-
-            buyTicketData:{
-                sessionId : "",
-                ticketId : 0,
-                name : "",
-                mobile : "",
-                email : "",
-                paymentMethod : 0,
+            buyTicketData: {
+                paymentMethod: 0,
+                ticketData:{
+                    sessionId: "",
+                    ticketId: 0,
+                    price : 0,
+                    name: "",
+                    mobile: "",
+                    email: "",
+                    discountCode : ""
+                },
+                productData: {
+                    title: "",
+                    description: "",
+                    imageUrl: "",
+                    price: 0,
+                },
             },
+            selectedTicket : {},
 
-            TicketSelectName : "",
+            TicketSelectName: "",
+
+            isDiscountSuccess : false,
+            discountMessage : "",
+            discountCode : "",
+           
             cities: []
         };
     },
@@ -31,6 +46,7 @@ export default {
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
         });
     },
+
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
         if (this.iti) {
@@ -46,7 +62,9 @@ export default {
 
     async created() {
         // Fetch cities based on initial stateId if available
-        console.log("this.getEventData :" ,this.getEventData);
+        console.log("this.getEventData :", this.getEventData);
+        await this.initFunc();
+        
         if (this.getEventData.stateId) {
             await this.fetchSearchCities(this.getEventData.stateId);
         }
@@ -67,18 +85,30 @@ export default {
         ...mapGetters("Events", ["getEventsData", "getEventData"]),
     },
 
-    methods: {      
+    methods: {
         ...mapActions("Events", ["BuyTicketOperation", "GetEvent",]),
 
-        clearData(){
-           this.buyTicketData.sessionId = "";
-           this.buyTicketData.ticketId = 0;
-           this.buyTicketData.name = "";
-           this.buyTicketData.mobile = "";
-           this.buyTicketData.email = "";
-           this.buyTicketData.paymentMethod = 0;
+        clearData() {
+            this.buyTicketData.paymentMethod = 0;
+            
+            this.buyTicketData.ticketData.sessionId = "";
+            this.buyTicketData.ticketData.ticketId = 0;
+            this.buyTicketData.ticketData.name = "";
+            this.buyTicketData.ticketData.mobile = "";
+            this.buyTicketData.ticketData.email = "";
+            this.buyTicketData.ticketData.discountCode = "";
 
-           this.TicketSelectName = "";
+            this.buyTicketData.productData.id = "";
+            this.buyTicketData.productData.title = "";
+            this.buyTicketData.productData.description = "";
+            this.buyTicketData.productData.imageUrl = "";
+            this.buyTicketData.productData.price = "";
+
+            this.selectedTicket = {};
+            this.TicketSelectName = "";
+            this.isDiscountSuccess = false;
+            this.discountMessage = "";
+
         },
         formatDate(dateTime) {
             if (!dateTime) return '';
@@ -91,6 +121,49 @@ export default {
             const minutes = date.getMinutes().toString().padStart(2, '0');
             return `${hours}:${minutes}`;
         },
+        
+        initFunc() {
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+            this.GetEvent(this.getEventData.id).then(Response => {
+                loading.close();                
+            }).catch(error => {
+                this.$moshaToast(error.response.data.message, {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                loading.close();
+            });
+        },
+
+        getEvnetFunc() {
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+            this.GetEvent(this.getEventData.id).then(Response => {
+                loading.close();                
+            }).catch(error => {
+                this.$moshaToast(error.response.data.message, {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                loading.close();
+            });
+        },
+
 
         // Fetch cities for the given stateId
         async fetchSearchCities(stateId) {
@@ -105,7 +178,7 @@ export default {
             } catch (error) {
                 console.error("Error fetching cities:", error);
             }
-        
+
         },
 
         // Get city name by city ID (index 2 in the data array)
@@ -116,14 +189,68 @@ export default {
             return selectedCity ? selectedCity[0] : "City not found";  // Return city name or a default message
         },
 
-        selectTicketToBuy(id){
+        selectTicketToBuy(id) {
             this.clearData();
-            
+
             const selectedTicket = this.getEventData.ticketsInfo.find(x => x.id === id);
             if (selectedTicket) {
-                this.buyTicketData.ticketId = selectedTicket.id;
+                this.selectedTicket = selectedTicket;
                 this.TicketSelectName = selectedTicket.ticketTypeName;
+
+                this.buyTicketData.ticketData.ticketId = selectedTicket.id;
+                this.buyTicketData.ticketData.price = selectedTicket.price;
+
+                this.buyTicketData.productData.title = "Buy " + selectedTicket.ticketTypeName + " Ticket.";
+                this.buyTicketData.productData.description = this.getEventData.title;
+                this.buyTicketData.productData.imageUrl = this.getEventData.imagePath;
+                this.buyTicketData.productData.price = selectedTicket.price;
             }
+        },
+
+        checkDiscountCodeFunc(){
+            const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+             });
+             setTimeout(() => {
+
+                if (this.discountCode === this.getEventData.discountCode) {
+                    
+                    let discountRate = this.selectedTicket.price * (this.getEventData.discountRate / 100);
+                    let priceAfterDiscount = this.selectedTicket.price - discountRate;
+              
+                    this.buyTicketData.ticketData.price = priceAfterDiscount;
+                    this.buyTicketData.productData.price = priceAfterDiscount;
+        
+                    this.isDiscountSuccess = true;  // Note: use `=` for assignment
+                    this.discountMessage = "Discount success"; // Note: use `=` for assignment
+                    this.buyTicketData.ticketData.discountCode = this.discountCode;
+        
+                    this.$moshaToast('Discount success', {
+                        hideProgressBar: false,
+                        showIcon: true,
+                        swipeClose: true,
+                        type: 'success',
+                        timeout: 3000,
+                    });
+                } else {
+
+                    this.isDiscountSuccess = false;  // Note: use `=` for assignment
+                    this.discountMessage = "Discount fail"; // Note: use `=` for assignment
+        
+                    this.$moshaToast("Discount fail, try again with another code", {
+                        hideProgressBar: false,
+                        position: 'top-center',
+                        showIcon: true,
+                        swipeClose: true,
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                }
+                loading.close(); // Close loading after the check
+            }, 2000); // Delay of 1 second (2000 milliseconds)
+
         },
 
         selectItemForDelete(id) {
@@ -140,9 +267,10 @@ export default {
 
         buyTicket() {
             const countryData = this.iti.getSelectedCountryData();
-			const countryCode = countryData.dialCode;
-			const fullPhoneNumber = `+${countryCode}${this.buyTicketData.mobile}`;
-			this.buyTicketData.mobile = fullPhoneNumber;
+            const countryCode = countryData.dialCode;
+            const fullPhoneNumber = `+${countryCode}${this.buyTicketData.ticketData.mobile}`;
+            
+            this.buyTicketData.ticketData.mobile = fullPhoneNumber;
 
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
@@ -150,17 +278,19 @@ export default {
                     background: 'rgba(0, 0, 0, 0.7)',
                     text: "",
                 });
-
                 this.BuyTicketOperation(this.buyTicketData).then(Response => {
-                    this.$moshaToast('Buy ticket success', {
+                    if(this.buyTicketData.paymentMethod == 1){
+                        this.$moshaToast('Buy ticket success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
                         swipeClose: 'true',
                         type: 'success',
                         timeout: 3000,
-                    });
-                    loading.close();
+                       });
+                       this.getEvnetFunc();
+                    }
                     $('#tickets_vip').modal('hide');
+                    
                 }).catch(error => {
                     this.$moshaToast(error.response.data.message, {
                         hideProgressBar: 'false',
@@ -174,9 +304,9 @@ export default {
                 });
             }
         },
-
         checkValidation() {
-            if (this.buyTicketData.ticketId == 0) {
+            
+            if (this.buyTicketData.ticketData.ticketId == 0) {
                 this.$moshaToast("there are error with select ticket contact with site manager", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -187,18 +317,8 @@ export default {
                 });
                 this.$refs.email.focus();
                 return false;
-            } else if (this.buyTicketData.sessionId.trim() == '' && this.buyTicketData.paymentMethod == 2) {
-                this.$moshaToast("you are not pay", {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                this.$refs.email.focus();
-                return false;
-            } else if (this.buyTicketData.name.trim() == '') {
+            } 
+            else if (this.buyTicketData.ticketData.name.trim() == '') {
                 this.$moshaToast("enter name", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -209,7 +329,7 @@ export default {
                 });
                 this.$refs.nickName.focus();
                 return false;
-            } else if (this.buyTicketData.mobile.trim() == '') {
+            } else if (this.buyTicketData.ticketData.mobile.trim() == '') {
                 this.$moshaToast("enter mobile", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -220,7 +340,7 @@ export default {
                 });
                 this.$refs.password.focus();
                 return false;
-            } else if (this.buyTicketData.email.trim() == '') {
+            } else if (this.buyTicketData.ticketData.email.trim() == '') {
                 this.$moshaToast("enter email", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -232,7 +352,6 @@ export default {
                 this.$refs.password.focus();
                 return false;
             }
-
             else if (this.buyTicketData.paymentMethod == 0) {
                 this.$moshaToast("select payment method", {
                     hideProgressBar: 'false',
@@ -245,9 +364,10 @@ export default {
                 this.$refs.password.focus();
                 return false;
             }
-
             return true;
         },
+
+       
     }
 };
 </script>
@@ -388,12 +508,16 @@ export default {
                                     <tr v-for="(item, index) in getEventData.ticketsInfo" :key="index">
                                         <td>{{ item.ticketTypeName }}</td>
                                         <td>
-                                            <span v-if="item.ticketAllNum > item.ticketBookNum " class="availabe"> Availabe </span>
-                                            <span v-else-if="item.ticketAllNum <= item.ticketBookNum " class="not-availabe">Not Availabe</span>
+                                            <span v-if="item.ticketAllNum > item.ticketBookNum" class="availabe">
+                                                Availabe </span>
+                                            <span v-else-if="item.ticketAllNum <= item.ticketBookNum"
+                                                class="not-availabe">Not Availabe</span>
                                         </td>
                                         <td>{{ item.price }} $</td>
-                                        <td >
-                                            <a v-if="item.ticketAllNum > item.ticketBookNum" v-on:click="selectTicketToBuy(item.id)" class="book-now" data-bs-toggle="modal" data-bs-target="#tickets_vip">
+                                        <td>
+                                            <a v-if="item.ticketAllNum > item.ticketBookNum"
+                                                v-on:click="selectTicketToBuy(item.id)" class="book-now"
+                                                data-bs-toggle="modal" data-bs-target="#tickets_vip">
                                                 Book Now </a>
                                         </td>
                                     </tr>
@@ -425,7 +549,6 @@ export default {
                                         data-fa-i2svg="">
                                         <path fill="currentColor"
                                             d="M576 240c0-23.63-12.95-44.04-32-55.12V32.01C544 23.26 537.02 0 512 0c-7.12 0-14.19 2.38-19.98 7.02l-85.03 68.03C364.28 109.19 310.66 128 256 128H64c-35.35 0-64 28.65-64 64v96c0 35.35 28.65 64 64 64h33.7c-1.39 10.48-2.18 21.14-2.18 32 0 39.77 9.26 77.35 25.56 110.94 5.19 10.69 16.52 17.06 28.4 17.06h74.28c26.05 0 41.69-29.84 25.9-50.56-16.4-21.52-26.15-48.36-26.15-77.44 0-11.11 1.62-21.79 4.41-32H256c54.66 0 108.28 18.81 150.98 52.95l85.03 68.03a32.023 32.023 0 0 0 19.98 7.02c24.92 0 32-22.78 32-32V295.13C563.05 284.04 576 263.63 576 240zm-96 141.42l-33.05-26.44C392.95 311.78 325.12 288 256 288v-96c69.12 0 136.95-23.78 190.95-66.98L480 98.58v282.84z">
-
                                         </path>
                                     </svg>
                                     <span class="text"> {{ getEventData.companyName }} </span>
@@ -468,11 +591,10 @@ export default {
                             <div class="col-md-12">
                                 <div class="d-flex  align-items-center mt-3 mt-lg-0 a1">
                                     <img src="/img/icons/city-svgrepo-com.svg" alt="" width="24" class="me-2" />
-                                    <span class="text" style="white-space: pre-line;"> {{ getEventData.address }} </span>
+                                    <span class="text" style="white-space: pre-line;"> {{ getEventData.address }}
+                                    </span>
                                 </div>
                             </div>
-
-                        
 
                         </div>
                     </div>
@@ -490,7 +612,7 @@ export default {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tickets {{ TicketSelectName }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Tickets {{ TicketSelectName }} : {{ buyTicketData.ticketData.price }}$</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -498,38 +620,49 @@ export default {
 
                         <label class=" label-form"> Name </label>
                         <div class="input-group mb-3">
-                            <input v-model="buyTicketData.name" type="text" class="form-control" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="buyTicketData.ticketData.name" type="text" class="form-control" placeholder="Username"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
 
                         <label class=" label-form"> Mobile </label>
                         <div class="input-group mb-3">
 
-                                <input v-model="buyTicketData.mobile" id="phone" type="tel" ref="phoneInput" class="form-control"
-                                maxlength="10" placeholder="(201) 555-0123" aria-label=""
+                            <input v-model="buyTicketData.ticketData.mobile" id="phone" type="tel" ref="phoneInput"
+                                class="form-control" maxlength="10" placeholder="(201) 555-0123" aria-label=""
                                 aria-describedby="basic-addon1" required>
                         </div>
 
                         <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
-                            <input v-model="buyTicketData.email" type="email" class="form-control" placeholder="Email" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input v-model="buyTicketData.ticketData.email" type="email" class="form-control" placeholder="Email"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                          <!-- Discount Code Section -->
+                        <label class="label-form">Discount Code</label>
+                        <div class="input-group mb-3">
+                            <input :disabled="isDiscountSuccess" v-model="discountCode" type="text" class="form-control" placeholder="Enter discount code">
+                            <button :disabled="isDiscountSuccess" type="button" class="btn btn-outline-primary" v-on:click="checkDiscountCodeFunc()">Apply</button>
+                        </div>
+     
+                        <!-- Discount Message -->
+                        <div v-if="discountMessage" class="mt-2 text-success">
+                            {{ discountMessage }}
                         </div>
 
                         <label class=" label-form"> Payment Method </label>
                         <div class="input-group mb-3">
                             <div class="mb-3">
-                            <div class="form-check" key="1">
-                                <input class="form-check-input" type="radio" name="bookfor" id="1" value="1"
-                                    v-model="buyTicketData.paymentMethod">
-                                <label class="form-check-label" for="1"> My Points </label>
+                                <div class="form-check" key="1">
+                                    <input class="form-check-input" type="radio" name="bookfor" id="1" value="1"
+                                        v-model="buyTicketData.paymentMethod">
+                                    <label class="form-check-label" for="1"> My Points </label>
+                                </div>
+                                <div class="form-check" key="1">
+                                    <input class="form-check-input" type="radio" name="bookfor" id="2" value="2"
+                                        v-model="buyTicketData.paymentMethod">
+                                    <label class="form-check-label" for="2"> Cash </label>
+                                </div>
                             </div>
-                            <div class="form-check" key="1">
-                                <input class="form-check-input" type="radio" name="bookfor" id="2" value="2"
-                                    v-model="buyTicketData.paymentMethod">
-                                <label class="form-check-label" for="2"> Cash </label>
-                            </div>
-                        </div>
                         </div>
                     </form>
                 </div>

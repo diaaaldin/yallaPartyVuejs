@@ -60,7 +60,7 @@ export default {
         return Api.get(`${END_POINT}/GetEventGuests`, config);
     },
 
-    BuyTicketOperation(data) {
+    BuyTicketOperationWithPoint(data) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
             : null;
@@ -74,7 +74,7 @@ export default {
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
-        const responce = Api.post(`${END_POINT}/BuyTicketOperation`, data, config);
+        const responce = Api.post(`${END_POINT}/BuyTicketOperationWithPoint`, data, config);
         return responce;
     },
     
