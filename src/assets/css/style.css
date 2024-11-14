@@ -985,6 +985,7 @@ display: none;
     padding: 8px;
     /* color: #fff; */
     transition: .3s all ease-in-out;
+    cursor: pointer;
 }
 .card-events .go svg{
     width: 20px;
@@ -1030,6 +1031,7 @@ display: none;
     position: relative;
     overflow: hidden;
     border-radius: 12px;
+    cursor: pointer;
 }
 
 .events .card-events .image::before {
@@ -1080,7 +1082,9 @@ display: none;
 .title-event .details-event-card .a1{
     padding: 22px 0 0px 0;
     font-size: 25px;
-
+}
+.title-event .details-event-card .a1 .last{
+    margin-top: -50px;
 }
 .title-event .details-event-card .a1 .text{
     color: #615f61;
@@ -1088,6 +1092,9 @@ display: none;
 }
 .event-details .details-event-card  svg path{
     fill: var(--second-color);
+}
+.event-details .details-event-card svg , .event-details .details-event-card  img{
+    width: 24px;
 }
 /* .event-details .img-title{
     margin: 0 auto;
@@ -1473,10 +1480,10 @@ margin: 10px 5px 0 0;
     border: 1px solid var(--main-color);
     background-color: var(--main-color);
   }
-/************** End profile******************/
+/************** End profile ******************/
 
 
-/************** Start campany******************/
+/************** Start campany ******************/
 .campany{
 
 }
@@ -1855,7 +1862,7 @@ input::-webkit-inner-spin-button {
     display: none;
 }
 .search_input{
-    width: 50%;
+    width: 60%;
     margin: 0 auto;
     border-radius: 30px;
     transition: all 0.4s ease-in-out;
@@ -2050,7 +2057,7 @@ input::-webkit-inner-spin-button {
 
 .item_about_us{
     font-weight: 300;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 22px;
     letter-spacing: 0.07px;
     color: #615f61;
@@ -2127,11 +2134,17 @@ input::-webkit-inner-spin-button {
 
 /************  start style login page 1 *******************/
 .password-container{
-
     position: relative;
 }
 
 .fa-eye{
+    position: absolute;
+    top: 61%;
+    left: 89%;
+    cursor: pointer;
+    color: lightgray;
+}
+.fa-eye-slash{
     position: absolute;
     top: 61%;
     left: 89%;
@@ -2150,7 +2163,6 @@ input::-webkit-inner-spin-button {
     outline: none;
     box-shadow: none;
     border: 1px solid var(--main-color);
-
 }
 .tab-title{
     font-size: 14px;
@@ -2627,6 +2639,7 @@ input[type="file"]{
     height: 78px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
 }
 .hero-profile-pic1{
     width: 50px;
@@ -3356,8 +3369,8 @@ footer > .copy-write{
 }
 .prov-acco{
     overflow-x: hidden;
-overflow-y: scroll;
-height: 220px;
+    overflow-y: scroll;
+    height: 220px;
 }
 .radio-provider-inp:checked +.radio-provider-label{
     color: var(--main-color);
@@ -3456,7 +3469,8 @@ height: 220px;
 .wallet-all-provider {
     overflow-y: scroll;
     overflow-x: hidden;
-height: 184px}
+    height: 184px;
+    }
 
 
 /*******************  media query   ***************************************/
@@ -3603,6 +3617,9 @@ height: 184px}
 }
 /*need edit in mobile iphone 11 */
 @media (max-width: 767px){
+    .header-title.store{
+        min-height: 45vh;
+    }
     .active > .tab-title-form::before{
         display: none;
     }
@@ -3645,9 +3662,16 @@ height: 184px}
       .card-events {
         margin: 0 0 30px 0;
       }
+      .search_input{
+        display: block !important;
+      }
+      .search_input .input-group{
+        margin-bottom: 10px;
+      }
       .search_input .custom-select {
         width: 100%;
         font-size: 14px;
+        margin: 0 0 10px 0;
       }
       .search_input  .option {
         font-size: 12px;
@@ -3680,6 +3704,19 @@ height: 184px}
       .img-about-us .a2{
         padding: 60px !important;
       }
+      .event-details .title-event{
+        margin-top: 20px;
+      }
+
+
+      .tickets .main-scrollx{
+		overflow-x: auto;
+		width: 100%;
+	  }
+	  .tickets .main-scrollx .scrollx{
+		/* display: flex; */
+		min-width: 362px;
+	    }
 }
 
 @media (max-width: 767px){
@@ -3688,7 +3725,7 @@ height: 184px}
         object-fit: cover;
     }
     .header-title .breadcrumb-outer h1 {
-        font-size: 60px;
+        font-size: 40px;
         margin-bottom: 25px;
       }
       footer .services{
@@ -3716,6 +3753,10 @@ height: 184px}
         } */
         .header-div .panner .sub-index-title {
             padding: 0 0 20px 0;
+            font-size: 14px;
+        }
+        .header-div .panner {
+            padding: 40px 10px;
         }
         .header-div .panner p {
             font-size: 16px;
@@ -3730,6 +3771,9 @@ height: 184px}
         }
         .header-title .breadcrumb-outer.add h1 {
             margin-bottom: -25px;
+          }
+          footer .services .text_footer{
+            margin: 0 auto;
           }
 }
 

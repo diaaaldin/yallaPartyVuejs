@@ -139,24 +139,24 @@ export default {
 								<form class="mt-4">
 									<label class="text">Email</label>
 									<br>
-									<input @keypress.enter="getLoginfunc()" name="email" type="email" dir="ltr"
+										<input @keypress.enter="getLoginfunc()" name="email" type="email" dir="ltr"
 										v-model="user.email"
 										class="form-control my-3 py-3 text-start gray_text gray-inp "
-										placeholder="email" required>
+										placeholder="email" required >
 
-									<div class="password-container">
-										<label class="text">Password</label>
-										<br>
-										<input @keypress.enter="getLoginfunc()"
-											:type="isPasswordVisible ? 'text' : 'password'" v-model="user.password"
-											class="form-control my-3 py-3 gray_text gray-inp id_password"
-											autocomplete="current-password" placeholder="password" required />
-										<a v-on:click="togglePasswordVisibility">
-											<i :class="isPasswordVisible ? 'far fa-eye-slash togglePassword' : 'far fa-eye togglePassword'"></i>
-											<!-- <i class="far fa-eye-slash togglePassword"></i> -->
-										</a>
-										
-									</div>
+										<div class="password-container">
+											<label class="text">Password</label>
+											<br />
+											<input @keypress.enter="getLoginfunc"
+											:type="isPasswordVisible ? 'text' : 'password'"
+											v-model="user.password" class="form-control my-3 py-3 gray_text gray-inp"
+											autocomplete="current-password" placeholder="password"
+											required @input="console.log('Current input type:', $event.target.type)" />
+											<span @click="togglePasswordVisibility" style="cursor: pointer;">
+												<i :class="isPasswordVisible ? 'far fa-eye-slash' : 'far fa-eye'"></i>
+											</span>
+										</div>
+									
 
 									<div class="d-flex justify-content-end">
 										<a data-bs-toggle="modal" data-bs-target="#forgot_password"
@@ -211,4 +211,6 @@ export default {
 	</div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
