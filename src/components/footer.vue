@@ -379,7 +379,7 @@ export default {
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 ps-lg-5 services">
+                <div class="col-lg-3 col-md-6 ps-lg-5 services">
                     <div class="d-flex flex-column flex-lg-column justify-content-center">
                         <a href="#">
                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
@@ -418,7 +418,7 @@ export default {
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 info">
+                <div class="col-lg-3 col-md-6 info">
                     <div class="d-flex flex-column flex-lg-column justify-content-between">
                      <p class="text_footer_hero">
                         Capitol Heights, MD USA
@@ -435,7 +435,7 @@ export default {
                     </a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 mb-lg-4 follow">
+                <div class="col-lg-3 col-md-12 mb-lg-4 follow">
                     <h3 class="text_footer"> Follow us on: </h3>
                     <div class="d-flex justify-content-center justify-content-lg-start">
                         <div class="social-links">
@@ -446,7 +446,6 @@ export default {
                             <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
                             </ul>
                             </div>
-
                     </div>
                 </div>
             </div>
