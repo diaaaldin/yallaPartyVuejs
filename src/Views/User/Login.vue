@@ -119,7 +119,6 @@ export default {
 		<div class="row flex-column-reverse flex-lg-row ">
 			<div class="col-12 col-lg-5 mt-5">
 				<div class="row row-login">
-
 					<div class="col-12 col-lg-8">
 						<div class="img">
 							<router-link to="/">

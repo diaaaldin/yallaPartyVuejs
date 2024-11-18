@@ -3046,6 +3046,9 @@ footer > .copy-write{
 .social-links {
     display: inline-block;
   }
+  .social-links ul{
+    padding: 0;
+  }
   .social-links svg{
     color : var(--second-color);
     transition: all 0.4s ease-in-out;
@@ -3600,6 +3603,15 @@ footer > .copy-write{
         margin-top: 30px;
         margin-bottom: 45px;
       }
+      footer .follow {
+        text-align: center;
+      }
+      .text_footer_hero{
+        text-align: center;
+      }
+      .info .text_footer_hero{
+        text-align: left;
+      }
 }
 @media (max-width: 450px){
     .upload_profile_div{
@@ -3717,6 +3729,9 @@ footer > .copy-write{
 		/* display: flex; */
 		min-width: 362px;
 	    }
+        .info .text_footer_hero{
+            text-align: center;
+          }
 }
 
 @media (max-width: 767px){
@@ -3777,7 +3792,7 @@ footer > .copy-write{
           }
 }
 
-/*****************************test ******************/
+/**************** test ******************/
 
 #phone {
     padding-left: 50px !important;
@@ -3793,21 +3808,32 @@ footer > .copy-write{
 }
 [dir=rtl] .iti--allow-dropdown .iti__flag-container{
     right: auto;
-
-    left: 0;}
+    left: 0;
+}
 
 .iti--separate-dial-code .iti__selected-flag {
     background-color: inherit;
 }
 .iti__selected-flag {
-    direction: ltr;}
+    direction: ltr;
+}
 .iti--separate-dial-code .iti__selected-dial-code {
     margin-left: 0;
     padding-inline-start: 10px;
     padding-inline-end: 10px;
-    font-size: 12px;}
+    font-size: 12px;
+}
 
-
-
-
-
+.btn-outline-primary {
+    color: var(--main-color);
+    border-color: var(--main-color);
+}
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+.btn-outline-primary.disabled, .btn-outline-primary:disabled {
+    color: var(--main-color);
+    background-color: #e9ecef;
+}
