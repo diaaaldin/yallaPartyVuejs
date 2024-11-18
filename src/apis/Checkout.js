@@ -20,7 +20,6 @@ export default {
         try {
             // Send the POST request to the API endpoint
             console.log("CheckoutTicket data : ",data);
-            
             const response = await Api.post(`${END_POINT}/CheckoutTicket`, data);
            
             console.log(response);

@@ -12,7 +12,7 @@ export default {
                 id: localStorage.getItem('id'),
                 name: "",
                 nickName: "",
-                email: "",
+                email: localStorage.getItem('email'),
                 mobile: "",
                 stateId: "",
                 cityId: "",
@@ -23,11 +23,13 @@ export default {
                 confirmPassword: "",
                 userTypeCFK: 0,
                 zipCode: "",
+                questionData: [],
             },
 
 
             dataImage: {
-                id: 1,
+                id: 0,
+                email : localStorage.getItem('email'),
                 image: ""
             },
 
@@ -111,7 +113,7 @@ export default {
                 text: "",
             });
 
-            this.CustomerProfileInfo(this.data.id).then(Response => {
+            this.CustomerProfileInfo(this.data.email).then(Response => {
                 console.log("Response : ", Response);
                 this.setData(Response);
                 console.log("this.getProfileData : " , this.getProfileData);
@@ -130,7 +132,7 @@ export default {
         },
 
         GetData() {
-            this.CustomerProfileInfo(this.data.id).then(Response => {
+            this.CustomerProfileInfo(this.data.email).then(Response => {
                 this.setData(Response);
 
                 console.log("this.getProfileData : ", this.getProfileData);
@@ -491,7 +493,7 @@ export default {
                     <div class="row justify-content-start">
                         <div class=" col-12 col-md-4 col-lg-3">
 
-                            <input v-on:click="UpdateFunc()" type="submit"
+                            <input v-on:click="UpdateFunc()" type="button"
                                 class=" form-control party-btn  w-100 my-4 py-3" value="Update Data">
 
                         </div>

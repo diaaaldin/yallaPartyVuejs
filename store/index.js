@@ -7,6 +7,8 @@ import Users from "./modules/Users/index";
 import Code from "./modules/Code/index";
 import Orders from "./modules/Orders/index";
 import Events from "./modules/Events/index";
+import Visit from "./modules/Visit/index";
+
 
 import Vuex from "vuex";
 import createPersistedState from 'vuex-persistedstate';
@@ -18,6 +20,7 @@ const store = new Vuex.Store({
     state:{
         isLogged : false,
     },
+
     // getter for read
     getters : getters,
     // mutations for update and operation  like setter 
@@ -29,9 +32,11 @@ const store = new Vuex.Store({
       Users,
       Code,
       Orders,
-      Events
-
+      Events,
+      Visit,
+      
      },
+
      plugins: [
         createPersistedState({
           paths: ['Users','Code','Orders','Events'], 

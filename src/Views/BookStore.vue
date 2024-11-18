@@ -53,19 +53,20 @@ export default {
             this.selectedOption2 = option; // Update selected option
             this.isOpen2 = false; // Close dropdown
         },
+
         closeDropdown(e) {
-    const customSelect1 = this.$refs.customSelect;
-    const customSelect2 = this.$refs.customSelect2;
-    
-    // Check if click is outside customSelect1
-    if (!customSelect1.contains(e.target)) {
-        this.isOpen = false;
-    }
-    // Check if click is outside customSelect2
-    if (!customSelect2.contains(e.target)) {
-        this.isOpen2 = false;
-    }
-}
+            const customSelect1 = this.$refs.customSelect;
+            const customSelect2 = this.$refs.customSelect2;
+            
+            // Check if click is outside customSelect1
+            if (!customSelect1.contains(e.target)) {
+                this.isOpen = false;
+            }
+            // Check if click is outside customSelect2
+            if (!customSelect2.contains(e.target)) {
+                this.isOpen2 = false;
+            }
+        }
     },
     beforeDestroy() {
         document.removeEventListener('click', this.closeDropdown);

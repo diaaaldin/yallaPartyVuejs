@@ -16,7 +16,7 @@ import teckitsuccess from '../Views/Checkout/TeckitBuySuccess.vue'
 import teckitfail from '../Views/Checkout/TeckitBuyFail.vue'
 import marketPlace from '../Views/MarketPlace.vue'
 import product from '../Views/Product.vue'
-import store from '../Views/Store.vue'
+import productStore from '../Views/Store.vue'
 import bookStore from '../Views/BookStore.vue'
 import aboutus from '../Views/AboutUs.vue'
 
@@ -63,6 +63,11 @@ const routes = [
         name: "teckitsuccess",
         component: teckitsuccess,
         props: route => ({ sessionId: route.query.sessionId }) // Pass sessionId as a prop
+    },
+    {
+        path: '/productStore',
+        name: "productStore",
+        component: productStore
     },
     {
         path: '/bookStore',

@@ -139,12 +139,13 @@ export default {
             if (!this.isTokenValid()) {
                 this.$router.push({ name: 'login' });
             } else {
-                let Id = parseInt(localStorage.getItem("id"));
-                this.CustomerProfileInfo(Id).then(Response => {
+                let email = localStorage.getItem("email");
+                this.CustomerProfileInfo(email).then(Response => {
                     this.$router.push({ name: 'profileProfile' });
                 })
             }
         },
+        
         goToBookStore() {
             this.$router.push({ name: 'bookStore' });
         },

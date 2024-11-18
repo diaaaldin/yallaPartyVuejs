@@ -16,8 +16,13 @@ export default {
             dataSearch: {
                 exceptionIds: [],
                 page: 1,
-                pageSize: 5
+                pageSize: 1
             },
+
+            events: [],
+            idsArray: [],
+
+            moreDataShow : true,
         }
     },
     mounted() {
@@ -52,7 +57,49 @@ export default {
                 background: 'rgba(0, 0, 0, 0.7)',
                 text: "",
             });
+
             this.GetEventsForShow(this.dataSearch).then(Response => {
+                Response.events.data.forEach(event => {
+                    this.dataSearch.exceptionIds.push(event.id);
+                    this.events.push(event);
+                });
+
+
+                if(Response.events.pagination.currentPage >= Response.events.pagination.pageCount ) this.moreDataShow = false;
+                else this.moreDataShow = true;
+
+                loading.close();
+            }).catch(error => {
+                this.$moshaToast(error.response.data.message, {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                loading.close();
+            });
+        },
+
+        seeMoreFunc() {
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+            
+            console.log("this.dataSearch : ", this.dataSearch);
+            this.GetEventsForShow(this.dataSearch).then(Response => {
+
+                Response.events.data.forEach(event => {
+                    this.dataSearch.exceptionIds.push(event.id);
+                    this.events.push(event);
+                });
+             
+                if(Response.events.pagination.currentPage >= Response.events.pagination.pageCount ) this.moreDataShow = false;
+                else this.moreDataShow = true;
+
                 loading.close();
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
@@ -88,13 +135,14 @@ export default {
             <div class="row">
                 <div class="col-12 col-lg-9 col-md-12">
                     <div class="all mt-3 mt-lg-0 white_card py-4">
-                       <eventCard v-for="item in getEventsData.events.data" :event='item' ></eventCard>                       
+                        <eventCard v-for="item in events" :event='item'></eventCard>
                     </div>
                 </div>
-                <div class="row justify-content-center see-more">
+
+                 <div v-if="moreDataShow" class="row justify-content-center see-more">
                     <div class="col-6 col-lg-3">
                         <div class=" d-flex align-items-center justify-content-center mt-4 ">
-                            <a href="#" class="btn btn-light p-3  show-more-btn w-100">
+                            <a href="javascript:void(0)" v-on:click="seeMoreFunc()" class="btn btn-light p-3  show-more-btn w-100">
                                 <span> See More </span>
                                 <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +154,8 @@ export default {
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> 
+
             </div>
         </div>
     </section>

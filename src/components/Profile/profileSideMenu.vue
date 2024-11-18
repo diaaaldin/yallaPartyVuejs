@@ -38,7 +38,8 @@ userImage() {
   methods: {
     // ...mapActions("Services", ["GetStatistics"]),
     logOutFunc(){
-        this.$router.push({ name: 'main' });
+      localStorage.clear();
+      this.$router.push({ name: 'main' });
     }
   }
 };
@@ -229,7 +230,7 @@ userImage() {
             
             
             
-                            <a href="" v-on:click="logOutFunc()" class="list_link ms-2"> Log Out </a>
+                            <a href="javascript:void(0)" v-on:click="logOutFunc()" class="list_link ms-2"> Log Out </a>
                           </div>
                         </div>
                         <div class="justify-content-end  d-flex">
