@@ -1,4 +1,5 @@
 <script>
+import { useHead } from '@vueuse/head'
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
 import axios from "axios";
@@ -7,6 +8,19 @@ import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
+    setup() {
+                useHead({
+                // Can be static or computed
+                title: 'Event Details | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                    },
+                    ],
+                
+                })
+            },
     data() {
         return {
             buyTicketData: {
@@ -379,10 +393,10 @@ export default {
         <div class="breadcrumb-outer">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="mb-0 white">Details Eevent</h1>
+                    <h1 class="mb-0 white">Details Event</h1>
                     <h2 class="theme mb-0 pt-3 name-event">{{ getEventData.title }}</h2>
-                </div>
-            </div>
+                </div> 
+            </div> 
         </div>
     </div>
     <section class="event-details mt-5">

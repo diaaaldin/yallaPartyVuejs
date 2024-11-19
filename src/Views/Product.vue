@@ -1,9 +1,23 @@
 <script>
+import { useHead } from '@vueuse/head'
 //import { mapState, mapGetters, mapActions } from "vuex";
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
+    setup() {
+                useHead({
+                // Can be static or computed
+                title: 'Product Details | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    },
+                    ],
+                
+                })
+            },
     data() {
         return {
 
@@ -60,7 +74,7 @@ export default {
             <div class="container">
                 <div class="breadcrumb-content text-center">
                     <h5 class="theme mb-0">Yalla Party</h5>
-                    <h1 class="mb-0 white">Details Product</h1>
+                    <h1 class="mb-0 white">Product Details</h1>
                 </div>
             </div>
         </div>

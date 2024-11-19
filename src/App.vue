@@ -1,11 +1,14 @@
 <script >
 import {reactive , provide} from 'vue'
+
 export default{
+ 
 components:{
 },
 computed:{
 
 },
+
 mounted(){
 
 },
@@ -22,3 +25,4 @@ mounted(){
     font-family: "Rubik", sans-serif !important;
   }
 </style>
+

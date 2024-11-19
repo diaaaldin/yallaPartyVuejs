@@ -1,4 +1,5 @@
 <script>
+import { useHead } from '@vueuse/head'
 import { RouterView } from 'vue-router';
 import { ElLoading } from 'element-plus';
 
@@ -6,8 +7,20 @@ import { mapState, mapGetters, mapActions } from "vuex";
 import pageFooter from '../components/footer.vue';
 import axios from "axios";
 
-
 export default {
+    setup() {
+                useHead({
+                // Can be static or computed
+                title: 'Home | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                    },
+                    ],
+                
+                })
+            },
     data() {
         return {
             data: {
@@ -117,6 +130,7 @@ export default {
     },
 
     computed: {
+        
         ...mapGetters("Code", ["getQuestionsData", "getStatesData", "getComunicationMethodsData", "getOrderServicesData", "getChildrenServicesData"]),
 
         GetUserName() {

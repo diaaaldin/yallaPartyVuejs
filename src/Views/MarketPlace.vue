@@ -1,10 +1,24 @@
 <script>
+import { useHead } from '@vueuse/head'
 //import { mapState, mapGetters, mapActions } from "vuex";
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 import product from '@/components/MarketPlace/productCard.vue'
 
 export default {
+    setup() {
+                useHead({
+                // Can be static or computed
+                title: 'Market | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    },
+                    ],
+                
+                })
+            },
     data() {
         return {
 
