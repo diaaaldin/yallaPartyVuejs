@@ -7,8 +7,14 @@ import profileNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
-    setup() {
-                useHead({
+
+    data() {
+        return {
+
+        }
+    },
+    mounted() {
+        useHead({
                 // Can be static or computed
                 title: 'Profile | YallaParty',
                 meta: [
@@ -18,15 +24,7 @@ export default {
                     },
                     ],
                 
-                })
-            },
-    data() {
-        return {
-
-        }
-    },
-    mounted() {
-
+                });
     },
     components: {
         profileHeader,

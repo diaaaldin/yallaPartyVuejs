@@ -5,8 +5,15 @@ import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
-    setup() {
-                useHead({
+
+    
+    data() {
+        return {
+
+        }
+    },
+    mounted() {
+        useHead({
                 // Can be static or computed
                 title: 'Product Details | YallaParty',
                 meta: [
@@ -16,14 +23,8 @@ export default {
                     },
                     ],
                 
-                })
-            },
-    data() {
-        return {
+                });
 
-        }
-    },
-    mounted() {
         this.iti = window.intlTelInput(this.$refs.phoneInput, {
       initialCountry: "us",
       strictMode: true,

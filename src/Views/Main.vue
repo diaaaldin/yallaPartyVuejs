@@ -8,19 +8,6 @@ import pageFooter from '../components/footer.vue';
 import axios from "axios";
 
 export default {
-    setup() {
-                useHead({
-                // Can be static or computed
-                title: 'Home | YallaParty',
-                meta: [
-                    {
-                    name: `description`,
-                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
-                    },
-                    ],
-                
-                })
-            },
     data() {
         return {
             data: {
@@ -70,6 +57,17 @@ export default {
         pageFooter,
     },
     mounted() {
+        useHead({
+                // Can be static or computed
+                title: 'Home | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                    },
+                    ],
+                
+                });
         //console.log("this.getQuestionsData : ", this.getQuestionsData);
         // Initialize intl-tel-input on the input element
         this.iti = window.intlTelInput(this.$refs.phoneInput1, {

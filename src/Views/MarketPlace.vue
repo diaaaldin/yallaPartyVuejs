@@ -6,9 +6,15 @@ import pageFooter from '@/components/footer.vue';
 import product from '@/components/MarketPlace/productCard.vue'
 
 export default {
-    setup() {
-                useHead({
-                // Can be static or computed
+
+    data() {
+        return {
+
+        }
+    },
+    mounted() {
+        useHead({
+                
                 title: 'Market | YallaParty',
                 meta: [
                     {
@@ -17,15 +23,7 @@ export default {
                     },
                     ],
                 
-                })
-            },
-    data() {
-        return {
-
-        }
-    },
-    mounted() {
-
+                });
     },
     components: {
         pageNav,

@@ -1621,6 +1621,8 @@ fill: var(--main-color) !important;
 .index-img-card{
     height: 213px;
     object-fit: cover;
+    -webkit-transition: .3s ease-in-out;
+        transition: .3s all ease-in-out;
 }
 .index-img-card.latest{
     height: 300px;

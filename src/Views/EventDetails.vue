@@ -8,20 +8,7 @@ import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
-    setup() {
-                useHead({
-                // Can be static or computed
-                title: 'Event Details | YallaParty',
-                meta: [
-                    {
-                    name: `description`,
-                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
-                    },
-                    ],
-                
-                })
-            },
-    data() {
+     data() {
         return {
             buyTicketData: {
                 paymentMethod: 0,
@@ -52,6 +39,17 @@ export default {
         };
     },
     mounted() {
+        useHead({
+                // Can be static or computed
+                title: 'Event Details | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                    },
+                    ],
+                
+                });
         // Initialize intl-tel-input on the input element
         this.iti = window.intlTelInput(this.$refs.phoneInput, {
             initialCountry: "us",

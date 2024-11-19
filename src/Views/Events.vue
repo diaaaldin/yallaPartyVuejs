@@ -11,19 +11,7 @@ import pageFooter from '@/components/footer.vue';
 import eventCard from '@/components/Event/eventCard.vue';
 
 export default {
-    setup() {
-                useHead({
-                // Can be static or computed
-                title: 'Events | YallaParty',
-                meta: [
-                    {
-                    name: `description`,
-                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
-                    },
-                    ],
-                
-                })
-            },
+    
     data() {
         return {
 
@@ -40,7 +28,17 @@ export default {
         }
     },
     mounted() {
-
+        useHead({
+                // Can be static or computed
+                title: 'Events | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                    },
+                    ],
+                
+                });
     },
     components: {
         pageNav,

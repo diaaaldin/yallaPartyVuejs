@@ -7,19 +7,7 @@ import pageFooter from '@/components/footer.vue';
 import product from '@/components/Store/productCard.vue'
 
 export default {
-    setup() {
-                useHead({
-                // Can be static or computed
-                title: 'Tools | YallaParty',
-                meta: [
-                    {
-                    name: `description`,
-                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
-                    },
-                    ],
-                
-                })
-            },
+     
     data() {
         return {
             selectedOption: '-- select --', // Default selected option
@@ -29,6 +17,17 @@ export default {
         }
     },
     mounted() {
+        useHead({
+                // Can be static or computed
+                title: 'Tools | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                    },
+                    ],
+                
+                });
         document.addEventListener('click', this.closeDropdown);
     },
     components: {

@@ -1,4 +1,5 @@
 <script>
+import { useHead } from '@vueuse/head'
 import { mapState, mapGetters, mapActions } from "vuex";
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
@@ -7,6 +8,7 @@ import lastProduct from '@/components/Store/lastProductCard.vue'
 import product from '@/components/Store/productCard.vue'
 
 export default {
+
     data() {
         return {
             currentSlide: 0, // Initialize current slide
@@ -19,6 +21,17 @@ export default {
         }
     },
     mounted() {
+        useHead({
+                // Can be static or computed
+                title: 'Store | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    },
+                    ],
+                
+                });
         this.initSlider();
         document.addEventListener('click', this.closeDropdown);
     },
