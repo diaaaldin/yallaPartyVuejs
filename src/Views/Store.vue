@@ -13,7 +13,9 @@ export default {
             totalSlides: 0, // Total slides will be set in the mounted hook
 
             selectedOption: '-- select --', // Default selected option
+            selectedOption2: '-- select2 --', // Default selected option
             isOpen: false, // Dropdown visibility state
+            isOpen2: false, // Dropdown visibility state
         }
     },
     mounted() {
@@ -92,9 +94,16 @@ export default {
             this.isOpen = false; // Close dropdown
         },
         closeDropdown(e) {
-            const customSelect = this.$refs.customSelect;
-            if (!customSelect.contains(e.target)) {
-                this.isOpen = false; // Close dropdown if clicked outside
+            const customSelect1 = this.$refs.customSelect;
+            const customSelect2 = this.$refs.customSelect2;
+            
+            // Check if click is outside customSelect1
+            if (!customSelect1.contains(e.target)) {
+                this.isOpen = false;
+            }
+            // Check if click is outside customSelect2
+            if (!customSelect2.contains(e.target)) {
+                this.isOpen2 = false;
             }
         }
     },
@@ -132,6 +141,19 @@ export default {
                     <li class="option" @click="selectOption('Category Product 4')">Category Product 4</li>
                     <li class="option" @click="selectOption('Category Product 5')">Category Product 5</li>
                     <li class="option" @click="selectOption('Category Product 6')">Category Product 6</li>
+                </ul>
+            </div>
+
+            <div class="custom-select" :class="{ open: isOpen2 === true }" ref="customSelect2">
+                <div class="selected-option"  @click="toggleDropdown2()">{{ selectedOption2 }}</div>
+                <ul class="options-list">
+                    <li class="option" @click="selectOption2('-- select section --')">-- select section 2--</li>
+                    <li class="option" @click="selectOption2('Category Product 1')">Category Product 1</li>
+                    <li class="option" @click="selectOption2('Category Product 2')">Category Product 2</li>
+                    <li class="option" @click="selectOption2('Category Product 3')">Category Product 3</li>
+                    <li class="option" @click="selectOption2('Category Product 4')">Category Product 4</li>
+                    <li class="option" @click="selectOption2('Category Product 5')">Category Product 5</li>
+                    <li class="option" @click="selectOption2('Category Product 6')">Category Product 6</li>
                 </ul>
             </div>
 

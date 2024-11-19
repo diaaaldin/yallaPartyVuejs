@@ -38,13 +38,16 @@ export default {
         return Api.get(`${END_POINT}/GetEvents`, config);
     },
 
-    GetEventsForShow(exceptionIds, page, pageSize) {
+    GetEventsForShow(data) {
+        // const exceptionIds = data.exceptionIds;
+        const queryString = new URLSearchParams({
+            page: data.page,
+            pageSize: data.pageSize
+        });
+        data.exceptionIds.forEach(id => queryString.append('exceptionIds', id));
+
         let config = {
-            params: {
-                exceptionIds: exceptionIds,
-                page: page,
-                pageSize: pageSize,
-            },
+            params: queryString,
         };
         return Api.get(`${END_POINT}/GetEventsForShow`, config);
     },

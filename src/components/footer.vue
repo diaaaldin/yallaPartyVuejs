@@ -20,7 +20,7 @@ export default {
                 cityId: "",
                 comunicationMethods: 0,
                 service: 0,
-                otherService:"",
+                otherService: "",
                 moreInfo: "",
                 questionData: [],
                 birthdayOwnerName: "",
@@ -32,9 +32,9 @@ export default {
 
             selectedService: '', // To store the selected service
             showOtherServiceText: false,
-            birthdayBookingFor : 0,
-            birthdayAgeGroup : 0,
-            childrenServices:[],
+            birthdayBookingFor: 0,
+            birthdayAgeGroup: 0,
+            childrenServices: [],
 
             jobApplicationQuestion: [],
 
@@ -57,7 +57,7 @@ export default {
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
         });
 
-        console.log("this.getQuestionsData : ",this.getQuestionsData);
+        console.log("this.getQuestionsData : ", this.getQuestionsData);
 
         this.organizeQuestions();
     },
@@ -77,7 +77,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters("Code", ["getQuestionsData","getStatesData", "getComunicationMethodsData", "getOrderServicesData" ,"getChildrenServicesData"]),
+        ...mapGetters("Code", ["getQuestionsData", "getStatesData", "getComunicationMethodsData", "getOrderServicesData", "getChildrenServicesData"]),
 
         GetUserName() {
             let userName = localStorage.getItem("customerName");
@@ -90,7 +90,7 @@ export default {
     },
 
     methods: {
-        ...mapActions("Code", ["GetQuestionsData","GetStates", "GetComunicationMethods", "GetOrderServices" , "GetChildrenServices"]),
+        ...mapActions("Code", ["GetQuestionsData", "GetStates", "GetComunicationMethods", "GetOrderServices", "GetChildrenServices"]),
         ...mapActions("Orders", ["CreateOrder"]),
 
 
@@ -128,9 +128,9 @@ export default {
             this.saveJobApplicationAnswers();
 
             const countryData = this.iti.getSelectedCountryData();
-			const countryCode = countryData.dialCode;
-			const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
-			this.data.mobile = fullPhoneNumber;
+            const countryCode = countryData.dialCode;
+            const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
+            this.data.mobile = fullPhoneNumber;
 
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
@@ -246,7 +246,7 @@ export default {
                 this.$refs.password.focus();
                 return false;
             }
-            
+
             else if (this.data.comunicationMethods == 0) {
                 this.$moshaToast("select comunication method", {
                     hideProgressBar: 'false',
@@ -265,10 +265,10 @@ export default {
 
         organizeQuestions() {
             // Clear previous data
-            this.jobApplicationQuestion=[];
+            this.jobApplicationQuestion = [];
             // Iterate over questions and filter based on orderType
             for (const question of this.getQuestionsData) {
-                if(question.orderType == 23){
+                if (question.orderType == 23) {
                     this.jobApplicationQuestion.push(question);
                 }
             }
@@ -300,7 +300,7 @@ export default {
             if (selectedUser) {
                 if (selectedUser.name.toLowerCase().includes('other')) {
                     this.showOtherServiceText = true;
-                }else{
+                } else {
                     this.data.otherService = '';
                     this.showOtherServiceText = false;
                 }
@@ -343,7 +343,7 @@ export default {
         },
 
         clearData() {
-                this.data.id = 0,
+            this.data.id = 0,
                 this.data.orderType = 0,
                 this.data.name = "",
                 this.data.nickName = "",
@@ -375,16 +375,20 @@ export default {
                             <img src="/img/WhiteYallaPartyLogo.png" alt="" width="70" class="img-fluid" />
                         </div>
                         <p class="text_footer_hero">
-                            Yalla Party is a subsidiary of Yalla Party LLC, registered in the state of Maryland, United States of America.
+                            Yalla Party is a subsidiary of Yalla Party LLC, registered in the state of Maryland, United
+                            States of America.
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 ps-lg-5 services">
                     <div class="d-flex flex-column flex-lg-column justify-content-center">
                         <a href="#">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
-                              </svg>                              
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m9 5 7 7-7 7" />
+                            </svg>
                             <span class="text_footer">Services </span>
                         </a>
 
@@ -395,24 +399,33 @@ export default {
 
                             <span class="text_footer">About Us</span>
                         </a> -->
-                        <router-link to="/aboutus" >
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
-                              </svg> 
+                        <router-link to="/aboutus">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m9 5 7 7-7 7" />
+                            </svg>
                             <span class="text_footer">About Us</span>
                         </router-link>
 
                         <a id="contact_with" @click="applySwing">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
-                              </svg> 
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m9 5 7 7-7 7" />
+                            </svg>
 
                             <span class="text_footer"> Contact with us </span>
                         </a>
                         <a href="" data-bs-toggle="modal" data-bs-target="#job-application">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
-                              </svg> 
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m9 5 7 7-7 7" />
+                            </svg>
 
                             <span class="text_footer">Work with Yalla Party</span>
                         </a>
@@ -420,19 +433,19 @@ export default {
                 </div>
                 <div class="col-lg-3 col-md-6 info">
                     <div class="d-flex flex-column flex-lg-column justify-content-between">
-                     <p class="text_footer_hero">
-                        Capitol Heights, MD USA
-                     </p>
-                     <a>
-                        <i class="fa fa-phone white fs-4"></i>
-                        <span class="text_footer contact-footer" :class="{ swing: isSwinging }"
-                        @animationend="isSwinging = false"> 202 455 9004 </span>
-                    </a>
-                     <a>
-                        <i class="fa fa-envelope white fs-4"></i>
-                        <span class="text_footer contact-footer" :class="{ swing: isSwinging }"
-                        @animationend="isSwinging = false"> info@yallaparty.com</span>
-                    </a>
+                        <p class="text_footer_hero">
+                            Capitol Heights, MD USA
+                        </p>
+                        <a>
+                            <i class="fa fa-phone white fs-4"></i>
+                            <span class="text_footer contact-footer" :class="{ swing: isSwinging }"
+                                @animationend="isSwinging = false"> 202 455 9004 </span>
+                        </a>
+                        <a>
+                            <i class="fa fa-envelope white fs-4"></i>
+                            <span class="text_footer contact-footer" :class="{ swing: isSwinging }"
+                                @animationend="isSwinging = false"> info@yallaparty.net</span>
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-12 mb-lg-4 follow">
@@ -440,10 +453,10 @@ export default {
                     <div class="d-flex justify-content-center justify-content-lg-start">
                         <div class="social-links">
                             <ul>
-                            <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
                             </ul>
                             </div>
                     </div>
@@ -513,14 +526,16 @@ export default {
                                 <input class="form-control" type="date" v-model="data.orderDate"
                                     required />
                         </div>-->
-                       
-                        <label class=" label-form"> Would you like to communicate by ? </label> 
+
+                        <label class=" label-form"> Would you like to communicate by ? </label>
 
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getComunicationMethodsData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" 
-                                :id="'service-' + service.id" :value="service.id"  v-model="data.comunicationMethods" >
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+                            <div class="form-check" v-for="service in this.getComunicationMethodsData"
+                                :key="service.id">
+                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                    :value="service.id" v-model="data.comunicationMethods">
+                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                </label>
                             </div>
                         </div>
 
@@ -582,13 +597,12 @@ export default {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" v-on:click="jobApplicationCreate()" class="btn btn-primary">Send order</button>
+                    <button type="button" v-on:click="jobApplicationCreate()" class="btn btn-primary">Send
+                        order</button>
                 </div>
             </div>
         </div>
     </div>
 
 </template>
-<style scoped>
-
-</style> 
+<style scoped></style>

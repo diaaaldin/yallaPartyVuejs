@@ -48,7 +48,6 @@ export default {
             isDiscountSuccess : false,
             discountMessage : "",
             discountCode : "",
-           
             cities: []
         };
     },

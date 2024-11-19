@@ -20,7 +20,7 @@ export const GetCustomerEventsGuests = ({ commit, dispatch }) => {
 }
 
 export const GetEventsForShow = ({ commit, dispatch },data) => {
-    return Event.GetEventsForShow(data.exceptionIds, data.page, data.pageSize)
+    return Event.GetEventsForShow(data)
     .then(function (response) {
        commit('SET_EVENTS_DATA', response.data.data);
         return response.data.data;

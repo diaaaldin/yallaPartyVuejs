@@ -193,14 +193,14 @@ export default {
         return Api.get(`${END_POINT}/AdminProfileInfo`, config);
     },
 
-    CustomerProfileInfo(userId) {
+    CustomerProfileInfo(userEmail) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
             : null;
         let config = {
             headers: { 'Authorization': token },
             params: {
-                userId:userId,
+                userEmail:userEmail,
             },
         };
         return Api.get(`${END_POINT}/CustomerProfileInfo`, config);
