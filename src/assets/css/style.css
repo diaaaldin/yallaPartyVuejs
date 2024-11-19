@@ -1614,15 +1614,15 @@ fill: var(--main-color) !important;
 /* Zoom Out #1 */
 .index-img-card:hover {
     -webkit-transform: scale(.9);
-        transform: scale(.9);
-        -webkit-transition: .3s ease-in-out;
-        transition: .3s all ease-in-out;
+    transform: scale(.9);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s all ease-in-out;
 }
 .index-img-card{
     height: 213px;
     object-fit: cover;
     -webkit-transition: .3s ease-in-out;
-        transition: .3s all ease-in-out;
+    transition: .3s all ease-in-out;
 }
 .index-img-card.latest{
     height: 300px;
