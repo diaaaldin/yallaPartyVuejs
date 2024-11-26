@@ -29,6 +29,7 @@ export default {
                 childrenServices: "",
                 totalPrice: 0
             },
+            
             // states: [], // Will hold the list of states
             cities: [], // Will hold the list of cities for the selected state
 
@@ -553,9 +554,12 @@ export default {
                 this.$refs.password.focus();
                 return false;
             }
+        
 
             return true;
         },
+
+      
 
         organizeQuestions() {
             // Clear previous data
@@ -1212,7 +1216,7 @@ export default {
                                 <div class="d-flex justify-content-start flex-column">
                                     <h2 class="text-hero mt-4 mt-lg-3 mb-lg-2">Be a partner</h2>
                                     <span class="sub-index-title mb-3 mb-lg-0 my-lg-4">
-                                        We are looking to extend Yalla Party to other states. Be our partner! </span>
+                                       We are looking to extend Yalla Party to other states. Be our partner! </span>
                                     <div class="my-4">
                                         <a href="http://dash.yallaparty.net/partnersignup" type="button"
                                             class="home-btn p-2"> Create Account
@@ -1249,7 +1253,7 @@ export default {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="">
+                    <form>
                         <label class=" label-form"> Name </label>
                         <div class="input-group mb-3">
                             <input v-model="data.name" type="text" class="form-control" placeholder="Username"
@@ -1270,7 +1274,7 @@ export default {
                         <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
                             <input v-model="data.email" type="text" class="form-control" placeholder="Email"
-                                aria-label="Username" aria-describedby="basic-addon1" required>
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <label class=" label-form"> State </label>
                         <div class="input-group mb-3">

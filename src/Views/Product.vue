@@ -9,6 +9,7 @@ export default {
     
     data() {
         return {
+            emailError: '', 
 
         }
     },
@@ -61,8 +62,30 @@ export default {
         //...mapActions(),
         goToMarketPlace(){
             this.$router.push({ name: 'marketPlace' });
-        }
-        
+        },
+        validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Check if the input is empty
+            if (!this.data.email) {
+                this.emailError = '';
+                return false;
+            } 
+            // Check if the input does not match the email format
+            else if (!emailPattern.test(this.data.email)) {
+                this.emailError = 'Please enter a valid email address.';
+                return false;
+            } 
+            // Clear the error if the input is valid
+            else {
+                this.emailError = '';
+                return true;
+            }
+        },
+        filterMobileInput(event) {
+            const input = event.target.value.replace(/\D/g, '').slice(0, 10);
+            this.data.mobile = input; 
+        },
     }
 };
 </script>
@@ -191,13 +214,14 @@ export default {
                 </div>
                 <label class=" label-form"> Moblie </label>
                 <div class="input-group mb-3">
-                    <input id="phone" type="tel" ref="phoneInput" class="form-control" maxlength="10" placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1">
+                    <input id="phone" type="tel" ref="phoneInput" class="form-control" maxlength="10" placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1" @input="filterMobileInput">
                 </div>
                 <label class=" label-form"> Email </label>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1" @input="validateEmail">
                 </div>
-             
+                <p v-if="emailError" style="color: red">{{ emailError }}</p>
+
            
                
               </form>
