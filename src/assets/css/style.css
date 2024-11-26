@@ -1614,13 +1614,15 @@ fill: var(--main-color) !important;
 /* Zoom Out #1 */
 .index-img-card:hover {
     -webkit-transform: scale(.9);
-        transform: scale(.9);
-        -webkit-transition: .3s ease-in-out;
-        transition: .3s all ease-in-out;
+    transform: scale(.9);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s all ease-in-out;
 }
 .index-img-card{
     height: 213px;
     object-fit: cover;
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s all ease-in-out;
 }
 .index-img-card.latest{
     height: 300px;
@@ -3720,7 +3722,6 @@ footer > .copy-write{
         margin-top: 20px;
       }
 
-
       .tickets .main-scrollx{
 		overflow-x: auto;
 		width: 100%;
@@ -3729,9 +3730,9 @@ footer > .copy-write{
 		/* display: flex; */
 		min-width: 362px;
 	    }
-        .info .text_footer_hero{
+      .info .text_footer_hero{
             text-align: center;
-          }
+        }
 }
 
 @media (max-width: 767px){
@@ -3780,14 +3781,14 @@ footer > .copy-write{
             font-size: 35px;
             padding: 10px 0 15px 0;
         }
-          .header-div .panner a {
+        .header-div .panner a {
             padding: 9px 43px;
             font-size: 16px;
         }
         .header-title .breadcrumb-outer.add h1 {
             margin-bottom: -25px;
-          }
-          footer .services .text_footer{
+        }
+        footer .services .text_footer{
             margin: 0 auto;
           }
 }

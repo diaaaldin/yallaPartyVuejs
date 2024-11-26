@@ -1,4 +1,5 @@
 <script>
+import { useHead } from '@vueuse/head'
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
 import axios from "axios";
@@ -7,7 +8,7 @@ import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
-    data() {
+     data() {
         return {
             buyTicketData: {
                 paymentMethod: 0,
@@ -27,6 +28,7 @@ export default {
                     price: 0,
                 },
             },
+            emailError: '', 
             selectedTicket : {},
 
             TicketSelectName: "",
@@ -38,6 +40,17 @@ export default {
         };
     },
     mounted() {
+        useHead({
+                // Can be static or computed
+                title: 'Event Details | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                    },
+                    ],
+                
+                });
         // Initialize intl-tel-input on the input element
         this.iti = window.intlTelInput(this.$refs.phoneInput, {
             initialCountry: "us",
@@ -376,9 +389,43 @@ export default {
                 this.$refs.password.focus();
                 return false;
             }
+            else if (!this.validateEmail(this.buyTicketData.ticketData.email)) {
+                this.$moshaToast("Please enter a valid email address.", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            }
             return true;
         },
+        validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+            // Check if the input is empty
+            if (!this.buyTicketData.ticketData.email) {
+                this.emailError = '';
+                return false;
+            } 
+            // Check if the input does not match the email format
+            else if (!emailPattern.test(this.buyTicketData.ticketData.email)) {
+                this.emailError = 'Please enter a valid email address.';
+                return false;
+            } 
+            // Clear the error if the input is valid
+            else {
+                this.emailError = '';
+                return true;
+            }
+        },
+        filterMobileInput(event) {
+            const input = event.target.value.replace(/\D/g, '').slice(0, 10);
+            this.buyTicketData.ticketData.mobile = input; 
+        },
         formatCurrency(value) {
 			return new Intl.NumberFormat('en-US', {
 				style: 'currency',
@@ -399,10 +446,10 @@ export default {
         <div class="breadcrumb-outer">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="mb-0 white">Details Eevent</h1>
+                    <h1 class="mb-0 white">Details Event</h1>
                     <h2 class="theme mb-0 pt-3 name-event">{{ getEventData.title }}</h2>
-                </div>
-            </div>
+                </div> 
+            </div> 
         </div>
     </div>
     <section class="event-details mt-5">
@@ -648,14 +695,16 @@ export default {
 
                             <input v-model="buyTicketData.ticketData.mobile" id="phone" type="tel" ref="phoneInput"
                                 class="form-control" maxlength="10" placeholder="(201) 555-0123" aria-label=""
-                                aria-describedby="basic-addon1" required>
+                                aria-describedby="basic-addon1" @input="filterMobileInput" required>
                         </div>
 
                         <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
                             <input v-model="buyTicketData.ticketData.email" type="email" class="form-control" placeholder="Email"
-                                aria-label="Username" aria-describedby="basic-addon1">
+                                aria-label="Username" aria-describedby="basic-addon1" @input="validateEmail">
                         </div>
+                        <p v-if="emailError" style="color: red">{{ emailError }}</p>
+
                           <!-- Discount Code Section -->
                         <label class="label-form">Discount Code</label>
                         <div class="input-group mb-3">

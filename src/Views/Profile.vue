@@ -1,4 +1,5 @@
 <script>
+import { useHead } from '@vueuse/head'
 import { mapState, mapGetters, mapActions } from "vuex";
 import profileHeader from '@/components/Profile/profileHeader.vue';
 import profileSideMenu from '@/components/Profile/profileSideMenu.vue';
@@ -6,13 +7,24 @@ import profileNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
+
     data() {
         return {
 
         }
     },
     mounted() {
-
+        useHead({
+                // Can be static or computed
+                title: 'Profile | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    },
+                    ],
+                
+                });
     },
     components: {
         profileHeader,

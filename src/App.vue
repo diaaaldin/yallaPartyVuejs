@@ -3,11 +3,13 @@ import {reactive , provide} from 'vue'
 import { mapState, mapGetters, mapActions } from "vuex";
 
 export default{
+ 
 components:{
 },
 computed:{
 
 },
+
 mounted(){
   this.recordVisit();
 },
@@ -48,3 +50,4 @@ methods:{
     font-family: "Rubik", sans-serif !important;
   }
 </style>
+

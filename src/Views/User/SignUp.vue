@@ -1,4 +1,5 @@
 <script>
+import { useHead } from '@vueuse/head';
 import { ElLoading } from 'element-plus';
 import { RouterView } from 'vue-router';
 import { mapState, mapGetters, mapActions } from "vuex";
@@ -30,7 +31,7 @@ export default {
                 userTypeCFK: 0,
                 zipCode: ""
             },
-
+            emailError: '', 
             states: [], // Will hold the list of states
             cities: [], // Will hold the list of cities for the selected state
         }
@@ -42,6 +43,17 @@ export default {
     },
 
     mounted() {
+        useHead({
+                // Can be static or computed
+                title: 'SignUp | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                    },
+                    ],
+                
+                });
         // Initialize intl-tel-input on the input element
         this.iti = window.intlTelInput(this.$refs.phoneInput, {
             initialCountry: "us",
@@ -69,12 +81,13 @@ export default {
                 const loading = ElLoading.service({
                     lock: true,
                     background: 'rgba(0, 0, 0, 0.7)',
-                    text: "",
+                    text: "Signing you up...",
+                    
                 });
 
                 this.CustomerSignUp(this.data).then(Response => {
                     console.log(Response);
-                    this.$moshaToast('Login Success', {
+                    this.$moshaToast('Registration Successful!', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
                         swipeClose: 'true',
@@ -101,7 +114,7 @@ export default {
 
                 }).catch(error => {
 
-                    this.$moshaToast(error.response.data.message, {
+                    this.$moshaToast(error.response.data.message || 'Signup failed', {
                         hideProgressBar: 'false',
                         position: 'top-center',
                         showIcon: 'true',
@@ -226,10 +239,49 @@ export default {
                 });
                 this.$refs.password.focus();
                 return false;
+
+            }else if (!this.validateEmail(this.data.email)) {
+                this.$moshaToast("Please enter a valid email address.", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
             }
             return true;
         },
 
+        validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Check if the input is empty
+            if (!this.data.email) {
+                this.emailError = '';
+                return false;
+            } 
+            // Check if the input does not match the email format
+            else if (!emailPattern.test(this.data.email)) {
+                this.emailError = 'Please enter a valid email address.';
+                return false;
+            } 
+            // Clear the error if the input is valid
+            else {
+                this.emailError = '';
+                return true;
+            }
+        },
+        filterMobileInput(event) {
+            const input = event.target.value.replace(/\D/g, '').slice(0, 10);
+            this.data.mobile = input; 
+        },
+        filterzipCdoeInput(event) {
+            const input = event.target.value.replace(/\D/g, '').slice(0, 5);
+            this.data.zipCode = input; 
+        },
         // Fetch the states from the API
         async fetchStates() {
             try {
@@ -258,7 +310,7 @@ export default {
             }
         },
     },
-}
+}                   
 </script>
 
 <template>
@@ -280,7 +332,7 @@ export default {
                         </div>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="">
-                                <form class="mt-4">
+                                <form class="mt-4" >
                                     <label class="text">Name</label>
                                     <br>
                                     <input v-model="data.name" ref="name" name="name" type="text"
@@ -291,18 +343,21 @@ export default {
                                     <input v-model="data.nickName" ref="nickName" name="nickname" type="text"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
                                         placeholder="Nickname" required>
+
                                     <label class="text">Email</label>
                                     <br>
-                                    <input v-model="data.email" ref="email" name="email" type="email"
+                                    <input v-model="data.email" ref="email" name="email" type="email" @input="validateEmail"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
                                         placeholder="email" required>
+                                        <p v-if="emailError" style="color: red">{{ emailError }}</p>
+
 
                                     <label class="text">Mobile</label>
                                     <br>
                                     <input v-model="data.mobile" name="mobile" id="phone" type="tel" ref="phoneInput"
-                                        class="form-control my-3 py-3 text-start gray_text gray-inp " maxlength="10"
+                                        class="form-control my-3 py-3 text-start gray_text gray-inp"
                                         placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
-                                        required>
+                                        @input="filterMobileInput" required>
                                     <label class="text">State</label>
                                     <br>
                                     <select v-model="data.stateId"
@@ -328,9 +383,9 @@ export default {
 
                                     <label class="text">Zip Code</label>
                                     <br>
-                                    <input v-model="data.zipCode" ref="zipCdoe" name="zipCode" type="text"
+                                    <input v-model="data.zipCode" ref="zipCode" name="zipCode" type="text"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                        placeholder="Zip Code" required>
+                                        placeholder="Zip Code" @input="filterzipCdoeInput"required>
                                     <!-- <label class="text">Company Address</label>
                                     <br>
                                     <input name="companyAddress" type="text"

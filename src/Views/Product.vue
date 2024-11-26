@@ -1,4 +1,5 @@
 <script>
+import { useHead } from '@vueuse/head'
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
 
@@ -6,8 +7,11 @@ import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
+
+    
     data() {
         return {
+            emailError: '', 
             buyData: {
                 paymentMethod: 0,
                 data: {
@@ -33,7 +37,23 @@ export default {
         }
     },
     mounted() {
+        useHead({
+                // Can be static or computed
+                title: 'Product Details | YallaParty',
+                meta: [
+                    {
+                    name: `description`,
+                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    },
+                    ],
+                
+                });
 
+        this.iti = window.intlTelInput(this.$refs.phoneInput, {
+      initialCountry: "us",
+      strictMode: true,
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+    });
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
@@ -64,6 +84,30 @@ export default {
         ...mapActions("Code", ["GetPointsProfitData",]),
         ...mapActions("Products", ["GetProduct" , "BuyProductOperationWithPoint" , "BuyProductOperationWithPayment"]),
 
+        validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Check if the input is empty
+            if (!this.data.email) {
+                this.emailError = '';
+                return false;
+            } 
+            // Check if the input does not match the email format
+            else if (!emailPattern.test(this.data.email)) {
+                this.emailError = 'Please enter a valid email address.';
+                return false;
+            } 
+            // Clear the error if the input is valid
+            else {
+                this.emailError = '';
+                return true;
+            }
+        },
+        filterMobileInput(event) {
+            const input = event.target.value.replace(/\D/g, '').slice(0, 10);
+            this.data.mobile = input; 
+        },
+        
         mapBuyDataFunc() {
             const selectedProfitRate = this.getPointProfitData.find(x => x.id === 36);
             const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === 31);
@@ -284,7 +328,7 @@ export default {
             <div class="container">
                 <div class="breadcrumb-content text-center">
                     <h5 class="theme mb-0">Yalla Party</h5>
-                    <h1 class="mb-0 white">Details Product</h1>
+                    <h1 class="mb-0 white">Product Details</h1>
                 </div>
             </div>
         </div>

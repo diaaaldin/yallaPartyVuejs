@@ -28,6 +28,7 @@ export default {
                 childrenServices: "",
                 totalPrice: 0
             },
+            emailError: '', 
             states: [], // Will hold the list of states
             cities: [], // Will hold the list of cities for the selected state
 
@@ -270,10 +271,44 @@ export default {
                 this.$refs.password.focus();
                 return false;
             }
+            else if (!this.validateEmail(this.data.email)) {
+                this.$moshaToast("Please enter a valid email address.", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            }
 
             return true;
         },
+        validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+            // Check if the input is empty
+            if (!this.data.email) {
+                this.emailError = '';
+                return false;
+            } 
+            // Check if the input does not match the email format
+            else if (!emailPattern.test(this.data.email)) {
+                this.emailError = 'Please enter a valid email address.';
+                return false;
+            } 
+            // Clear the error if the input is valid
+            else {
+                this.emailError = '';
+                return true;
+            }
+        },
+        filterMobileInput(event) {
+            const input = event.target.value.replace(/\D/g, '').slice(0, 10);
+            this.data.mobile = input; 
+        },
         organizeQuestions() {
             // Clear previous data
             this.jobApplicationQuestion = [];
@@ -512,14 +547,15 @@ export default {
                         <div class="input-group mb-3">
                             <input v-model="data.mobile" id="phone" type="tel" ref="phoneInput" class="form-control"
                                 maxlength="10" placeholder="(201) 555-0123" aria-label=""
-                                aria-describedby="basic-addon1" required>
+                                aria-describedby="basic-addon1" @input="filterMobileInput" required>
 
                         </div>
                         <label class=" label-form"> Email </label>
                         <div class="input-group mb-3">
-                            <input v-model="data.email" type="text" class="form-control" placeholder="Email"
-                                aria-label="Username" aria-describedby="basic-addon1">
+                            <input v-model="data.email" type="email" class="form-control" placeholder="Email"
+                                aria-label="Username" aria-describedby="basic-addon1" @input="validateEmail">
                         </div>
+                        <p v-if="emailError" style="color: red">{{ emailError }}</p>
                         <label class=" label-form"> State </label>
                         <div class="input-group mb-3">
                             <select v-model="data.stateId" class="form-control" @change="fetchCities(data.stateId)">

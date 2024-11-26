@@ -1,16 +1,26 @@
 <script>
 //import { mapState, mapGetters, mapActions } from "vuex";
+import { useHead } from '@vueuse/head'
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
+ 
     data() {
         return {
 
         }
     },
     mounted() {
-
+        useHead({
+            title: 'About Us | YallaParty',
+            meta: [
+                {
+                    name: 'description',
+                    content: 'Yalla Party is your go-to platform for booking events of all sizes, including weddings, engagements, birthdays, and graduation parties. We strive to connect users with businesses that provide everything needed for unforgettable celebrations',
+                },
+            ],
+        });
     },
     components: {
         pageNav,
@@ -27,6 +37,18 @@ export default {
     },
 
     computed: {
+        // useHead() {
+        //     return {
+        //         title: 'About Us 2 | YallaParty',
+        //         meta: [
+        //             {
+        //                 name: 'description',
+        //                 content: 'Yalla Party is your go-to platform for booking events of all sizes, including weddings, engagements, birthdays, and graduation parties. We strive to connect users with businesses that provide everything needed for unforgettable celebrations',
+        //             },
+        //         ],
+        //     };
+        // },
+    
         //...mapGetters(),
         //...mapGetters(),
 
