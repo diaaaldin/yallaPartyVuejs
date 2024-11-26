@@ -1,5 +1,6 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+import { ElLoading } from 'element-plus';
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
 
@@ -9,10 +10,23 @@ import product from '@/components/Store/productCard.vue'
 export default {
     data() {
         return {
+            dataSearch: {
+                exceptionIds: [],
+                productName: "",
+                productSection: 0,
+                userEmail: "",
+                userName: "",
+                page: 1,
+                pageSize: 12,
+            },
+
+            productsData : [],
+            moreDataShow : false,
+
             currentSlide: 0, // Initialize current slide
             totalSlides: 0, // Total slides will be set in the mounted hook
 
-            selectedOption: '-- select --', // Default selected option
+            selectedOption: '-- select section --', // Default selected option
             selectedOption2: '-- select2 --', // Default selected option
             isOpen: false, // Dropdown visibility state
             isOpen2: false, // Dropdown visibility state
@@ -21,7 +35,10 @@ export default {
     mounted() {
         this.initSlider();
         document.addEventListener('click', this.closeDropdown);
+
+    
     },
+
     components: {
         pageNav,
         pageFooter,
@@ -35,16 +52,100 @@ export default {
 
     created() {
         // Call the function from the store directly when the component is created
-
+        this.GetToolsSections();
+        this.initFunc();
     },
 
     computed: {
-        //...mapGetters(),
-        //...mapGetters(),
-
+        ...mapGetters("Code", ["getToolsSectionsData"]),
+        ...mapGetters("Products", ["getProductsData", "getLastProductsData"]),
     },
     methods: {
-        //...mapActions(),
+        ...mapActions("Code", ["GetToolsSections"]),
+        ...mapActions("Products", ["GetProductsRandomly", "GetLastProducts" , "GetProductInBasket"]),
+
+        initFunc() {
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+            this.GetLastProducts();
+            this.GetProductInBasket();
+            this.GetProductsRandomly(this.dataSearch).then(Response => {
+                Response.products.data.forEach(event => {
+                    this.productsData.push(event);
+                });
+                if(Response.products.pagination.currentPage >= Response.products.pagination.pageCount ) this.moreDataShow = false;
+                else this.moreDataShow = true;
+                loading.close();
+            }).catch(error => {
+                this.$moshaToast(error.response.data.message, {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                loading.close();
+            });
+        },
+
+        SearchChangeFunc() {
+            this.GetData();
+        },
+
+        GetData() {
+            this.GetProductsRandomly(this.dataSearch).then(Response => {
+                this.productsData = [];
+                Response.products.data.forEach(event => {
+                    this.productsData.push(event);
+                });
+                if(Response.products.pagination.currentPage >= Response.products.pagination.pageCount ) this.moreDataShow = false;
+                else this.moreDataShow = true;
+            }).catch(error => {
+                this.$moshaToast(error.response.data.message, {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+            });
+        },
+
+        seeMoreFunc() {
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+
+            this.productsData.forEach(product => {
+                this.dataSearch.exceptionIds.push(product.id);
+            });
+            this.GetProductsRandomly(this.dataSearch).then(Response => {
+                Response.products.data.forEach(event => {
+                    this.productsData.push(event);
+                });
+                if(Response.products.pagination.currentPage >= Response.products.pagination.pageCount ) this.moreDataShow = false;
+                else this.moreDataShow = true;
+
+                loading.close();
+            }).catch(error => {
+                this.$moshaToast(error.response.data.message, {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                loading.close();
+            });
+        },
 
         initSlider() {
             $('.latestslider').slick({
@@ -89,22 +190,31 @@ export default {
         toggleDropdown() {
             this.isOpen = !this.isOpen; // Toggle dropdown visibility
         },
+
         selectOption(option) {
-            this.selectedOption = option; // Update selected option
+            if(option == 0){
+                this.selectedOption = "-- select section --";
+                this.dataSearch.productSection = 0;
+            } else {
+                this.selectedOption = option.name;
+                this.dataSearch.productSection = option.id;
+            }
+            this.SearchChangeFunc();
             this.isOpen = false; // Close dropdown
         },
+
         closeDropdown(e) {
             const customSelect1 = this.$refs.customSelect;
-            const customSelect2 = this.$refs.customSelect2;
-            
+            //const customSelect2 = this.$refs.customSelect2;
+
             // Check if click is outside customSelect1
             if (!customSelect1.contains(e.target)) {
                 this.isOpen = false;
             }
             // Check if click is outside customSelect2
-            if (!customSelect2.contains(e.target)) {
-                this.isOpen2 = false;
-            }
+            // if (!customSelect2.contains(e.target)) {
+            //     this.isOpen2 = false;
+            // }
         }
     },
     beforeDestroy() {
@@ -127,24 +237,21 @@ export default {
         </div>
         <div class="d-flex justify-content-between mt-5 search_input">
             <div class="input-group">
-                <input type="text" placeholder="Search..." class="form-control search_input-tab  p-3 search">
+                <input @input="SearchChangeFunc()" v-model="dataSearch.productName" type="text" placeholder="Search..." class="form-control search_input-tab  p-3 search">
                 <button class="input-group-text search_icon-tab"><i class="fas fa-search"></i>
                 </button>
             </div>
             <div class="custom-select" :class="{ open: isOpen === true }" ref="customSelect">
-                <div class="selected-option"  @click="toggleDropdown()">{{ selectedOption }}</div>
+                <div class="selected-option" @click="toggleDropdown()">{{ selectedOption }}</div>
                 <ul class="options-list">
-                    <li class="option" @click="selectOption('-- select section --')">-- select section --</li>
-                    <li class="option" @click="selectOption('Category Product 1')">Category Product 1</li>
-                    <li class="option" @click="selectOption('Category Product 2')">Category Product 2</li>
-                    <li class="option" @click="selectOption('Category Product 3')">Category Product 3</li>
-                    <li class="option" @click="selectOption('Category Product 4')">Category Product 4</li>
-                    <li class="option" @click="selectOption('Category Product 5')">Category Product 5</li>
-                    <li class="option" @click="selectOption('Category Product 6')">Category Product 6</li>
+                    <li class="option" @click="selectOption(0)">-- select section --</li>
+                    <li v-for="item in getToolsSectionsData" :key="item.id" class="option" @click="selectOption(item)">
+                        {{ item.name }}
+                    </li>
                 </ul>
             </div>
 
-            <div class="custom-select" :class="{ open: isOpen2 === true }" ref="customSelect2">
+            <!-- <div class="custom-select" :class="{ open: isOpen2 === true }" ref="customSelect2">
                 <div class="selected-option"  @click="toggleDropdown2()">{{ selectedOption2 }}</div>
                 <ul class="options-list">
                     <li class="option" @click="selectOption2('-- select section --')">-- select section 2--</li>
@@ -155,7 +262,7 @@ export default {
                     <li class="option" @click="selectOption2('Category Product 5')">Category Product 5</li>
                     <li class="option" @click="selectOption2('Category Product 6')">Category Product 6</li>
                 </ul>
-            </div>
+            </div> -->
 
         </div>
     </div>
@@ -163,20 +270,15 @@ export default {
 
     <section class="store mt-5">
         <div class="container">
-            <div class="row">
+            <div v-if="getLastProductsData && getLastProductsData.length >= 5" class="row">
                 <div class="div-slider">
                     <span class="sub-hero-title"> Latest Products </span>
                     <div class="row latestslider first_sec">
                         <!--  start row latestslider  -->
-                        <product></product>
-                        <product></product>
-                        <product></product>
-                        <product></product>
-                        <product></product>
-                        <product></product>
-                        <product></product>
-                        <product></product>
-
+                        <!-- <lastProduct v-for="item in getLastProductsData" :product='item' ></lastProduct> -->
+                        <product v-for="item in getLastProductsData" :product='item' ></product>
+           
+                      
                     </div>
                 </div>
             </div>
@@ -184,25 +286,15 @@ export default {
             <div class="Product">
                 <span class="sub-hero-title">Products</span>
                 <div class="row first_sec justify-content-center">
-                    <product></product>
-                    <product></product>
-                    <product></product>
-                    <product></product>
-                    <product></product>
-                    <product></product>
-                    <product></product>
-                    <product></product>
-                    <product></product>
-                    <product></product>
-                    <product></product>
+                    <product v-for="item in productsData" :product='item'></product>
                 </div>
 
             </div>
 
-            <div class="row justify-content-center see-more">
+            <div v-if="moreDataShow" class="row justify-content-center see-more">
                 <div class="col-6 col-lg-3">
                     <div class=" d-flex align-items-center justify-content-center mt-4 ">
-                        <a href="#" class="btn btn-light p-3  show-more-btn w-100">
+                        <a href="javascript:void(0)" v-on:click="seeMoreFunc()" class="btn btn-light p-3  show-more-btn w-100">
                             <span> See More </span>
                             <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -223,10 +315,12 @@ export default {
 
 <style scoped>
 .custom-select .options-list {
-    display: none; /* Hide options by default */
+    display: none;
+    /* Hide options by default */
 }
 
 .custom-select .options-list[style*="display: block"] {
-    display: block; /* Show options when open */
+    display: block;
+    /* Show options when open */
 }
 </style>

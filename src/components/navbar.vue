@@ -1,10 +1,19 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+import { Urls } from '@/config';
 
 export default {
     data() {
         return {
 
+        dashUrl :{
+            login : Urls.login,
+            addProduct :Urls.addProduct ,
+            addEvent :Urls.addEvent ,
+            storeSignup : Urls.storeSignup,
+            companySignup :Urls.companySignup ,
+            partnerSignup :Urls.partnerSignup ,
+        }
         }
     },
     mounted() {
@@ -94,27 +103,28 @@ export default {
                             </label>
                             <ul class="navigation__list">
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/login" class="navigation__link"> Login Business
+                                    <a :href="dashUrl.login" class="navigation__link"> Login Business
                                     </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/companylogin" class="navigation__link"> Create
+                                    <a :href="dashUrl.addEvent" class="navigation__link"> Create
                                         Event </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/storelogin" class="navigation__link"> Create
-                                        Product </a>
+                                    <a :href="dashUrl.addProduct" class="navigation__link"> Create
+                                        Product 
+                                    </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/storesignup" class="navigation__link"> Create
+                                    <a :href="dashUrl.storeSignup" class="navigation__link"> Create
                                         Store </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/companysignup" class="navigation__link"> Create
+                                    <a :href="dashUrl.companySignup" class="navigation__link"> Create
                                         Company </a>
                                 </li>
                                 <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/partnersignup" class="navigation__link"> Be a
+                                    <a :href="dashUrl.partnerSignup" class="navigation__link"> Be a
                                         partner </a>
                                 </li>
                             </ul>
@@ -151,8 +161,8 @@ export default {
                                 :class="{ active: $route.path === '/productStore' }"> STORE </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/bookStore" class="nav-link"
-                                :class="{ active: $route.path === '/bookStore' }"> TOOLS </router-link>
+                            <router-link to="/toolStore" class="nav-link"
+                                :class="{ active: $route.path === '/toolStore' }"> TOOLS </router-link>
                         </li>
                     </ul>
 

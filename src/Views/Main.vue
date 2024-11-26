@@ -147,7 +147,7 @@ export default {
         },
         
         goToBookStore() {
-            this.$router.push({ name: 'bookStore' });
+            this.$router.push({ name: 'toolStore' });
         },
         isTokenValid() {
             const token = localStorage.getItem('token');
@@ -804,39 +804,6 @@ export default {
                         <img src="/img/WhiteYallaPartyLogo.png" width="110" alt="" />
                     </router-link>
 
-                    <!-- <div class="navigation">
-                        <input type="checkbox" class="navigation__checkbox" id="nav-toggle">
-                        <label for="nav-toggle" class="navigation__button">
-                            <span class="navigation__icon" aria-label="toggle navigation menu"></span>
-                        </label>
-                        <div class="navigation__background"></div>
-                        <nav class="navigation__nav" role="navigation">
-                            <label for="nav-toggle" class="navigation__button">
-                                <i class="fa fa-arrow-left" style="color: #de147f;font-size: 18px;margin-top: 15px;"></i>
-                            </label>
-                            <ul class="navigation__list">
-                                <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/login" class="navigation__link"> Login Business </a>
-                                </li>
-                                <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/companylogin" class="navigation__link"> Create Event </a>
-                                </li>
-                                <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/storelogin" class="navigation__link"> Create Product </a>
-                                </li>
-                                <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/storesignup" class="navigation__link"> Create Store </a>
-                                </li>
-                                <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/companysignup" class="navigation__link"> Create Company </a>
-                                </li>
-                                <li class="navigation__item">
-                                    <a href="http://dash.yallaparty.net/partnersignup" class="navigation__link"> Be a partner </a>
-                                </li>
-                            </ul>
-                         </nav>
-                    </div> -->
-
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -862,7 +829,7 @@ export default {
                                 <router-link to="/productStore" class="nav-link ">STORE</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link to="/bookStore" class="nav-link ">TOOLS</router-link>
+                                <router-link to="/toolStore" class="nav-link ">TOOLS</router-link>
                             </li>
                         </ul>
 

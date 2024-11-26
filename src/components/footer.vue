@@ -1,6 +1,7 @@
 <script>
 import { RouterView } from 'vue-router';
 import { ElLoading } from 'element-plus';
+import { socialUrlData } from '@/config';
 
 import { mapState, mapGetters, mapActions } from "vuex";
 import axios from "axios";
@@ -44,6 +45,13 @@ export default {
             selectedAnswers: {}, // For storing checkbox selections
             questionData: [], // This will hold the final structured data
             isSwinging: false, // Controls the swing class
+
+            socialUrls: {
+                facebook: socialUrlData.facebook,
+                instagram: socialUrlData.instagram,
+                twitter: socialUrlData.twitter,
+                linkedIn: socialUrlData.linkedIn,
+            },
         }
     },
     components: {
@@ -69,6 +77,7 @@ export default {
     },
 
     created() {
+
         this.GetStates();
         this.GetQuestionsData();
         this.GetComunicationMethods();
@@ -120,9 +129,11 @@ export default {
                 console.error("Error fetching cities:", error);
             }
         },
+
         applySwing() {
             this.isSwinging = true; // Apply swing class
         },
+
         jobApplicationCreate() {
             this.data.orderType = 23;
             this.saveJobApplicationAnswers();
@@ -374,10 +385,12 @@ export default {
                         <div class="d-flex justify-content-center justify-content-lg-start my-3">
                             <img src="/img/WhiteYallaPartyLogo.png" alt="" width="70" class="img-fluid" />
                         </div>
+
                         <p class="text_footer_hero">
                             Yalla Party is a subsidiary of Yalla Party LLC, registered in the state of Maryland, United
                             States of America.
                         </p>
+                        
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 ps-lg-5 services">
@@ -453,12 +466,16 @@ export default {
                     <div class="d-flex justify-content-center justify-content-lg-start">
                         <div class="social-links">
                             <ul>
-                                <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                                <li><a :href="socialUrls.facebook"><i class="fab fa-facebook"
+                                            aria-hidden="true"></i></a></li>
+                                <li><a :href="socialUrls.twitter"><i class="fab fa-twitter"
+                                            aria-hidden="true"></i></a></li>
+                                <li><a :href="socialUrls.instagram"><i class="fab fa-instagram"
+                                            aria-hidden="true"></i></a></li>
+                                <li><a :href="socialUrls.linkedIn"><i class="fab fa-linkedin"
+                                            aria-hidden="true"></i></a></li>
                             </ul>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

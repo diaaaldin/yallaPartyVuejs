@@ -8,6 +8,9 @@ import Code from "./modules/Code/index";
 import Orders from "./modules/Orders/index";
 import Events from "./modules/Events/index";
 import Visit from "./modules/Visit/index";
+import Products from "./modules/Products/index";
+import Tools from "./modules/Tools/index";
+
 
 
 import Vuex from "vuex";
@@ -34,16 +37,15 @@ const store = new Vuex.Store({
       Orders,
       Events,
       Visit,
-      
+      Products,
+      Tools,
      },
 
      plugins: [
         createPersistedState({
-          paths: ['Users','Code','Orders','Events'], 
+          paths: ['Users','Code','Orders','Events','Products','Tools'],
         })
       ],
 });
-
-
 
 export default store;

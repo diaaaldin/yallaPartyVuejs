@@ -57,7 +57,7 @@ export default {
           <p>We've sent an order confirmation email with all the details.</p>
         </div> -->
         <div class="success-buttons">
-          <router-link class="btn btn-primary" to="/events">Back to events</router-link>
+          <router-link class="btn btn-primary" to="/productStore">Back to Tools </router-link>
         </div>
       </div>
     </div>

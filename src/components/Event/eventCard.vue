@@ -86,6 +86,7 @@ export default {
             if (!dateTime) return '';
             return new Date(dateTime).toISOString().split('T')[0];
         },
+
         stripHtml(html) {
             const div = document.createElement('div');
             div.innerHTML = html;
@@ -147,7 +148,7 @@ export default {
                     </div>
 
                     <div class="justify-content-end go">
-                        <a @click="goToEventFunc()">
+                        <a href="javascript:void(0)" @click="goToEventFunc()">
                             <!-- <i class="fas fa-angle-right"></i> -->
                             <svg class="svg-inline--fa fa-long-arrow-alt-right fa-w-14" aria-hidden="true"
                                 focusable="false" data-prefix="fas" data-icon="long-arrow-alt-right" role="img"

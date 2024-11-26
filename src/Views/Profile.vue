@@ -46,10 +46,9 @@ export default {
     <section class="profile mt-5">
         <div class="container">
             <div class="row mt-5 h-100 ">
-                <!--    start left side list   -->
+                <!-- start left side list -->
                 <profileSideMenu></profileSideMenu>
-                <!--    end left side list     -->
-                
+                <!-- end left side list  -->
                 <!-- right side container -->
                 <router-view />
                 <!-- end right side  -->

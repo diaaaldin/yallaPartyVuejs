@@ -1,5 +1,7 @@
 <script>
 //import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
+import { ElLoading } from 'element-plus';
 import favoritProduct from '@/components/Favorit/favoritProduct.vue';
 
 export default {
@@ -8,9 +10,11 @@ export default {
 
     }
   },
+
   mounted() {
 
   },
+
   components: {
     favoritProduct,
   },
@@ -21,16 +25,16 @@ export default {
 
   created() {
     // Call the function from the store directly when the component is created
-
+    this.GetProductInBasket();
   },
 
   computed: {
-    //...mapGetters(),
-    //...mapGetters(),
+    ...mapGetters("Products", ["getFavoritProductsData"]),
 
   },
+
   methods: {
-    //...mapActions(),
+    ...mapActions("Products", ["GetProductInBasket"]),
 
   }
 };
@@ -41,14 +45,9 @@ export default {
     <div class="container white_card px-4 pt-3 pb-2 mt-3 mt-lg-0 right-side">
       <div class="tab-content px-0" id="myTabContent">
         <div class="favorite-product" id="">
-          <!--      start card link               -->
-          <favoritProduct></favoritProduct>
-          <favoritProduct></favoritProduct>
-          <favoritProduct></favoritProduct>
-          <favoritProduct></favoritProduct>
-          <favoritProduct></favoritProduct>
-          <favoritProduct></favoritProduct>
-          <!-- end card link        -->
+          <!-- start card link -->
+          <favoritProduct v-for="item in getFavoritProductsData" :product='item'></favoritProduct>
+          <!-- end card link -->
 
         </div>
       </div>

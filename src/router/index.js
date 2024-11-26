@@ -6,20 +6,28 @@ import main from '../Views/Main.vue'
 import profile from '../Views/Profile.vue'
 import profileProfile from '../Views/Profile/profile.vue'
 import myevents from '../Views/Profile/myEvents.vue'
+import myproducts from '../Views/Profile/myProducts.vue'
+import mytools from '../Views/Profile/myTools.vue'
 import profileOrders from '../Views/Profile/orders.vue'
 import profileChangePassword from '../Views/Profile/changePassword.vue'
 import profileFavorit from '../Views/Profile/favorit.vue'
 
 import events from '../Views/Events.vue'
 import event from '../Views/EventDetails.vue'
-import teckitsuccess from '../Views/Checkout/TeckitBuySuccess.vue'
-import teckitfail from '../Views/Checkout/TeckitBuyFail.vue'
+
 import marketPlace from '../Views/MarketPlace.vue'
 import product from '../Views/Product.vue'
+import tool from '../Views/Tool.vue'
 import productStore from '../Views/Store.vue'
-import bookStore from '../Views/BookStore.vue'
+import toolStore from '../Views/BookStore.vue'
 import aboutus from '../Views/AboutUs.vue'
 
+import teckitsuccess from '../Views/Checkout/TeckitBuySuccess.vue'
+import teckitfail from '../Views/Checkout/TeckitBuyFail.vue'
+import productsuccess from '../Views/Checkout/ProductBuySuccess.vue'
+import productfail from '../Views/Checkout/ProductBuyFaild.vue'
+import toolsuccess from '../Views/Checkout/RentToolSuccess.vue'
+import toolfail from '../Views/Checkout/RentToolFaild.vue'
 
 
 const routes = [
@@ -54,6 +62,31 @@ const routes = [
         component: event
     },
     {
+        path: '/productStore',
+        name: "productStore",
+        component: productStore
+    },
+    {
+        path: '/toolStore',
+        name: "toolStore",
+        component: toolStore
+    },
+    {
+        path: '/marketPlace/:id',
+        name: "marketPlace",
+        component: marketPlace
+    },
+    {
+        path: '/product/:slug',
+        name: "product",
+        component: product
+    },
+    {
+        path: '/tool/:slug',
+        name: "tool",
+        component: tool
+    },
+    {
         path: '/teckitfail',
         name: "teckitfail",
         component: teckitfail
@@ -65,26 +98,27 @@ const routes = [
         props: route => ({ sessionId: route.query.sessionId }) // Pass sessionId as a prop
     },
     {
-        path: '/productStore',
-        name: "productStore",
-        component: productStore
+        path: '/productfail',
+        name: "productfail",
+        component: productfail
     },
     {
-        path: '/bookStore',
-        name: "bookStore",
-        component: bookStore
+        path: '/productsuccess',
+        name: "productsuccess",
+        component: productsuccess,
+        props: route => ({ sessionId: route.query.sessionId }) // Pass sessionId as a prop
     },
     {
-        path: '/marketPlace',
-        name: "marketPlace",
-        component: marketPlace
+        path: '/toolfail',
+        name: "toolfail",
+        component: toolfail
     },
     {
-        path: '/product',
-        name: "product",
-        component: product
+        path: '/toolsuccess',
+        name: "toolsuccess",
+        component: toolsuccess,
+        props: route => ({ sessionId: route.query.sessionId }) // Pass sessionId as a prop
     },
-
     {
         path: '/profile',
         name: "profile",
@@ -99,6 +133,16 @@ const routes = [
                 path: '/myevents',
                 name: "myevents",
                 component: myevents
+            },
+            {
+                path: '/myproducts',
+                name: "myproducts",
+                component: myproducts
+            },
+            {
+                path: '/mytools',
+                name: "mytools",
+                component: mytools
             },
             {
                 path: '/orders',

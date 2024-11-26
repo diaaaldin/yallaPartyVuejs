@@ -18,6 +18,7 @@ export default{
     TicketTypesData:null,
     UserTypesData:null,
     ChildrenServicesData:null,
+    PointProfitData:null,
 
 
 }

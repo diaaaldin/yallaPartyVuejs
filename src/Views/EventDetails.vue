@@ -52,6 +52,7 @@ export default {
             this.iti.destroy();
         }
     },
+
     components: {
         pageNav,
         pageFooter
@@ -61,9 +62,8 @@ export default {
 
     async created() {
         // Fetch cities based on initial stateId if available
-        console.log("this.getEventData :", this.getEventData);
+        //console.log("this.getEventData :", this.getEventData);
         await this.initFunc();
-        
         if (this.getEventData.stateId) {
             await this.fetchSearchCities(this.getEventData.stateId);
         }
@@ -81,10 +81,13 @@ export default {
     },
 
     computed: {
+        ...mapGetters("Code", ["getPointProfitData"]),
         ...mapGetters("Events", ["getEventsData", "getEventData"]),
+    
     },
 
     methods: {
+        ...mapActions("Code", ["GetPointsProfitData",]),
         ...mapActions("Events", ["BuyTicketOperation", "GetEvent",]),
 
         clearData() {
@@ -109,10 +112,12 @@ export default {
             this.discountMessage = "";
 
         },
+
         formatDate(dateTime) {
             if (!dateTime) return '';
             return new Date(dateTime).toISOString().split('T')[0];
         },
+
         formatTime(dateTime) {
             if (!dateTime) return '';
             const date = new Date(dateTime);
@@ -127,7 +132,14 @@ export default {
                 background: 'rgba(0, 0, 0, 0.7)',
                 text: "",
             });
-            this.GetEvent(this.getEventData.id).then(Response => {
+            //http://yallaparty.net/event/5-event%20title
+            const path = window.location.pathname;
+            const lastSection = path.split('/').pop(); // Get the last section of the URL
+            const idMatch = lastSection.match(/^\d+/); // Match numbers at the start of the string
+            const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
+            
+            console.log("id : ", id);
+            this.GetEvent(id).then(Response => {
                 loading.close();                
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
@@ -303,6 +315,7 @@ export default {
                 });
             }
         },
+        
         checkValidation() {
             
             if (this.buyTicketData.ticketData.ticketId == 0) {
@@ -366,6 +379,14 @@ export default {
             return true;
         },
 
+        formatCurrency(value) {
+			return new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: "USD",
+				//minimumFractionDigits: 0, // No decimals
+				//maximumFractionDigits: 0  // No decimals
+			}).format(value);
+		},
        
     }
 };
@@ -508,12 +529,10 @@ export default {
                                     <tr v-for="(item, index) in getEventData.ticketsInfo" :key="index">
                                         <td>{{ item.ticketTypeName }}</td>
                                         <td>
-                                            <span v-if="item.ticketAllNum > item.ticketBookNum" class="availabe">
-                                                Availabe </span>
-                                            <span v-else-if="item.ticketAllNum <= item.ticketBookNum"
-                                                class="not-availabe">Not Availabe</span>
+                                            <span v-if="item.ticketAllNum > item.ticketBookNum" class="availabe"> Availabe </span>
+                                            <span v-else-if="item.ticketAllNum <= item.ticketBookNum" class="not-availabe">Not Availabe</span>
                                         </td>
-                                        <td>{{ item.price }} $</td>
+                                        <td>{{ formatCurrency(item.price) }}</td>
                                         <td>
                                             <a v-if="item.ticketAllNum > item.ticketBookNum"
                                                 v-on:click="selectTicketToBuy(item.id)" class="book-now"

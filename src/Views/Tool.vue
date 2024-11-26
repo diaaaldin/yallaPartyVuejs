@@ -8,11 +8,12 @@ import pageFooter from '@/components/footer.vue';
 export default {
     data() {
         return {
-            buyData: {
+            rentData: {
                 paymentMethod: 0,
                 data: {
                     sessionId: "",
-                    productId: 0,
+                    toolId: 0,
+                    rentDate: null,
                     price: 0,
                     name: "",
                     mobile: "",
@@ -57,14 +58,14 @@ export default {
 
     computed: {
         ...mapGetters("Code", ["getPointProfitData"]),
-        ...mapGetters("Products", ["getProductData"]),
+        ...mapGetters("Tools", ["getToolData"]),
 
     },
     methods: {
         ...mapActions("Code", ["GetPointsProfitData",]),
-        ...mapActions("Products", ["GetProduct" , "BuyProductOperationWithPoint" , "BuyProductOperationWithPayment"]),
+        ...mapActions("Tools", ["GetTool", "RentToolOperationWithPoint", "RentToolOperationWithPayment"]),
 
-        mapBuyDataFunc() {
+        mapRentDataFunc() {
             const selectedProfitRate = this.getPointProfitData.find(x => x.id === 36);
             const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === 31);
 
@@ -75,38 +76,40 @@ export default {
                 this.pointsForDoller = selectedPointsForDoller.value;
             }
 
-            this.buyData.data.productId = this.getProductData.id;
-            this.finalProductPricePoint = Math.ceil(this.pointsForDoller * this.getProductData.price);
-            this.buyData.data.price = this.finalProductPrice;
-            this.buyData.data.name = localStorage.getItem('customerName');
-            this.buyData.data.email = localStorage.getItem('email');
+            this.rentData.data.toolId = this.getToolData.id;
+            this.finalProductPricePoint = Math.ceil(this.pointsForDoller * this.getToolData.rentPrice);
+            this.rentData.data.price = this.finalProductPrice;
+            this.rentData.data.name = localStorage.getItem('customerName');
+            this.rentData.data.email = localStorage.getItem('email');
 
-            this.finalProductPrice = this.formatPriceToTwoDigits(this.getProductData.price + (this.getProductData.price * (this.siteProfitRate / 100)));
-            this.buyData.productData.price = this.finalProductPrice;
-            this.buyData.productData.title = "Buy product";
-            this.buyData.productData.description = this.getProductData.name;
-            this.buyData.productData.imageUrl = this.getProductData.image;
+            this.finalProductPrice = this.formatPriceToTwoDigits(this.getToolData.rentPrice + (this.getToolData.rentPrice * (this.siteProfitRate / 100)));
+            this.rentData.productData.price = this.finalProductPrice;
+            this.rentData.productData.title = "Rent tool";
+            this.rentData.productData.description = this.getToolData.name;
+            this.rentData.productData.imageUrl = this.getToolData.image;
         },
 
         toMarketFunc() {
-            this.$router.push({ name: 'marketPlace', params: { id: this.getProductData.companyId } });
+            this.$router.push({ name: 'marketPlace', params: { id: this.getToolData.userId } });
         },
 
         clearData() {
-            this.buyData.paymentMethod = 0;
+            this.rentData.paymentMethod = 0;
 
-            this.buyData.data.sessionId = "";
-            this.buyData.data.productId = 0;
-            this.buyData.data.name = "";
-            this.buyData.data.mobile = "";
-            this.buyData.data.email = "";
-            this.buyData.data.discountCode = "";
+            this.rentData.data.sessionId = "";
+            this.rentData.data.toolId = 0;
+            this.rentData.data.price = 0;
+            this.rentData.data.rentDate = null;
+            this.rentData.data.name = "";
+            this.rentData.data.mobile = "";
+            this.rentData.data.email = "";
+            this.rentData.data.discountCode = "";
 
-            this.buyData.productData.id = "";
-            this.buyData.productData.title = "";
-            this.buyData.productData.description = "";
-            this.buyData.productData.imageUrl = "";
-            this.buyData.productData.price = "";
+            this.rentData.productData.id = "";
+            this.rentData.productData.title = "";
+            this.rentData.productData.description = "";
+            this.rentData.productData.imageUrl = "";
+            this.rentData.productData.price = "";
 
             this.selectedTicket = {};
             this.TicketSelectName = "";
@@ -127,7 +130,7 @@ export default {
             const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
             console.log("id : ", id);
 
-            this.GetProduct(id).then(Response => {
+            this.GetTool(id).then(Response => {
                 loading.close();
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
@@ -142,46 +145,24 @@ export default {
             });
         },
 
-        getProductFunc() {
-            const loading = ElLoading.service({
-                lock: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                text: "",
-            });
-            this.GetProduct(this.getProductData.id).then(Response => {
-                loading.close();
-            }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                loading.close();
-            });
-        },
-
-        buyFunc() {
-            console.log("this.buyData : ", this.buyData);
+        buyFunc() {     
+                
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
                     lock: true,
                     background: 'rgba(0, 0, 0, 0.7)',
                     text: "",
-                });
-
-                if (this.buyData.paymentMethod == 1) {
-                    this.BuyProductOperationWithPoint(this.buyData.data).then(Response => {
-                        this.$moshaToast('Buy product success', {
+                }); 
+                if (this.rentData.paymentMethod == 1) {
+                    this.RentToolOperationWithPoint(this.rentData.data).then(Response => {
+                        this.$moshaToast('Rent tool success', {
                             hideProgressBar: 'false',
                             showIcon: 'true',
                             swipeClose: 'true',
                             type: 'success',
                             timeout: 3000,
                         });
-                        this.$router.push({ name: 'myproducts' });
+                        this.$router.push({ name: 'mytools' });
                     }).catch(error => {
                         this.$moshaToast(error.response.data.message, {
                             hideProgressBar: 'false',
@@ -194,8 +175,8 @@ export default {
                         loading.close();
                     });
                 } else {
-                    this.BuyProductOperationWithPayment(this.buyData).then(Response => {
-                       
+                    this.RentToolOperationWithPayment(this.rentData).then(Response => {
+
                     }).catch(error => {
                         this.$moshaToast(error.response.data.message, {
                             hideProgressBar: 'false',
@@ -212,8 +193,8 @@ export default {
         },
 
         checkValidation() {
-            if (this.buyData.data.productId == 0) {
-                this.$moshaToast("there are error with select product contact with site manager", {
+            if (this.rentData.data.toolId == 0) {
+                this.$moshaToast("there are error with select tool contact with site manager", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -224,8 +205,8 @@ export default {
                 this.$refs.email.focus();
                 return false;
             }
-            else if (this.buyData.data.name.trim() == '') {
-                this.$moshaToast("login first if you want to buy product", {
+            else if (!this.rentData.data.name || this.rentData.data.name.trim() == '') {
+                this.$moshaToast("login first if you want to rent tool", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -235,8 +216,8 @@ export default {
                 });
                 this.$refs.nickName.focus();
                 return false;
-            } else if (this.buyData.data.email.trim() == '') {
-                this.$moshaToast("login first if you want to buy product", {
+            } else if (this.rentData.data.email.trim() == '') {
+                this.$moshaToast("login first if you want to rent tool", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -246,7 +227,18 @@ export default {
                 });
                 this.$refs.password.focus();
                 return false;
-            } else if (this.buyData.paymentMethod == 0) {
+            } else if (this.rentData.data.rentDate == null) {
+                this.$moshaToast("enter rent date", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                return false;
+            } else if (this.rentData.paymentMethod == 0) {
                 this.$moshaToast("select payment method", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -284,7 +276,7 @@ export default {
             <div class="container">
                 <div class="breadcrumb-content text-center">
                     <h5 class="theme mb-0">Yalla Party</h5>
-                    <h1 class="mb-0 white">Details Product</h1>
+                    <h1 class="mb-0 white">Details Tool</h1>
                 </div>
             </div>
         </div>
@@ -296,7 +288,7 @@ export default {
                 <div class="col-lg-8">
                     <div class="col-12 col-lg-12">
                         <div class="main-img">
-                            <img :src="getProductData.image" alt="name product" class="img-fluid">
+                            <img :src="getToolData.image" alt=" tool image" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -307,13 +299,13 @@ export default {
                                 <div class="flex-column mb-4">
                                     <div class="d-flex align-items-center">
                                         <img src="/img/icons/event-svgrepo-2.svg" class="icon-card" width="25" alt="">
-                                        <span class="text-store"> {{ getProductData.name }} </span>
+                                        <span class="text-store"> {{ getToolData.name }} </span>
                                     </div>
                                 </div>
                                 <div class="flex-column mb-4">
                                     <div class="d-flex align-items-center">
                                         <img src="/img/icons/price-svgrepo-com.svg" class="icon-card" width="25" alt="">
-                                        <span class="text-store">{{ getProductData.price }}</span>
+                                        <span class="text-store">{{ getToolData.rentPrice }}</span>
                                     </div>
                                 </div>
                                 <div class="flex-column">
@@ -321,21 +313,19 @@ export default {
                                         <img src="/img/icons/company-svgrepo-com.svg" class="icon-card" width="25"
                                             alt="">
                                         <a href="javascript:void(0)" v-on:click="toMarketFunc()"><span
-                                                class="text-store"> {{
-                                                    getProductData.companyName }}</span></a>
+                                                class="text-store"> {{ getToolData.userName }}</span></a>
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center shop-now">
-                                <a data-bs-toggle="modal" data-bs-target="#shop_now" v-on:click="mapBuyDataFunc()"> Buy
-                                    now </a>
+                                <a data-bs-toggle="modal" data-bs-target="#shop_now" v-on:click="mapRentDataFunc()"> Rent now </a>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-12 multi-img">
                         <div class="d-flex flex-lg-column  mt-3 mt-lg-0">
                             <div id="gallery" class="mt-lg-3">
-                                <a v-for="(image, index) in getProductData.images" :key="index" :href="image"
+                                <a v-for="(image, index) in getToolData.images" :key="index" :href="image"
                                     :data-caption="'Image #' + (index + 1)"
                                     :class="{ 'Before_After_div': index === 0 }">
                                     <img :src="image" alt="" :class="index === 0
@@ -357,9 +347,9 @@ export default {
                         <div class="gray-inp px-4 py-3">
                             <p class="text mb-3 mt-2 description-text-title">
                                 <img src="/img/heart_icon.png" alt="" width="30" class="">
-                                Product Description
+                                Tool Description
                             </p>
-                            <p v-html="getProductData.description" class="description-text-gray"></p>
+                            <p v-html="getToolData.description" class="description-text-gray"></p>
                         </div>
                     </div>
                 </div>
@@ -373,44 +363,33 @@ export default {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ getProductData.name }} : {{
-                        formatCurrency(getProductData.price) }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{ getToolData.name }} : {{ formatCurrency(getToolData.rentPrice) }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="" method="">
-                        <!-- <label class=" label-form"> Name </label>
+                        <label class=" label-form"> Rent date </label>
                         <div class="input-group mb-3">
-                            <input v-model="buyData.data.name" type="text" class="form-control"
+                            <input v-model="rentData.data.rentDate" type="date" class="form-control"
                                 placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
-                        <label class=" label-form"> Mobile </label>
-                        <div class="input-group mb-3">
-                            <input v-model="buyData.data.mobile" id="phone" type="tel" ref="phoneInput"
-                                class="form-control" maxlength="10" placeholder="(201) 555-0123" aria-label=""
-                                aria-describedby="basic-addon1" required>
-                        </div>
-                        <label class=" label-form"> Email </label>
-                        <div class="input-group mb-3">
-                            <input v-model="buyData.data.email" type="email" class="form-control"
-                                placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
-                        </div> -->
+
                         <label class=" label-form"> Payment Method </label>
                         <div class="input-group mb-3">
                             <div class="mb-3">
                                 <div class="form-check" key="1">
                                     <input class="form-check-input" type="radio" name="bookfor" id="1" value="1"
-                                        v-model="buyData.paymentMethod">
+                                        v-model="rentData.paymentMethod">
                                     <label class="form-check-label" for="1"> My Points </label>
                                     <p style="color: red;  margin-top: 5px;">Note: The number of points that will be
                                         deducted {{ this.finalProductPricePoint }} point</p>
                                 </div>
                                 <div class="form-check" key="1">
                                     <input class="form-check-input" type="radio" name="bookfor" id="2" value="2"
-                                        v-model="buyData.paymentMethod">
+                                        v-model="rentData.paymentMethod">
                                     <label class="form-check-label" for="2"> Payment </label>
                                     <p style="color: red;  margin-top: 5px; ">Note: Price after the site commission {{
-                                        formatCurrency(buyData.productData.price) }}</p>
+                                        formatCurrency(rentData.productData.price) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -418,7 +397,7 @@ export default {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" v-on:click="buyFunc()" class="btn btn-primary">Buy now</button>
+                    <button type="button" v-on:click="buyFunc()" class="btn btn-primary">Rent now</button>
                 </div>
             </div>
         </div>

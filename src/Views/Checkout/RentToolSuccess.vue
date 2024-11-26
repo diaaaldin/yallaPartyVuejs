@@ -35,25 +35,25 @@ export default {
 
     created() {
         // Call the function from the store directly when the component is created
-        this.checkSuccessPaymentAndSaveEventGuestFunc();
+        this.checkSuccessPaymentAndSaveFunc();
     },
 
     computed: {
-      ...mapGetters("Events", ["getEventData"]),
+      ...mapGetters("Tools", ["getToolData"]),
 
     },
 
     methods: {
-      ...mapActions("Events", ["successTicketPayment", "GetEvent",]),
+      ...mapActions("Tools", ["successToolPayment"]),
 
-        checkSuccessPaymentAndSaveEventGuestFunc(){
+        checkSuccessPaymentAndSaveFunc(){
                const loading = ElLoading.service({
                     lock: true,
                     background: 'rgba(0, 0, 0, 0.7)',
                     text: "",
                 });
-                const buyTicketData = JSON.parse(localStorage.getItem('BuyOperationTicketData'));
-                this.successTicketPayment(buyTicketData.ticketData).then(Response => {
+                const buyData = JSON.parse(localStorage.getItem('RentOperationToolData'));
+                this.successToolPayment(buyData.data).then(Response => {
                     this.$moshaToast('success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -76,19 +76,8 @@ export default {
         
         },
 
-        goBackToEventFunc() {
-            const loading = ElLoading.service({
-                lock: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                text: "",
-            });
-            this.GetEvent(this.getEventData.id).then(Response => {
-                loading.close();
-			    	    this.$router.push({ name: "event", params: { slug: Response.slug }});
-		        }).catch(error => {
-                loading.close();
-		        });
-         loading.close();
+        goBackToolFunc() {
+            this.$router.push({ name: "tool", params: { slug: this.getToolData.slug }});
         },
 
     }
@@ -110,7 +99,7 @@ export default {
           <p>We've sent an order confirmation email with all the details.</p>
         </div> -->
         <div class="success-buttons">
-          <button type="button" v-on:click="goBackToEventFunc()" class="btn btn-primary">Back to event</button>
+          <button type="button" v-on:click="goBackToolFunc()" class="btn btn-primary">Back to tool</button>
         </div>
       </div>
     </div>

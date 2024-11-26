@@ -124,7 +124,17 @@ export const GetUserTypes = ({ commit, dispatch }) => {
 export const GetChildrenServices = ({ commit, dispatch }) => {
     return Code.GetCodeItems(12 ,0).then(function (response) {
        commit('SET_CHILDREN_SERVICES_DATA', response.data.data);
-       console.log("response.data.data : ", response.data.data);
+       //console.log("response.data.data : ", response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+            throw error;
+    });
+}
+
+export const GetPointsProfitData = ({ commit, dispatch }) => {
+    return Code.GetCodeItems(13 ,0).then(function (response) {
+       commit('SET_POINT_PROFIT_DATA', response.data.data);
+      // console.log("response.data.data : ", response.data.data);
         return response.data.data;
     }).catch(function (error) {
             throw error;

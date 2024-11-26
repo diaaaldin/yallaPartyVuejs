@@ -20,8 +20,13 @@ export default {
 				password: "",
 			},
 
-			newPassword: {
-				email: ""
+			newPasswordData: {
+				userId : 0,
+				email: "",
+				Mobile:"",
+				sendWay:0,
+				oldPassword:"",
+				newPassword:""
 			},
 
 			isPasswordVisible: false,
@@ -37,7 +42,8 @@ export default {
 	},
 
 	methods: {
-		...mapActions("Users", ["GetLogin"]),
+		...mapActions("Users", ["GetLogin" , "GetNewPassword"]),
+		
 		getLoginfunc() {
 			if (this.checkValidation()) {
 				const loading = ElLoading.service({
@@ -102,8 +108,58 @@ export default {
 			return true;
 		},
 
+		clearNewPasswordFunc(){
+			    this.newPasswordData.userId = 0;
+				this.newPasswordData.email= "";
+				this.newPasswordData.Mobile="";
+				this.newPasswordData.sendWay=0;
+				this.newPasswordData.oldPassword="";
+				this.newPasswordData.newPassword="";
+		},
 		getNewPasswordFunc() {
+			if (this.checkNewPasswordValidation()) {
+				const loading = ElLoading.service({
+					lock: true,
+					background: 'rgba(0, 0, 0, 0.7)',
+					text: "",
+				});
+				this.GetNewPassword(this.newPasswordData).then(Response => {
+					this.$moshaToast('We send new password to your email', {
+						hideProgressBar: 'false',
+						showIcon: 'true',
+						swipeClose: 'true',
+						type: 'success',
+						timeout: 3000,
+					});
+					loading.close();
+				}).catch(error => {
+					this.$moshaToast(error.response.data.message, {
+						hideProgressBar: 'false',
+						position: 'top-center',
+						showIcon: 'true',
+						swipeClose: 'true',
+						type: 'warning',
+						timeout: 3000,
+					});
+					loading.close();
+				});
+			}
+		},
 
+		checkNewPasswordValidation() {
+			if (this.newPasswordData.email.trim() == '') {
+				this.$moshaToast("enter email", {
+					hideProgressBar: 'false',
+					position: 'top-center',
+					showIcon: 'true',
+					swipeClose: 'true',
+					type: 'warning',
+					timeout: 3000,
+				});
+				this.$refs.email.focus();
+				return;
+			}
+			return true;
 		},
 
 		togglePasswordVisibility() {
@@ -158,7 +214,7 @@ export default {
 									
 
 									<div class="d-flex justify-content-end">
-										<a data-bs-toggle="modal" data-bs-target="#forgot_password"
+										<a v-on:click="clearNewPasswordFunc()" data-bs-toggle="modal" data-bs-target="#forgot_password"
 											class="text text-login forgot-password">forgot your password?</a>
 									</div>
 
@@ -196,7 +252,7 @@ export default {
 						<label class=" label-form"> Send to email </label>
 						<div class="input-group mb-3">
 							<input type="email" class="form-control" placeholder="Email" aria-label="Email"
-								aria-describedby="basic-addon1" v-model="newPassword.email">
+								aria-describedby="basic-addon1" v-model="newPasswordData.email">
 						</div>
 					</form>
 				</div>

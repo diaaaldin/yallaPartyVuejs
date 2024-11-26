@@ -49,3 +49,7 @@ export const SET_USER_TYPES_DATA = (state , data ) => {
 export const SET_CHILDREN_SERVICES_DATA = (state , data ) => {
     state.ChildrenServicesData = data;
 }
+export const SET_POINT_PROFIT_DATA = (state , data ) => {
+    state.PointProfitData = data;
+}
+

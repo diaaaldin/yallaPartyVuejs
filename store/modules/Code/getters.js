@@ -48,3 +48,6 @@ export const getUserTypesData = (state) => {
 export const getChildrenServicesData = (state) => {
     return state.ChildrenServicesData;
 }
+export const getPointProfitData = (state) => {
+    return state.PointProfitData;
+}
