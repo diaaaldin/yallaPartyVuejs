@@ -1,24 +1,24 @@
 export default{
 
-    CodesData:null,
+    CodesData:[],
     CodeData:null,
 
-    statesData:null,
+    statesData:[],
 
-    QuestionsData:null,
+    QuestionsData:[],
 
-    OrderTypesData:null,
-    ToolsSectionsData:null,
-    CompanyTypesData:null,
-    ComunicationMethodsData:null,
-    OrderStatusData:null,
-    OrderServicesData:null,
-    OrderTypeQuestionsData:null,
+    OrderTypesData:[],
+    ToolsSectionsData:[],
+    CompanyTypesData:[],
+    ComunicationMethodsData:[],
+    OrderStatusData:[],
+    OrderServicesData:[],
+    OrderTypeQuestionsData:[],
     QuestionAnswersData:[],
-    TicketTypesData:null,
-    UserTypesData:null,
-    ChildrenServicesData:null,
-    PointProfitData:null,
+    TicketTypesData:[],
+    UserTypesData:[],
+    ChildrenServicesData:[],
+    PointProfitData:[],
 
 
 }

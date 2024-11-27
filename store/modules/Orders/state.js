@@ -1,8 +1,8 @@
 export default{
 
-    OrdersData:null,
+    OrdersData:[],
     OrderData:null,
     JobApplicationData:null,
-    JobApplicationsData:null,
+    JobApplicationsData:[],
 
 }
