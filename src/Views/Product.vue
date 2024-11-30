@@ -133,7 +133,7 @@ export default {
         },
 
         toMarketFunc() {
-            this.$router.push({ name: 'marketPlace', params: { id: this.getProductData.companyId } });
+            this.$router.push({ name: 'productsmarket', params: { id: this.getProductData.companyId } });
         },
 
         clearData() {

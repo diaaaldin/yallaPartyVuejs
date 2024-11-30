@@ -171,6 +171,7 @@ export default {
         toggleDropdown2() {
             this.isOpen2 = !this.isOpen2; // Toggle dropdown visibility
         },
+        
         // selectOption2(option) {
         //     this.selectedOption2 = option; // Update selected option
         //     this.isOpen2 = false; // Close dropdown

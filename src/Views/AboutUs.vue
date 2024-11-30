@@ -55,9 +55,7 @@ export default {
     },
     methods: {
         //...mapActions(),
-        goToMarketPlace(){
-            this.$router.push({ name: 'marketPlace' });
-        }
+        
         
     }
 };

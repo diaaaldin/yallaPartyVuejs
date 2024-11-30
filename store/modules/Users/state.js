@@ -1,26 +1,29 @@
 export default{
-    UserLoginData:null,
+    UserLoginData:{},
+
+    UserData:{},
+    CompanyData:{},
 
     AdminUsersData: [],
-    AdminUserData: null,
+    AdminUserData: {},
 
     PartnersData: [],
-    PartnerData: null,
+    PartnerData: {},
 
     CustomersData: [],
-    CustomerData: null,
+    CustomerData: {},
 
     CompaniesData: [],
-    StoresData: null,
+    StoresData: {},
 
-    CompanyStoreData: null,
+    CompanyStoreData: {},
 
     CompanyEmpsData: [],
-    CompanyEmpData: null,
+    CompanyEmpData: {},
 
     PartnerEmpsData: [],
-    PartnerEmpData: null,
+    PartnerEmpData: {},
 
-    ProfileData : null,
+    ProfileData : {},
 
 }

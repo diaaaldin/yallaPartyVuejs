@@ -36,6 +36,7 @@ export default {
         const queryString = new URLSearchParams({
             toolName : data.toolName,
             toolSection : data.toolSection,
+            userId : data.userId,
             userEmail : data.userEmail,
             userName : data.userName,
             stateId : data.stateId,

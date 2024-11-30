@@ -2,6 +2,14 @@ export const USER_LOGIN_DATA = (state , data ) => {
     state.UserLoginData = data;
 }
 
+export const SET_USER_DATA = (state , data ) => {
+    state.UserData = data;
+}
+
+export const SET_COMPANY_DATA = (state , data ) => {
+    state.CompanyData = data;
+}
+
 export const SET_PROFILE_DATA = (state , data ) => {
     state.ProfileData = data;
 }

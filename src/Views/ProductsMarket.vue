@@ -14,7 +14,6 @@ export default {
     },
     mounted() {
         useHead({
-                
                 title: 'Market | YallaParty',
                 meta: [
                     {
@@ -22,7 +21,6 @@ export default {
                     content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
                     },
                     ],
-                
                 });
     },
     components: {
@@ -41,7 +39,6 @@ export default {
     },
 
     computed: {
-        //...mapGetters(),
         //...mapGetters(),
 
     },

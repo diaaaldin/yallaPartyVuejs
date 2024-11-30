@@ -90,7 +90,7 @@ export default {
         },
 
         toMarketFunc() {
-            this.$router.push({ name: 'marketPlace', params: { id: this.getToolData.userId } });
+            this.$router.push({ name: 'toolsmarket', params: { id: this.getToolData.userId } });
         },
 
         clearData() {

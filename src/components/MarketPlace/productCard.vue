@@ -39,7 +39,7 @@ export default {
         },
 
         toMarketFunc(){
-            this.$router.push({ name: 'marketPlace' });
+            this.$router.push({ name: 'productsmarket' });
         }
     }
 };

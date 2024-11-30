@@ -54,7 +54,7 @@ export default {
         },
 
         toMarketFunc() {
-            this.$router.push({ name: 'marketPlace', params: { id: this.tool.userId } });
+            this.$router.push({ name: 'toolsmarket', params: { id: this.tool.userId } });
         },
 
         stripHtml(html) {

@@ -42,6 +42,7 @@ export const GetLogin = ({ commit, dispatch }, data) => {
 }
 
 
+
 export const GetAdminUsers = ({ commit, dispatch }, data) => {
     return User.GetAdminUsers(data.name, data.page, data.pageSize).then(function (response) {
         console.log("data : ", response.data.data);
@@ -97,6 +98,24 @@ export const CustomerProfileInfo = ({ commit, dispatch }, userId) => {
         throw error;
     });
 }
+
+export const GetUserInfo = ({ commit, dispatch }, userId) => {
+    return User.GetUserInfo(userId).then(function (response) {
+        commit('SET_USER_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
+export const GetCompanyInfo = ({ commit, dispatch }, userId) => {
+    return User.GetCompanyInfo(userId).then(function (response) {
+        commit('SET_COMPANY_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
+
 
 
 /////////////

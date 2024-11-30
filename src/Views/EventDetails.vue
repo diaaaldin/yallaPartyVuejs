@@ -403,6 +403,7 @@ export default {
             }
             return true;
         },
+
         validateEmail(email) {
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -422,10 +423,12 @@ export default {
                 return true;
             }
         },
+
         filterMobileInput(event) {
             const input = event.target.value.replace(/\D/g, '').slice(0, 10);
             this.buyTicketData.ticketData.mobile = input; 
         },
+        
         formatCurrency(value) {
 			return new Intl.NumberFormat('en-US', {
 				style: 'currency',

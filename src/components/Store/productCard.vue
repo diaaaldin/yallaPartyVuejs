@@ -105,7 +105,7 @@ export default {
         },
 
         toMarketFunc() {
-            this.$router.push({ name: 'marketPlace', params: { id: this.product.companyId } });
+            this.$router.push({ name: 'productsmarket', params: { id: this.product.companyId } });
         },
 
         stripHtml(html) {

@@ -6,6 +6,25 @@ const END_POINT = 'User';
 
 export default {
 
+    GetUserInfo(userId) {
+        let config = {
+            params: {
+                userId: userId,
+            },
+        };
+        return Api.get(`${END_POINT}/GetUserInfo`, config );
+    },
+
+    GetCompanyInfo(userId) {
+        let config = {
+            params: {
+                userId: userId,
+            },
+        };
+        return Api.get(`${END_POINT}/GetCompanyInfo`, config );
+    },
+
+    /////////////////
     GetAdminUsers(name, page, pageSize) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
@@ -149,6 +168,8 @@ export default {
     PartnerSignUp(data) {
         return Api.post(`${END_POINT}/PartnerSignUp`, data);
     },
+
+
     AdminCreate(data) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))

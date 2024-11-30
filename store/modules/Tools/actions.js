@@ -20,6 +20,16 @@ export const GetToolsRandomly = ({ commit, dispatch } , data) => {
     });
 }
 
+export const GetTools = ({ commit, dispatch } , data) => {
+    return tool.GetTools(data).then(function (response) {
+       commit('SET_TOOLS_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+            throw error;
+    });
+}
+
+
 export const GetCustomerRentToolsOrders = ({ commit, dispatch }) => {
     return tool.GetCustomerRentToolsOrders().then(function (response) {
         commit('SET_CUSTOMER_RENT_TOOLS_ORDERS_DATA', response.data.data);

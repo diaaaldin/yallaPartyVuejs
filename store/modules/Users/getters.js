@@ -1,6 +1,15 @@
 export const getUserLoginData = (state) => {
     return state.UserLoginData;
 }
+
+export const getUserData = (state) => {
+    return state.UserData;
+}
+export const getCompanyData = (state) => {
+    return state.CompanyData;
+}
+
+
 export const getProfileData = (state) => {
     return state.ProfileData;
 }

@@ -15,7 +15,8 @@ import profileFavorit from '../Views/Profile/favorit.vue'
 import events from '../Views/Events.vue'
 import event from '../Views/EventDetails.vue'
 
-import marketPlace from '../Views/MarketPlace.vue'
+import productsmarket from '../Views/ProductsMarket.vue'
+import toolsmarket from '../Views/ToolsMarket.vue'
 import product from '../Views/Product.vue'
 import tool from '../Views/Tool.vue'
 import productStore from '../Views/Store.vue'
@@ -72,9 +73,14 @@ const routes = [
         component: toolStore
     },
     {
-        path: '/marketPlace/:id',
-        name: "marketPlace",
-        component: marketPlace
+        path: '/productsmarket/:id',
+        name: "productsmarket",
+        component: productsmarket
+    },
+    {
+        path: '/toolsmarket/:id',
+        name: "toolsmarket",
+        component: toolsmarket
     },
     {
         path: '/product/:slug',
