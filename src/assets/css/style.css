@@ -1287,6 +1287,12 @@ display: none;
     background-color: #fe04041c;
     color: #f50808;
 }
+.warning{
+    border-left: 3px solid #fea804;
+    padding: 2px 8px 3px 6px;
+    background-color: #fecb0030;
+    color: #fea804;
+}
 
 #gallery{
     /* width: 200px;
@@ -2334,7 +2340,11 @@ input::-webkit-inner-spin-button {
     position: relative;
     z-index: 0;
     display: block;
+    max-height: 270px;
+    overflow: hidden;
+    border-radius: 9px;
 }
+
 .Before_After_div::before{
     content: "";
     border-radius: 8px;

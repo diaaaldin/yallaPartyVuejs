@@ -239,7 +239,7 @@ export default {
 
 <template>
     <pageNav></pageNav>
-    <div class="header-title text-center">
+    <div class="header-title store text-center">
         <div class="breadcrumb-outer search add">
             <div class="container">
                 <div class="breadcrumb-content text-center">

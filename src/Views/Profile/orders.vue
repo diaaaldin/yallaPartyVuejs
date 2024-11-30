@@ -759,7 +759,15 @@ export default {
             <td>{{ item.name }}</td>
             <td>{{ item.email }}</td>
             <td>{{ item.mobile }}</td>
-            <td>{{ item.statusName }}</td>
+            
+            <td>
+              <span v-if="item.statusName == 'succeeded'"
+                  class="availabe">{{ item.statusName }}</span>
+              <span v-else-if="item.statusName == 'pending'"
+                  class="warning">{{ item.statusName }}</span>
+              <span v-else-if="item.statusName == 'canceled'"
+                  class="not-availabe">{{ item.statusName }}</span>
+            </td>
 
             <td>
               <a v-on:click="selectItemForDelete(item.id)">
