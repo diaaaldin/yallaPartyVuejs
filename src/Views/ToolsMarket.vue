@@ -7,7 +7,8 @@ import axios from "axios";
 
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
-import toolCard from '@/components/Store/ToolCard.vue';
+// import toolCard from '@/components/MarketPlace/ToolCard.vue';
+import toolCard from '@/components/MarketPlace/toolCard.vue';
 
 export default {
 
@@ -404,7 +405,7 @@ export default {
                 <!-- end left side list      -->
 
                 <!-- right side container -->
-                <div class="col-12 col-lg-9  ">
+                <div class="col-12 col-lg-9 ">
                     <div class="container white_card px-4 pb-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
                         <div class="Product">
                             <span class="sub-hero-title"> Tools </span>

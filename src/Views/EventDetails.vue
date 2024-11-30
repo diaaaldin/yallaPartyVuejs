@@ -6,6 +6,8 @@ import axios from "axios";
 
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
+import { pointManagmentOperation } from '@/config';
+
 
 export default {
      data() {
@@ -33,10 +35,18 @@ export default {
 
             TicketSelectName: "",
 
+            ticketPrice:0,
+
             isDiscountSuccess : false,
             discountMessage : "",
             discountCode : "",
-            cities: []
+
+            siteProfitRate: 0,
+            pointsForDoller: 0,
+            finalProductPrice: 0,
+
+
+            cities: [],
         };
     },
     mounted() {
@@ -123,6 +133,7 @@ export default {
             this.TicketSelectName = "";
             this.isDiscountSuccess = false;
             this.discountMessage = "";
+            this.ticketPrice = 0;
 
         },
 
@@ -216,22 +227,47 @@ export default {
         selectTicketToBuy(id) {
             this.clearData();
 
+            const selectedProfitRate = this.getPointProfitData.find(x => x.id === pointManagmentOperation.SiteProfitPercentage);
+            const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === pointManagmentOperation.howManyPointForDollar);
+
+            if (selectedProfitRate) {
+                this.siteProfitRate = selectedProfitRate.value;
+            }
+            if (selectedPointsForDoller) {
+                this.pointsForDoller = selectedPointsForDoller.value;
+            }
+
             const selectedTicket = this.getEventData.ticketsInfo.find(x => x.id === id);
             if (selectedTicket) {
                 this.selectedTicket = selectedTicket;
                 this.TicketSelectName = selectedTicket.ticketTypeName;
+                this.ticketPrice = selectedTicket.price;
 
                 this.buyTicketData.ticketData.ticketId = selectedTicket.id;
-                this.buyTicketData.ticketData.price = selectedTicket.price;
+                this.finalProductPricePoint = Math.ceil(this.pointsForDoller * this.selectedTicket.price);
+                this.finalProductPrice = this.formatPriceToTwoDigits(selectedTicket.price + (selectedTicket.price * (this.siteProfitRate / 100)));
+                this.buyTicketData.ticketData.price = this.finalProductPrice;
 
                 this.buyTicketData.productData.title = "Buy " + selectedTicket.ticketTypeName + " Ticket.";
                 this.buyTicketData.productData.description = this.getEventData.title;
                 this.buyTicketData.productData.imageUrl = this.getEventData.imagePath;
-                this.buyTicketData.productData.price = selectedTicket.price;
+                this.buyTicketData.productData.price = this.finalProductPrice;
             }
+
         },
 
         checkDiscountCodeFunc(){
+
+            const selectedProfitRate = this.getPointProfitData.find(x => x.id === pointManagmentOperation.SiteProfitPercentage);
+            const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === pointManagmentOperation.howManyPointForDollar);
+
+            if (selectedProfitRate) {
+                this.siteProfitRate = selectedProfitRate.value;
+            }
+            if (selectedPointsForDoller) {
+                this.pointsForDoller = selectedPointsForDoller.value;
+            }
+
             const loading = ElLoading.service({
                     lock: true,
                     background: 'rgba(0, 0, 0, 0.7)',
@@ -244,8 +280,17 @@ export default {
                     let discountRate = this.selectedTicket.price * (this.getEventData.discountRate / 100);
                     let priceAfterDiscount = this.selectedTicket.price - discountRate;
               
-                    this.buyTicketData.ticketData.price = priceAfterDiscount;
-                    this.buyTicketData.productData.price = priceAfterDiscount;
+
+                    this.buyTicketData.ticketData.ticketId = this.selectedTicket.id;
+                   // this.finalProductPricePoint = Math.ceil(this.pointsForDoller * this.selectedTicket.price);
+                    
+                    this.ticketPrice = priceAfterDiscount;
+                    this.finalProductPrice = this.formatPriceToTwoDigits(priceAfterDiscount + (priceAfterDiscount * (this.siteProfitRate / 100)));
+                    //this.buyTicketData.ticketData.price = this.finalProductPrice;
+                    this.buyTicketData.productData.price = this.finalProductPrice;
+
+                    //this.buyTicketData.ticketData.price = priceAfterDiscount;
+                    //this.buyTicketData.productData.price = priceAfterDiscount;
         
                     this.isDiscountSuccess = true;  // Note: use `=` for assignment
                     this.discountMessage = "Discount success"; // Note: use `=` for assignment
@@ -433,10 +478,14 @@ export default {
 			return new Intl.NumberFormat('en-US', {
 				style: 'currency',
 				currency: "USD",
-				//minimumFractionDigits: 0, // No decimals
-				//maximumFractionDigits: 0  // No decimals
+				minimumFractionDigits: 0, // No decimals
+				maximumFractionDigits: 0  // No decimals
 			}).format(value);
 		},
+
+        formatPriceToTwoDigits(price) {
+            return Math.round(price);  
+        }
        
     }
 };
@@ -681,7 +730,7 @@ export default {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tickets {{ TicketSelectName }} : {{ buyTicketData.ticketData.price }}$</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Tickets {{ TicketSelectName }} : {{ formatCurrency(ticketPrice) }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -727,11 +776,15 @@ export default {
                                     <input class="form-check-input" type="radio" name="bookfor" id="1" value="1"
                                         v-model="buyTicketData.paymentMethod">
                                     <label class="form-check-label" for="1"> My Points </label>
+                                    <p style="color: red;  margin-top: 5px;">Note: The number of points that will be
+                                        deducted {{ this.finalProductPricePoint }} point</p>
                                 </div>
                                 <div class="form-check" key="1">
                                     <input class="form-check-input" type="radio" name="bookfor" id="2" value="2"
                                         v-model="buyTicketData.paymentMethod">
-                                    <label class="form-check-label" for="2"> Cash </label>
+                                    <label class="form-check-label" for="2"> Payment </label>
+                                    <p style="color: red;  margin-top: 5px; ">Note: Price after the site commission {{
+                                        formatCurrency(buyTicketData.productData.price) }}</p>
                                 </div>
                             </div>
                         </div>

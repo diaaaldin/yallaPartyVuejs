@@ -38,6 +38,7 @@ export default {
         const queryString = new URLSearchParams({
             productName : data.productName,
             productSection : data.productSection,
+            userId : data.userId,
             userEmail : data.userEmail,
             userName : data.userName,
             page: data.page,

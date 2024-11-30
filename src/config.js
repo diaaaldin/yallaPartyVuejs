@@ -21,8 +21,17 @@ export const socialUrlData = {
   
 };
   
-  export const orderStatus = {
-    pending: 54,
-    success: 55,
-    canceled: 57,
-  };
+export const orderStatus = {
+  pending: 54,
+  success: 55,
+  canceled: 57,
+};
+
+export const pointManagmentOperation = {
+  howManyPointForDollar: 31,
+  orderPoints: 32,
+  pointsForBuyProduct: 33,
+  pointsForReservationTool: 34,
+  pointsForBuyEventTicket: 35,
+  SiteProfitPercentage : 36,
+};

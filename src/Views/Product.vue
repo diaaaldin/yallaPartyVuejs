@@ -49,11 +49,11 @@ export default {
                 
                 });
 
-        this.iti = window.intlTelInput(this.$refs.phoneInput, {
-      initialCountry: "us",
-      strictMode: true,
-      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-    });
+    //     this.iti = window.intlTelInput(this.$refs.phoneInput, {
+    //   initialCountry: "us",
+    //   strictMode: true,
+    //   utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+    // });
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
@@ -309,12 +309,13 @@ export default {
             return new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: "USD",
-                //minimumFractionDigits: 0, // No decimals
-                //maximumFractionDigits: 0  // No decimals
+                minimumFractionDigits: 0, // No decimals
+                maximumFractionDigits: 0  // No decimals
             }).format(value);
         },
+
         formatPriceToTwoDigits(price) {
-            return parseFloat(price.toFixed(2));
+            return Math.round(price);  
         }
     }
 };

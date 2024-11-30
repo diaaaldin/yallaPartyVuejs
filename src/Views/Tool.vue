@@ -4,6 +4,7 @@ import { ElLoading } from 'element-plus';
 
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
+import { pointManagmentOperation } from '@/config';
 
 export default {
     data() {
@@ -66,8 +67,9 @@ export default {
         ...mapActions("Tools", ["GetTool", "RentToolOperationWithPoint", "RentToolOperationWithPayment"]),
 
         mapRentDataFunc() {
-            const selectedProfitRate = this.getPointProfitData.find(x => x.id === 36);
-            const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === 31);
+
+            const selectedProfitRate = this.getPointProfitData.find(x => x.id === pointManagmentOperation.SiteProfitPercentage);
+            const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === pointManagmentOperation.howManyPointForDollar);
 
             if (selectedProfitRate) {
                 this.siteProfitRate = selectedProfitRate.value;
@@ -176,7 +178,6 @@ export default {
                     });
                 } else {
                     this.RentToolOperationWithPayment(this.rentData).then(Response => {
-
                     }).catch(error => {
                         this.$moshaToast(error.response.data.message, {
                             hideProgressBar: 'false',
@@ -257,13 +258,14 @@ export default {
             return new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: "USD",
-                //minimumFractionDigits: 0, // No decimals
-                //maximumFractionDigits: 0  // No decimals
+                minimumFractionDigits: 0, // No decimals
+                maximumFractionDigits: 0  // No decimals
             }).format(value);
         },
         formatPriceToTwoDigits(price) {
-            return parseFloat(price.toFixed(2));
+            return Math.round(price);  
         }
+       
     }
 };
 </script>
