@@ -69,6 +69,9 @@ initFunc() {
                         </div>
                    </div>
                </div>
+               <div v-if="!getEventsData || getEventsData === 0" class="alert alert-danger mt-3">
+                Your table is empty. Try adding to show some data.
+              </div>
         </section>
       </div>
 </div>

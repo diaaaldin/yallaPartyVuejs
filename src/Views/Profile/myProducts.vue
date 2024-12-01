@@ -182,24 +182,33 @@ export default {
                 <img :src="item.productImage" class="img-responsive rounded" alt="product image" height="80">
             </td>
             <td>
-                {{ item.statusName }}
-                <!-- <span v-if="item.ticketAllNum > item.ticketBookNum" class="availabe"> {{item.statusName}} </span>
-                <span v-else-if="item.ticketAllNum <= item.ticketBookNum" class="not-availabe">{{ item.statusName }}</span> -->
+              <span v-if="item.statusName == 'succeeded'"
+                  class="availabe">Delivered</span>
+              <span v-else-if="item.statusName == 'pending'"
+                  class="warning">{{ item.statusName }}</span>
+              <span v-else-if="item.statusName == 'canceled'"
+                  class="not-availabe">{{ item.statusName }}</span>
             </td>
 
             <td>
+
+            <!-- <a v-on:click="toProductFunc(item.id)">
+                <i class="fa fa-eye" ></i>
+              </a> -->
+
               <a v-on:click="selectItemForDelete(item.id)">
                 <i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#delete_order"></i>
               </a>
-              <a v-on:click="toProductFunc(item.id)">
-                <i class="fa fa-edit" ></i>
-              </a>
+             
             </td>
 
           </tr>
 
         </tbody>
       </table>
+      <div v-if="!getCustomerBuyProductsOrdersData || getCustomerBuyProductsOrdersData === 0" class="alert alert-danger mt-3">
+         Your table is empty. Try adding to show some data.
+      </div>
     </div>
   </div>
   <!-- end right side  -->

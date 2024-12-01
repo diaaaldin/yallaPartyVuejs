@@ -320,6 +320,10 @@ export default {
                     </div>
                 </div>
             </div>
+
+            <div v-if="!productsData || productsData === 0" class="alert alert-danger mt-3">
+                Your table is empty. Try adding to show some data.
+            </div>
         </div>
     </section>
 
