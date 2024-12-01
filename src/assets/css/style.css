@@ -1463,9 +1463,12 @@ margin: 10px 5px 0 0;
   }
   .profile .table > tbody > tr > td .fa-trash{
     background-color: #e50202cf;
-    margin-right: 5px;
+    margin-left: 5px;
   }
   .profile .table > tbody > tr > td .fa-pen-to-square{
+    background-color: var(--main-color);
+  }
+  .profile .table > tbody > tr > td .fa-eye{
     background-color: var(--main-color);
   }
 

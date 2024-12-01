@@ -782,6 +782,9 @@ export default {
 
         </tbody>
       </table>
+      <div v-if="!getOrdersData.orders.data || getOrdersData.orders.data === 0" class="alert alert-danger mt-3">
+         Your table is empty. Try adding to show some data.
+      </div>
     </div>
   </div>
   <!-- end right side  -->
