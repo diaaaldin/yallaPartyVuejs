@@ -556,6 +556,7 @@ export default {
                                 aria-label="Username" aria-describedby="basic-addon1" @input="validateEmail">
                         </div>
                         <p v-if="emailError" style="color: red">{{ emailError }}</p>
+
                         <label class=" label-form"> State </label>
                         <div class="input-group mb-3">
                             <select v-model="data.stateId" class="form-control" @change="fetchCities(data.stateId)">
