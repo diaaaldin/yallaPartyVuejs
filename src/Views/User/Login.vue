@@ -14,10 +14,10 @@ export default {
                 // Can be static or computed
                 title: 'Login | YallaParty',
                 meta: [
-                    {
-                    name: `description`,
-                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
-                    },
+                     {
+                     name: `description`,
+                     content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                     },
                     ],
                 
                 });
@@ -137,6 +137,7 @@ export default {
 					text: "",
 				});
 				this.GetNewPassword(this.newPasswordData).then(Response => {
+					console.log("new Password ",Response);
 					this.$moshaToast('We send new password to your email', {
 						hideProgressBar: 'false',
 						showIcon: 'true',
@@ -144,6 +145,7 @@ export default {
 						type: 'success',
 						timeout: 3000,
 					});
+					$('#forgot_password').modal('hide');
 					loading.close();
 				}).catch(error => {
 					this.$moshaToast(error.response.data.message, {

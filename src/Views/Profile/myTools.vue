@@ -138,16 +138,23 @@ export default {
       }
     },
 
-    toProductFunc() {
-        console.log("id :", id);
+    toProductFunc(id) {
       const selectedOrder = this.getCustomerRentToolsOrdersData.find(x => x.id === id);
       console.log("selectedOrder :", selectedOrder);
-
       if (selectedOrder) {
         this.data.id = selectedOrder.id;
         this.$router.push({ name: "tool", params: { slug: selectedOrder.toolSlug } });
         }
     },
+
+    formatCurrency(value) {
+			return new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: "USD",
+				//minimumFractionDigits: 0, // No decimals
+				//maximumFractionDigits: 0  // No decimals
+			}).format(value);
+		},
 
 
 
@@ -168,6 +175,7 @@ export default {
        
             <th scope="col">Tool name</th>
             <th scope="col">Rent price</th>
+            <th scope="col">Rent date</th>
             <th scope="col">Image</th>
             <th scope="col">Status</th>
             <th scope="col"></th>
@@ -179,7 +187,8 @@ export default {
             <!-- <td>{{ item.storeName }}</td> -->
             <td>{{ item.userName }}</td>
             <td>{{ item.toolName }}</td>
-            <td>{{ item.toolPrice }}</td>
+            <td>{{ formatCurrency(item.toolPrice) }}</td>
+            <td>{{ item.rentDate }}</td>
             <td>
                 <img :src="item.toolImage" class="img-responsive rounded" alt="tool image" height="80">
             </td>
@@ -194,7 +203,7 @@ export default {
                 <i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#delete_order"></i>
               </a>
               
-              <a v-on:click="toProductFunc(item.id)">
+              <a href="javascript:void(0)" v-on:click="toProductFunc(item.id)">
                 <i class="fa fa-edit" ></i>
               </a>
             </td>

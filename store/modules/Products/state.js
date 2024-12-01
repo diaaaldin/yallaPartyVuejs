@@ -1,6 +1,6 @@
 export default{
 
-    ProductData:null,
+    ProductData:{},
     LastProductsData:[],
     ProductsData:[],
     FavoritProductsData : [],

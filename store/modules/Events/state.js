@@ -1,7 +1,7 @@
 export default{
 
     EventsData:[],
-    EventData:null,
+    EventData:{},
     EventGuestData:[],
     
 }

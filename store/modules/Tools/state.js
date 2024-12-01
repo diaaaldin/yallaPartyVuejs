@@ -1,5 +1,5 @@
 export default{
-    ToolData:null,
+    ToolData:{},
     ToolsData:[],
     CustomerRentToolsOrdersData : [],
 }

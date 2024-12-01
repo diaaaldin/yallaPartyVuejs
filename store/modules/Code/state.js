@@ -1,7 +1,7 @@
 export default{
 
     CodesData:[],
-    CodeData:null,
+    CodeData:{},
 
     statesData:[],
 
