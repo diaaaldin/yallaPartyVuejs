@@ -389,7 +389,7 @@ export default {
         },
 
         clearData() {
-            this.data.id = 0,
+                this.data.id = 0,
                 this.data.orderType = 0,
                 this.data.name = "",
                 this.data.nickName = "",
