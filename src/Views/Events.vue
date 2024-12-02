@@ -101,7 +101,6 @@ export default {
                 text: "",
             });
             
-            console.log("this.dataSearch : ", this.dataSearch);
             this.GetEventsForShow(this.dataSearch).then(Response => {
 
                 Response.events.data.forEach(event => {
@@ -152,7 +151,7 @@ export default {
                     </div>
                 </div>
 
-                 <div v-if="moreDataShow" class="row justify-content-center see-more">
+                <div v-if="moreDataShow" class="row justify-content-center see-more">
                     <div class="col-6 col-lg-3">
                         <div class=" d-flex align-items-center justify-content-center mt-4 ">
                             <a href="javascript:void(0)" v-on:click="seeMoreFunc()" class="btn btn-light p-3  show-more-btn w-100">
@@ -168,6 +167,10 @@ export default {
                         </div>
                     </div>
                 </div> 
+
+                <div v-if="!events || events.length === 0" class="alert alert-danger mt-3">
+                     No data added yet.
+                </div>
 
             </div>
         </div>

@@ -87,12 +87,20 @@ export default {
         ...mapGetters("Tools", ["getToolsData"]),
         ...mapGetters("Users", ["getUserData"]),
 
+        userImage() {
+            const imageUrl = this.getUserData && this.getUserData.image
+                ? this.getUserData.image
+                : "/img/person1.jpg";
+            return imageUrl;
+        },
+
     },
     methods: {
         ...mapActions("Code", ["GetToolsSections"]),
         ...mapActions("Tools", ["GetTools"]),
         ...mapActions("Users", ["GetUserInfo"]),
 
+     
 
         initFunc() {
             const loading = ElLoading.service({
@@ -304,7 +312,9 @@ export default {
                 <!--    start left side list          -->
                 <div class="col-12 col-lg-3 h-100 left-side">
                     <div class="image">
-                        <img :src="getUserData.image" class="img-fluid hero-profile-campany" alt="profile pic">
+                        <!-- <img src="userImage" class="img-fluid hero-profile-campany" alt="profile pic"> -->
+                        <img :src="userImage"
+                        alt="profile-picture" class="img-fluid hero-profile-campany" >
                     </div>
 
                     <div class="" id="">

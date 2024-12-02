@@ -76,11 +76,11 @@ export default {
     computed: {
         ...mapGetters("Users", ["getProfileData"]),
 
+        
         userImage() {
             const imageUrl = this.getProfileData && this.getProfileData.image
                 ? this.getProfileData.image
                 : "/img/person1.jpg";
-            console.log("Computed image URL:", imageUrl);
             return imageUrl;
         }
     },
@@ -106,7 +106,6 @@ export default {
         },
 
         initFunc() {
-            console.log("initFunc userId : ", this.data.id);
             const loading = ElLoading.service({
                 lock: true,
                 background: 'rgba(0, 0, 0, 0.7)',
@@ -114,9 +113,7 @@ export default {
             });
 
             this.CustomerProfileInfo(this.data.email).then(Response => {
-                console.log("Response : ", Response);
                 this.setData(Response);
-                console.log("this.getProfileData : " , this.getProfileData);
                 loading.close();
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
@@ -135,7 +132,6 @@ export default {
             this.CustomerProfileInfo(this.data.email).then(Response => {
                 this.setData(Response);
 
-                console.log("this.getProfileData : ", this.getProfileData);
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
                     hideProgressBar: 'false',
@@ -392,7 +388,6 @@ export default {
 
                 if (city) {
                     const cityName = city[0]; // The city name is in the first column
-                    console.log("City Name:", cityName);
                     this.cityName = cityName;
                     return cityName;
                 } else {

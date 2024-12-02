@@ -24,7 +24,6 @@ export default {
             ? JSON.parse(localStorage.getItem("token"))
             : null;
         
-        console.log("this.dataSearch : " , exceptionIds, orderType, orderName, orderStatus, stateId, cityId, userId,email, page, pageSize);
 
         let config = {
             headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
@@ -47,7 +46,6 @@ export default {
     },
 
     CreateOrder(data) {
-        console.log("data : " , data);
         const responce = Api.post(`${END_POINT}/CreateOrder`, data);
         return responce;
     },

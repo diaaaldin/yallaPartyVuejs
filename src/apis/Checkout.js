@@ -12,16 +12,13 @@ export default {
         let config = {
             headers: {'Authorization': token, "Access-Control-Allow-Origin" : "*" },
         };
-        console.log("successTicket data : " , data);
         return Api.post(`${END_POINT}/successTicket`, data , config);
     },
     async CheckoutTicket(data) {
         try {
             // Send the POST request to the API endpoint
-            console.log("CheckoutTicket data : ",data);
             const response = await Api.post(`${END_POINT}/CheckoutTicket`, data);
            
-            console.log(response);
             // Return the API response data
             return response;
         } catch (error) {

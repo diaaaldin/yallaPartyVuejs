@@ -9,15 +9,15 @@ export const socialUrlData = {
   };
   
   export const Urls = {
-    dashboard: 'http://dash.yallaparty.net',
-    site: 'http://yallaparty.net',
+    dashboard: 'https://dash.yallaparty.net',
+    site: 'https://yallaparty.net',
 
-    login: 'http://dash.yallaparty.net/login',
-    addEvent: 'http://dash.yallaparty.net/addcompanyevent',
-    addProduct: 'http://dash.yallaparty.net/store_addproduct',
-    storeSignup: 'http://dash.yallaparty.net/storesignup',
-    companySignup: 'http://dash.yallaparty.net/companysignup',
-    partnerSignup: 'http://dash.yallaparty.net/partnersignup',
+    login: 'https://dash.yallaparty.net/login',
+    addEvent: 'https://dash.yallaparty.net/addcompanyevent',
+    addProduct: 'https://dash.yallaparty.net/store_addproduct',
+    storeSignup: 'https://dash.yallaparty.net/storesignup',
+    companySignup: 'https://dash.yallaparty.net/companysignup',
+    partnerSignup: 'https://dash.yallaparty.net/partnersignup',
   
 };
   

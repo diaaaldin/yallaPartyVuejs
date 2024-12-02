@@ -65,7 +65,6 @@ export default {
         },
 
         async fetchSearchCities(stateId) {
-            console.log("Fetching cities for stateId:", stateId);
             try {
                 const response = await axios.get(
                     `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`, {

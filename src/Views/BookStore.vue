@@ -267,8 +267,9 @@ export default {
                     </div>
                 </div>
             </div>
-            <div v-if="!toolsData || toolsData === 0" class="alert alert-danger mt-3">
-                Your table is empty. Try adding to show some data.
+            
+            <div v-if="!toolsData || toolsData.length === 0" class="alert alert-danger mt-3">
+                No data added yet.
             </div>
         </div>
     </section>

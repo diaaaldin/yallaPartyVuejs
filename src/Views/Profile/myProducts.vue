@@ -128,9 +128,7 @@ export default {
     },
 
     selectItemForDelete(id) {
-      console.log("id :", id);
       const selectedOrder = this.getCustomerBuyProductsOrdersData.find(x => x.id === id);
-      console.log("selectedOrder :", selectedOrder);
 
       if (selectedOrder) {
         this.data.id = selectedOrder.id;
@@ -138,9 +136,7 @@ export default {
     },
 
     toProductFunc(id) {
-      console.log("id :", id);
       const selectedOrder = this.getCustomerBuyProductsOrdersData.find(x => x.id === id);
-      console.log("selectedOrder :", selectedOrder);
 
       if (selectedOrder) {
         this.data.id = selectedOrder.id;
@@ -149,6 +145,14 @@ export default {
 
     },
 
+    formatCurrency(value) {
+			return new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: "USD",
+				//minimumFractionDigits: 0, // No decimals
+				//maximumFractionDigits: 0  // No decimals
+			}).format(value);
+		},
 
 
 
@@ -177,7 +181,7 @@ export default {
             <td>{{ index + 1 }}</td>
             <td>{{ item.storeName }}</td>
             <td>{{ item.productName }}</td>
-            <td>{{ item.productPrice }}</td>
+            <td>{{ formatCurrency(item.productPrice) }}</td>
             <td>
                 <img :src="item.productImage" class="img-responsive rounded" alt="product image" height="80">
             </td>
@@ -206,7 +210,7 @@ export default {
 
         </tbody>
       </table>
-      <div v-if="!getCustomerBuyProductsOrdersData || getCustomerBuyProductsOrdersData === 0" class="alert alert-danger mt-3">
+      <div v-if="!getCustomerBuyProductsOrdersData || getCustomerBuyProductsOrdersData.length === 0" class="alert alert-danger mt-3">
          Your table is empty. Try adding to show some data.
       </div>
     </div>

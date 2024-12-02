@@ -151,7 +151,6 @@ export default {
           withCredentials: false,
         });
         this.cities = response.data;
-        console.log(this.cities);
       } catch (error) {
         console.error("Error fetching cities:", error);
       }
@@ -197,7 +196,6 @@ export default {
       this.data.childrenServices = this.convertSelectedChildrenServicesToString();
 
       this.saveAnswersFunc();
-      console.log("this.data : ", this.data);
       if (this.checkValidation()) {
         const loading = ElLoading.service({
           lock: true,
@@ -206,7 +204,6 @@ export default {
         });
 
         this.UpdateOrder(this.data).then(Response => {
-          console.log(Response);
           this.$moshaToast('Update order success', {
             hideProgressBar: 'false',
             showIcon: 'true',
@@ -513,12 +510,7 @@ export default {
         }
       }
 
-      // Optional: Log the results to the console
-      console.log("Wedding Questions:", this.weddingQuestion);
-      console.log("Engagement Questions:", this.engagementQuestion);
-      console.log("Birthday Questions:", this.birthdayQuestion);
-      console.log("Graduation Questions:", this.graduationQuestion);
-      console.log("Special Questions:", this.specialQuestion);
+
     },
 
     saveAnswersFunc() {
@@ -541,7 +533,6 @@ export default {
         this.data.questionData.push(questionEntry);
       }
 
-      console.log(this.data.questionData); // Display the collected data
     },
 
     handleServiceChange() {
@@ -697,9 +688,7 @@ export default {
     },
 
     selectItemForDelete(id) {
-      console.log("id :", id);
       const selectedOrder = this.getOrdersData.orders.data.find(x => x.id === id);
-      console.log("selectedOrder :", selectedOrder);
 
       if (selectedOrder) {
         this.data.id = selectedOrder.id;
@@ -782,7 +771,7 @@ export default {
 
         </tbody>
       </table>
-      <div v-if="!getOrdersData.orders.data || getOrdersData.orders.data === 0" class="alert alert-danger mt-3">
+      <div v-if="!getOrdersData.orders.data || getOrdersData.orders.data.length === 0" class="alert alert-danger mt-3">
          Your table is empty. Try adding to show some data.
       </div>
     </div>

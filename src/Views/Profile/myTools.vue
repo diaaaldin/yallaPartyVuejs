@@ -129,9 +129,7 @@ export default {
     },
 
     selectItemForDelete(id) {
-      console.log("id :", id);
       const selectedOrder = this.getCustomerRentToolsOrdersData.find(x => x.id === id);
-      console.log("selectedOrder :", selectedOrder);
 
       if (selectedOrder) {
         this.data.id = selectedOrder.id;
@@ -140,11 +138,10 @@ export default {
 
     toProductFunc(id) {
       const selectedOrder = this.getCustomerRentToolsOrdersData.find(x => x.id === id);
-      console.log("selectedOrder :", selectedOrder);
       if (selectedOrder) {
         this.data.id = selectedOrder.id;
         this.$router.push({ name: "tool", params: { slug: selectedOrder.toolSlug } });
-        }
+      }
     },
 
     formatCurrency(value) {
@@ -202,12 +199,11 @@ export default {
             </td>
 
             <td>
-              <!-- <a>
+            
+               <!-- <a href="javascript:void(0)" v-on:click="toProductFunc(item.id)">
                 <i class="fa fa-eye" ></i>
-              </a> -->
-              <!-- <a v-on:click="toProductFunc(item.id)">
-                <i class="fa fa-eye" ></i>
-              </a> -->
+              </a>  -->
+            
               <a v-on:click="selectItemForDelete(item.id)">
                 <i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#delete_order"></i>
               </a>
@@ -217,7 +213,7 @@ export default {
 
         </tbody>
       </table>
-      <div v-if="!getCustomerRentToolsOrdersData || getCustomerRentToolsOrdersData === 0" class="alert alert-danger mt-3">
+      <div v-if="!getCustomerRentToolsOrdersData || getCustomerRentToolsOrdersData.length === 0" class="alert alert-danger mt-3">
          Your table is empty. Try adding to show some data.
       </div>
     </div>

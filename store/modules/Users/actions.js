@@ -1,11 +1,9 @@
 import User from "@/apis/Users";
 
 export const GetLogin = ({ commit, dispatch }, data) => {
-    console.log("data : ", data);
     return User.Login(data).then(function (response) {
 
         if (response.data.data.id > 0) {
-            console.log("data : ", response.data.data);
             commit('USER_LOGIN_DATA', response.data.data);
        
             if (response.data.data.typeName == "Customer") {
@@ -45,7 +43,6 @@ export const GetLogin = ({ commit, dispatch }, data) => {
 
 export const GetAdminUsers = ({ commit, dispatch }, data) => {
     return User.GetAdminUsers(data.name, data.page, data.pageSize).then(function (response) {
-        console.log("data : ", response.data.data);
         commit('SET_ADMIN_USERS_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {
@@ -89,9 +86,7 @@ export const GetStores = ({ commit, dispatch }, data) => {
 /////////////
 
 export const CustomerProfileInfo = ({ commit, dispatch }, userId) => {
-    console.log("action userId : ", userId);
     return User.CustomerProfileInfo(userId).then(function (response) {
-        console.log("data : ", response.data.data);
         commit('SET_PROFILE_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {

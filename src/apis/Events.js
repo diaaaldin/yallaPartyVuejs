@@ -108,7 +108,6 @@ export default {
             headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
         };
 
-        console.log("update data : ",data);
         const responce = Api.put(`${END_POINT}/UpdateEvent`, data, config);
         return responce;
     },

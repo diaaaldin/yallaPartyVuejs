@@ -40,7 +40,6 @@ initFunc() {
         text: "",
     });
     this.GetCustomerEventsGuests().then(Response => {
-        console.log("my event data : ",Response);
         loading.close();        
     }).catch(error => {
         this.$moshaToast(error.response.data.message, {
@@ -69,7 +68,7 @@ initFunc() {
                         </div>
                    </div>
                </div>
-               <div v-if="!getEventsData || getEventsData === 0" class="alert alert-danger mt-3">
+               <div v-if="!getEventsData || getEventsData.length === 0" class="alert alert-danger mt-3">
                 Your table is empty. Try adding to show some data.
               </div>
         </section>

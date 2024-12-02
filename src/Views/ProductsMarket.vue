@@ -86,13 +86,20 @@ export default {
         ...mapGetters("Code", ["getToolsSectionsData"]),
         ...mapGetters("Products", ["getProductsData"]),
         ...mapGetters("Users", ["getCompanyData"]),
-
+       
+        userImage() {
+            const imageUrl = this.getCompanyData && this.getCompanyData.image
+                ? this.getCompanyData.image
+                : "/img/person1.jpg";
+            return imageUrl;
+        },
     },
     methods: {
         ...mapActions("Code", ["GetToolsSections"]),
         ...mapActions("Products", ["GetProducts"]),
         ...mapActions("Users", ["GetCompanyInfo"]),
 
+       
 
         initFunc() {
             const loading = ElLoading.service({
@@ -303,8 +310,12 @@ export default {
             <div class="row mt-5 h-100 ">
                 <!--    start left side list          -->
                 <div class="col-12 col-lg-3 h-100 left-side">
+                   
                     <div class="image">
-                        <img :src="getCompanyData.image" class="img-fluid hero-profile-campany" alt="profile pic">
+                        <!-- <img :src="userImage" class="img-fluid hero-profile-campany" alt="profile pic" >
+                         -->
+                        <img :src="userImage"
+                        alt="profile-picture" class="img-fluid hero-profile-campany" >
                     </div>
 
                     <div class="" id="">

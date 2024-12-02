@@ -25,10 +25,8 @@ methods:{
 					route: this.$route.path
 				};
 				// Log the visitData for debugging
-				console.log("visitData:", visitData);
 				// If needed, send the data to your backend
 				this.RecordVisit(visitData).then(Response => {
-				    console.log(Response);
 				}).catch(error => {
 				    console.log(error.response.data.message);
 				});

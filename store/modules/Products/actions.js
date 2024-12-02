@@ -63,11 +63,9 @@ function checkout(pubKey, sessionId) {
 
 export const BuyProductOperationWithPayment = async ({ commit, dispatch },data) => {
         try {
-            console.log("data : ",data);
             const ProductChickout = await Checkout.CheckoutProduct(data.productData);
             data.data.sessionId = ProductChickout.data.data.result.sessionId;
 
-            console.log("Saving data:", data);
             localStorage.setItem('BuyOperationProductData', JSON.stringify(data));
             const checkoutRes = await checkout(ProductChickout.data.data.result.pubKey, ProductChickout.data.data.result.sessionId);
            // console.log("checkoutRes : ", checkoutRes);
