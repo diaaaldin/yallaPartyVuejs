@@ -508,8 +508,8 @@ export default {
                                 </a></li>
                                 <li><a :href="socialUrls.instagram"><i class="fab fa-instagram"
                                             aria-hidden="true"></i></a></li>
-                                <li><a :href="socialUrls.linkedIn"><i class="fab fa-linkedin"
-                                            aria-hidden="true"></i></a></li>
+                                <!-- <li><a :href="socialUrls.linkedIn"><i class="fab fa-linkedin"
+                                            aria-hidden="true"></i></a></li> -->
                             </ul>
                         </div>
                     </div>
