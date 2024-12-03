@@ -336,7 +336,7 @@ export default {
     </div>
     <section class="details-product mt-5">
         <div class="container">
-            <!-- <p class="title">Name product</p> -->
+
             <div class="row">
                 <div class="col-lg-8">
                     <div class="col-12 col-lg-12">
@@ -424,22 +424,7 @@ export default {
                 </div>
                 <div class="modal-body">
                     <form action="" method="">
-                        <!-- <label class=" label-form"> Name </label>
-                        <div class="input-group mb-3">
-                            <input v-model="buyData.data.name" type="text" class="form-control"
-                                placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <label class=" label-form"> Mobile </label>
-                        <div class="input-group mb-3">
-                            <input v-model="buyData.data.mobile" id="phone" type="tel" ref="phoneInput"
-                                class="form-control" maxlength="10" placeholder="(201) 555-0123" aria-label=""
-                                aria-describedby="basic-addon1" required>
-                        </div>
-                        <label class=" label-form"> Email </label>
-                        <div class="input-group mb-3">
-                            <input v-model="buyData.data.email" type="email" class="form-control"
-                                placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
-                        </div> -->
+                       
                         <label class=" label-form"> Payment Method </label>
                         <div class="input-group mb-3">
                             <div class="mb-3">

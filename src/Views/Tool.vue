@@ -284,7 +284,7 @@ export default {
     </div>
     <section class="details-product mt-5">
         <div class="container">
-            <!-- <p class="title">Name product</p> -->
+
             <div class="row">
                 <div class="col-lg-8">
                     <div class="col-12 col-lg-12">
