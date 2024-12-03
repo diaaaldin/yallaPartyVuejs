@@ -8,7 +8,6 @@ export default {
     data() {
         return {
 
-         // buyTicketData : localStorage.getItem('BuyOperationTicketData'),
 
         }
     },
@@ -99,7 +98,7 @@ export default {
           <p>We've sent an order confirmation email with all the details.</p>
         </div> -->
         <div class="success-buttons">
-          <button type="button" v-on:click="goBackToStoreFunc()" class="btn btn-primary">Back to Store</button>
+          <button type="button" v-on:click="goBackToProductFunc()" class="btn btn-primary">Back to product</button>
         </div>
       </div>
     </div>

@@ -86,7 +86,6 @@ export default {
                 });
 
                 this.CustomerSignUp(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast('Registration Successful!', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -107,7 +106,6 @@ export default {
                     localStorage.setItem('userTypeId', JSON.parse(JSON.stringify(Response.userTypeId)));
                     localStorage.setItem('typeName', JSON.parse(JSON.stringify(Response.typeName)));
 
-                    console.log("Register data : ", Response);
                     loading.close();
                     this.$router.push({ name: 'main' });
 
@@ -290,7 +288,6 @@ export default {
                 });
                 // API returns the first element as headers, so we slice it off
                 this.states = response.data;
-                console.log("this.states : ", this.states);
             } catch (error) {
                 console.error("Error fetching states:", error);
             }
@@ -304,7 +301,6 @@ export default {
                     withCredentials: false,
                 });
                 this.cities = response.data;
-                console.log(this.cities);
             } catch (error) {
                 console.error("Error fetching cities:", error);
             }

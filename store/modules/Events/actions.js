@@ -53,13 +53,11 @@ function checkout(pubKey, sessionId) {
 }
 
 export const BuyTicketOperation = async ({ commit, dispatch },data) => {
-    console.log("buy data :" ,data);
     if(data.paymentMethod == 2){
         try {
             const tecketChickout = await Checkout.CheckoutTicket(data.productData);
             data.ticketData.sessionId = tecketChickout.data.data.result.sessionId;
 
-            console.log("Saving data:", data);
             localStorage.setItem('BuyOperationTicketData', JSON.stringify(data));
             const checkoutRes = await checkout(tecketChickout.data.data.result.pubKey, tecketChickout.data.data.result.sessionId);
            // console.log("checkoutRes : ", checkoutRes);

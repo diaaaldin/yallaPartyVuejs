@@ -54,7 +54,6 @@ export default {
                 });
 
                 this.ChangePassword(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast('change password success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',

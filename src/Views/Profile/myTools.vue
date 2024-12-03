@@ -199,11 +199,9 @@ export default {
             </td>
 
             <td>
-            
                <!-- <a href="javascript:void(0)" v-on:click="toProductFunc(item.id)">
                 <i class="fa fa-eye" ></i>
               </a>  -->
-            
               <a v-on:click="selectItemForDelete(item.id)">
                 <i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#delete_order"></i>
               </a>

@@ -321,7 +321,7 @@ export default {
                 </div>
             </div>
 
-            <div v-if="!productsData || productsData === 0" class="alert alert-danger mt-3">
+            <div v-if="!productsData || productsData.length === 0" class="alert alert-danger mt-3">
                 No data added yet.
             </div>
         </div>

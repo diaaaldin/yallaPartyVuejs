@@ -5,6 +5,7 @@ import { ElLoading } from 'element-plus';
 
 import pageNav from '@/components/navbar.vue';
 import pageFooter from '@/components/footer.vue';
+import { pointManagmentOperation } from '@/config';
 
 export default {
 
@@ -109,8 +110,9 @@ export default {
         },
         
         mapBuyDataFunc() {
-            const selectedProfitRate = this.getPointProfitData.find(x => x.id === 36);
-            const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === 31);
+            
+            const selectedProfitRate = this.getPointProfitData.find(x => x.id === pointManagmentOperation.SiteProfitPercentage);
+            const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === pointManagmentOperation.howManyPointForDollar);
 
             if (selectedProfitRate) {
                 this.siteProfitRate = selectedProfitRate.value;
@@ -169,7 +171,6 @@ export default {
             const lastSection = path.split('/').pop(); // Get the last section of the URL
             const idMatch = lastSection.match(/^\d+/); // Match numbers at the start of the string
             const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
-            console.log("id : ", id);
 
             this.GetProduct(id).then(Response => {
                 loading.close();
@@ -208,7 +209,6 @@ export default {
         },
 
         buyFunc() {
-            console.log("this.buyData : ", this.buyData);
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
                     lock: true,

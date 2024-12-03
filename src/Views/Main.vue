@@ -98,7 +98,6 @@ export default {
         });
 
         this.organizeQuestions();
-        console.log("this.getChildrenServicesData : ", this.getChildrenServicesData);
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
@@ -197,7 +196,6 @@ export default {
                     withCredentials: false,
                 });
                 this.cities = response.data;
-                console.log(this.cities);
             } catch (error) {
                 console.error("Error fetching cities:", error);
             }
@@ -219,7 +217,6 @@ export default {
                 });
 
                 this.CreateOrder(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast('Send order success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -260,7 +257,6 @@ export default {
                 });
 
                 this.CreateOrder(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast('Send order success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -303,7 +299,6 @@ export default {
                 });
 
                 this.CreateOrder(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast('Send order success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -345,7 +340,6 @@ export default {
                 });
 
                 this.CreateOrder(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast('Send order success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -387,7 +381,6 @@ export default {
                 });
 
                 this.CreateOrder(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast('Send order success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -415,7 +408,6 @@ export default {
             this.data.orderType = 23;
             this.saveJobApplicationAnswers();
 
-            console.log("data : ", this.data);
             if (this.checkJobApplicationValidation()) {
                 const loading = ElLoading.service({
                     lock: true,
@@ -424,7 +416,6 @@ export default {
                 });
 
                 this.CreateOrder(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast('Send order success', {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -651,7 +642,6 @@ export default {
                 this.data.questionData.push(questionEntry);
             }
 
-            console.log(this.data.questionData); // Display the collected data
         },
 
         saveEngagementAnswers() {
@@ -673,7 +663,6 @@ export default {
                 this.data.questionData.push(questionEntry);
             }
 
-            console.log(this.data.questionData); // Display the collected data
         },
 
         saveBirthdayAnswers() {
@@ -694,7 +683,6 @@ export default {
                 this.data.questionData.push(questionEntry);
             }
 
-            console.log(this.data.questionData); // Display the collected data
         },
 
         saveGraduationAnswers() {
@@ -714,7 +702,6 @@ export default {
                 this.data.questionData.push(questionEntry);
             }
 
-            console.log(this.data.questionData); // Display the collected data
         },
 
         saveSpecialAnswers() {
@@ -735,7 +722,6 @@ export default {
                 this.data.questionData.push(questionEntry);
             }
 
-            console.log(this.data.questionData); // Display the collected data
         },
         saveJobApplicationAnswers() {
             // Clear the previous questionData
@@ -755,7 +741,6 @@ export default {
                 this.data.questionData.push(questionEntry);
             }
 
-            console.log(this.data.questionData); // Display the collected data
         },
 
         handleServiceChange() {

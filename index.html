@@ -50,65 +50,11 @@
   
   <script src="https://js.stripe.com/v3/"></script>
 
-
   <script>
     Fancybox.bind('#gallery a', {
       groupAll: true,
     });
   </script>
-
-<!-- 
-  <script>
-    const togglePassword = document.querySelectorAll('.togglePassword');
-    const password = document.querySelectorAll('.id_password');
-    for (const eye of togglePassword ) {
-      for (const input of password){
-  
-      eye.addEventListener('click', function (e) {
-        // toggle the type attribute
-        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-        input.setAttribute('type', type);
-        // toggle the eye slash icon
-        this.classList.toggle('fa-eye-slash');
-      })}}
-  </script> -->
-  <!-- <script>
-    const input = document.querySelector("#phone");
-    window.intlTelInput(input, {
-      initialCountry: "us",
-      strictMode: true,
-      utilsScript: "/intl-tel-input/js/utils.js?1727952657388"
-    });
-  </script> -->
-<!-- <script>
-  document.getElementById('otherServicesCheckbox').addEventListener('change', function() {
-    var textarea = document.getElementById('otherServicesTextarea');
-    
-    // Show or hide the textarea based on checkbox state
-    if (this.checked) {
-      textarea.style.display = 'block'; // Show textarea
-    } else {
-      textarea.style.display = 'none'; // Hide textarea
-    }
-  });
-</script> -->
-<!-- <script>
-  // Function to handle radio button change
-  function handleBookingForChange() {
-    var radioMe = document.getElementById('radioMe');
-    var radioSomeoneElse = document.getElementById('radioSomeoneElse');
-    var textarea = document.getElementById('someoneElseTextarea');
-    // Show textarea if "Someone else" is selected, otherwise hide it
-    if (radioSomeoneElse.checked) {
-      textarea.style.display = 'block'; // Show textarea
-    } else {
-      textarea.style.display = 'none'; // Hide textarea
-    }
-  }
-  // Add event listeners to both radio buttons
-  document.getElementById('radioMe').addEventListener('change', handleBookingForChange);
-  document.getElementById('radioSomeoneElse').addEventListener('change', handleBookingForChange);
-</script> -->
 
   <script type="module" src="/src/main.js"></script>
 </body>

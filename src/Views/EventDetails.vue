@@ -90,6 +90,7 @@ export default {
         if (this.getEventData.stateId) {
             await this.fetchSearchCities(this.getEventData.stateId);
         }
+
     },
     watch: {
         // Watch for changes in the event prop's stateId
@@ -141,7 +142,7 @@ export default {
             if (!dateTime) return '';
             return new Date(dateTime).toISOString().split('T')[0];
         },
-
+        
         formatTime(dateTime) {
             if (!dateTime) return '';
             const date = new Date(dateTime);
@@ -162,7 +163,6 @@ export default {
             const idMatch = lastSection.match(/^\d+/); // Match numbers at the start of the string
             const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
             
-            console.log("id : ", id);
             this.GetEvent(id).then(Response => {
                 loading.close();                
             }).catch(error => {
@@ -199,16 +199,13 @@ export default {
             });
         },
 
-
         // Fetch cities for the given stateId
         async fetchSearchCities(stateId) {
-            console.log("Fetching cities for stateId:", stateId);
             try {
                 const response = await axios.get(
                     `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`, {
                     withCredentials: false
                 });
-                console.log("Cities data fetched:", response.data);  // Log the raw data to check structure
                 this.cities = response.data;
             } catch (error) {
                 console.error("Error fetching cities:", error);
@@ -218,8 +215,6 @@ export default {
 
         // Get city name by city ID (index 2 in the data array)
         getCityName(cityId) {
-            console.log("City ID in getCityName:", cityId);  // Log the ID to debug
-            console.log("Cites:", this.cities);  // Log the ID to debug
             const selectedCity = this.cities.find(x => x[2] === cityId);  // Assuming cityId is at index 2
             return selectedCity ? selectedCity[0] : "City not found";  // Return city name or a default message
         },
@@ -227,6 +222,7 @@ export default {
         selectTicketToBuy(id) {
             this.clearData();
 
+            console.log(pointManagmentOperation.SiteProfitPercentage);
             const selectedProfitRate = this.getPointProfitData.find(x => x.id === pointManagmentOperation.SiteProfitPercentage);
             const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === pointManagmentOperation.howManyPointForDollar);
 
@@ -245,6 +241,7 @@ export default {
 
                 this.buyTicketData.ticketData.ticketId = selectedTicket.id;
                 this.finalProductPricePoint = Math.ceil(this.pointsForDoller * this.selectedTicket.price);
+                
                 this.finalProductPrice = this.formatPriceToTwoDigits(selectedTicket.price + (selectedTicket.price * (this.siteProfitRate / 100)));
                 this.buyTicketData.ticketData.price = this.finalProductPrice;
 
@@ -323,9 +320,7 @@ export default {
         },
 
         selectItemForDelete(id) {
-            console.log("id :", id);
             const selectedOrder = this.getOrdersData.orders.data.find(x => x.id === id);
-            console.log("selectedOrder :", selectedOrder);
 
             if (selectedOrder) {
                 this.data.id = selectedOrder.id;

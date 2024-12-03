@@ -65,39 +65,52 @@ export default {
                 background: 'rgba(0, 0, 0, 0.7)',
                 text: "",
             });
-            this.ToggleProductInBasket(this.product.id).then(Response => {
-                if (Response.isInBasket) {
-                    this.$moshaToast('Added to favourites', {
-                        hideProgressBar: 'false',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'success',
-                        timeout: 3000,
-                    });
-                    this.isFilled = true;
-                } else {
-                    this.$moshaToast('Removed from favourites', {
-                        hideProgressBar: 'false',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'danger',
-                        timeout: 3000,
-                    });
-                    this.isFilled = false;
-                }
+            let token =  localStorage.getItem("token");
+            if (token) {
+                this.ToggleProductInBasket(this.product.id).then(Response => {
+                    if (Response.isInBasket) {
+                        this.$moshaToast('Added to favourites', {
+                            hideProgressBar: 'false',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'success',
+                            timeout: 3000,
+                        });
+                        this.isFilled = true;
+                    } else {
+                        this.$moshaToast('Removed from favourites', {
+                            hideProgressBar: 'false',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'danger',
+                            timeout: 3000,
+                        });
+                        this.isFilled = false;
+                    }
 
-                loading.close();
-            }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
+                    loading.close();
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
                 });
-                loading.close();
-            });
+            }else{
+                this.$moshaToast("login first", {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+            }
         },
 
         toProductFunc() {

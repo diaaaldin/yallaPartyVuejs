@@ -1,7 +1,7 @@
 export const socialUrlData = {
-    facebook: 'https://www.facebook.com',
-    instagram: 'https://www.instagram.com',
-    twitter: 'https://twitter.com',
+    facebook: 'https://www.facebook.com/YallaPartyUS',
+    instagram: 'https://www.instagram.com/yallapartyus',
+    twitter: 'https://x.com/Yallapartyus',
     linkedIn: 'https://www.linkedin.com',
     snapchat: 'https://www.snapchat.com',
     tiktok: 'https://www.tiktok.com',

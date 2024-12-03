@@ -130,7 +130,6 @@ export default {
             const lastSection = path.split('/').pop(); // Get the last section of the URL
             const idMatch = lastSection.match(/^\d+/); // Match numbers at the start of the string
             const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
-            console.log("id : ", id);
 
             this.GetTool(id).then(Response => {
                 loading.close();

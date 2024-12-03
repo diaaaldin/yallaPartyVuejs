@@ -74,7 +74,6 @@ export default {
 						timeout: 3000,
 					});
 					loading.close();
-					console.log("login responce : ", Response);
 					if (Response.typeName == "Customer") {
 						this.$router.push({ name: 'main' });
 					}
@@ -137,7 +136,6 @@ export default {
 					text: "",
 				});
 				this.GetNewPassword(this.newPasswordData).then(Response => {
-					console.log("new Password ",Response);
 					this.$moshaToast('We send new password to your email', {
 						hideProgressBar: 'false',
 						showIcon: 'true',
@@ -179,7 +177,6 @@ export default {
 
 		togglePasswordVisibility() {
 			this.isPasswordVisible = !this.isPasswordVisible;
-			console.log("this.isPasswordVisible : " , this.isPasswordVisible);
 		},
 	},
 }
@@ -222,8 +219,10 @@ export default {
 											v-model="user.password" class="form-control my-3 py-3 gray_text gray-inp"
 											autocomplete="current-password" placeholder="password"
 											required @input="console.log('Current input type:', $event.target.type)" />
-											<span @click="togglePasswordVisibility" style="cursor: pointer;">
-												<i :class="isPasswordVisible ? 'far fa-eye-slash' : 'far fa-eye'"></i>
+											<span  @click="togglePasswordVisibility" style="cursor: pointer;">
+												<!-- <i  class="far fa-eye-slash"></i> -->
+												<i  class="far fa-eye"></i>
+												<!-- <i :class="isPasswordVisible ? 'far fa-eye-slash' : 'far fa-eye'"></i> -->
 											</span>
 										</div>
 									

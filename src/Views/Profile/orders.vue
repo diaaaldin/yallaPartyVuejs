@@ -759,11 +759,13 @@ export default {
             </td>
 
             <td>
-              <a v-on:click="selectItemForDelete(item.id)">
-                <i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#delete_order"></i>
-              </a>
+              
               <a v-on:click="selectItem(item.id)">
                 <i class="fa fa-edit " data-bs-toggle="modal" data-bs-target="#Edit_order"></i>
+              </a>
+
+              <a v-on:click="selectItemForDelete(item.id)">
+                <i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#delete_order"></i>
               </a>
             </td>
 
@@ -825,7 +827,7 @@ export default {
             </div>
             <label class=" label-form"> Email </label>
             <div class="input-group mb-3">
-              <input v-model="data.email" type="text" class="form-control" placeholder="Email" aria-label="Username"
+              <input disabled v-model="data.email" type="text" class="form-control" placeholder="Email" aria-label="Username"
                 aria-describedby="basic-addon1">
             </div>
             <label class=" label-form"> State </label>

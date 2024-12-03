@@ -46,7 +46,6 @@ function checkout(pubKey, sessionId) {
 
 export const RentToolOperationWithPayment = async ({ commit, dispatch },data) => {
         try {
-            console.log("data.productData : " , data.productData);
             const ToolChickout = await Checkout.CheckoutTool(data.productData);
             data.data.sessionId = ToolChickout.data.data.result.sessionId;
             
