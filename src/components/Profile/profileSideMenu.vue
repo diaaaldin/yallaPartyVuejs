@@ -98,10 +98,10 @@ export default {
                     fill="#B5BEC8" />
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M9 10C9.55228 10 10 9.55228 10 9C10 8.44772 9.55228 8 9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10ZM13 8C12.4477 8 12 8.44772 12 9C12 9.55228 12.4477 10 13 10H15C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8H13ZM13 12C12.4477 12 12 12.4477 12 13C12 13.5523 12.4477 14 13 14H15C15.5523 14 16 13.5523 16 13C16 12.4477 15.5523 12 15 12H13ZM12 17C12 16.4477 12.4477 16 13 16H15C15.5523 16 16 16.4477 16 17C16 17.5523 15.5523 18 15 18H13C12.4477 18 12 17.5523 12 17ZM10 13C10 13.5523 9.55228 14 9 14C8.44772 14 8 13.5523 8 13C8 12.4477 8.44772 12 9 12C9.55228 12 10 12.4477 10 13ZM9 18C9.55228 18 10 17.5523 10 17C10 16.4477 9.55228 16 9 16C8.44772 16 8 16.4477 8 17C8 17.5523 8.44772 18 9 18Z"
-                    fill="black" />
+                    fill="#e5008f" />
                   <path
                     d="M9 3C9 2.44772 9.44772 2 10 2H14C14.5523 2 15 2.44772 15 3V4C15 4.55228 14.5523 5 14 5H10C9.44772 5 9 4.55228 9 4V3Z"
-                    fill="black" />
+                    fill="#e5008f" />
                 </svg>
                 <router-link to="/profile" class="list_link ms-2"> My Profile </router-link>
               </div>
@@ -121,10 +121,23 @@ export default {
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 448 512">
-                  <path
-                    d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48L0 160l0-48C0 85.5 21.5 64 48 64l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm64 80l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 400l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z" />
-                </svg>
+                <svg fill="#000000" width="20" height="20" viewBox="0 0 24 24" id="date-check" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+
+                      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+
+                      <g id="SVGRepo_iconCarrier">
+
+                      <path id="primary" d="M21,7H3A1,1,0,0,0,2,8V20a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2V8A1,1,0,0,0,21,7Z" style="fill: #ffa5dd;"/>
+
+                      <path id="secondary" d="M22,6V9H2V6A2,2,0,0,1,4,4H20A2,2,0,0,1,22,6ZM11.71,17.71l4-4a1,1,0,0,0-1.42-1.42L11,15.59l-1.29-1.3a1,1,0,0,0-1.42,1.42l2,2a1,1,0,0,0,1.42,0Z" style="fill: #e5008f;"/>
+
+                      <path id="primary-2" data-name="primary" d="M16,7a1,1,0,0,1-1-1V3a1,1,0,0,1,2,0V6A1,1,0,0,1,16,7ZM9,6V3A1,1,0,0,0,7,3V6A1,1,0,0,0,9,6Z" style="fill: #ffa5dd;"/>
+
+                      </g>
+
+                      </svg>
                 <router-link to="/myevents" class="list_link ms-2"> My Events </router-link>
               </div>
             </div>
@@ -144,10 +157,14 @@ export default {
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 448 512">
-                  <path
-                    d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48L0 160l0-48C0 85.5 21.5 64 48 64l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm64 80l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 400l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z" />
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
+
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <g id="SVGRepo_iconCarrier"> <path d="M15.5777 3.38197L17.5777 4.43152C19.7294 5.56066 20.8052 6.12523 21.4026 7.13974C22 8.15425 22 9.41667 22 11.9415V12.0585C22 14.5833 22 15.8458 21.4026 16.8603C20.8052 17.8748 19.7294 18.4393 17.5777 19.5685L15.5777 20.618C13.8221 21.5393 12.9443 22 12 22C11.0557 22 10.1779 21.5393 8.42229 20.618L6.42229 19.5685C4.27063 18.4393 3.19479 17.8748 2.5974 16.8603C2 15.8458 2 14.5833 2 12.0585V11.9415C2 9.41667 2 8.15425 2.5974 7.13974C3.19479 6.12523 4.27063 5.56066 6.42229 4.43152L8.42229 3.38197C10.1779 2.46066 11.0557 2 12 2C12.9443 2 13.8221 2.46066 15.5777 3.38197Z" stroke="#e5008f" stroke-width="1.5" stroke-linecap="round"/> <path opacity="0.5" d="M21 7.5L17 9.5M12 12L3 7.5M12 12V21.5M12 12C12 12 14.7426 10.6287 16.5 9.75C16.6953 9.65237 17 9.5 17 9.5M17 9.5V13M17 9.5L7.5 4.5" stroke="#e5008f" stroke-width="1.5" stroke-linecap="round"/> </g>
+                    </svg>
                 <router-link to="/myproducts" class="list_link ms-2"> My Products </router-link>
               </div>
             </div>
@@ -165,10 +182,16 @@ export default {
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 448 512">
-                  <path
-                    d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48L0 160l0-48C0 85.5 21.5 64 48 64l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm64 80l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 400l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z" />
-                </svg>
+                <svg fill="#000000" width="20" height="20" viewBox="0 0 24 24" id="podcast" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"/> 
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/> 
+                        <g id="SVGRepo_iconCarrier"> 
+                        <path id="primary" d="M14.42,13.08a3.26,3.26,0,0,0-5.66,2.51l.49,4.62a2,2,0,0,0,2,1.79h1.54a2,2,0,0,0,2-1.79l.49-4.62A3.28,3.28,0,0,0,14.42,13.08Z" style="fill: #ffa5dd;"/>
+                        <path id="secondary" d="M18,14.56a1.07,1.07,0,0,1-.52-.14A1,1,0,0,1,17.16,13,5.82,5.82,0,0,0,18,10,6,6,0,0,0,6,10a5.82,5.82,0,0,0,.84,3,1,1,0,1,1-1.72,1,8,8,0,1,1,13.76,0A1,1,0,0,1,18,14.56ZM12,6a4,4,0,1,0,4,4A4,4,0,0,0,12,6Z"/>
+                        </g>
+
+                        </svg>
                 <router-link to="/mytools" class="list_link ms-2"> My Tools </router-link>
               </div>
             </div>
@@ -193,7 +216,7 @@ export default {
                     fill="#B5BEC8" />
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M14.2499 4.75H18.9999V10.45H14.2499C12.6759 10.45 11.3999 9.17401 11.3999 7.6C11.3999 6.02599 12.6759 4.75 14.2499 4.75ZM14.2499 8.55C14.7746 8.55 15.1999 8.12467 15.1999 7.6C15.1999 7.07533 14.7746 6.65 14.2499 6.65C13.7252 6.65 13.2999 7.07533 13.2999 7.6C13.2999 8.12467 13.7252 8.55 14.2499 8.55Z"
-                    fill="black" />
+                    fill="#e5008f" />
                 </svg>
                 <router-link to="/orders" class="list_link ms-2"> Orders </router-link>
               </div>
@@ -220,7 +243,7 @@ export default {
                     fill="#B5BEC8" />
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M15.7071 7.29289C16.0976 7.68342 16.0976 8.31658 15.7071 8.70711L11.7071 12.7071C11.3166 13.0976 10.6834 13.0976 10.2929 12.7071L8.29289 10.7071C7.90237 10.3166 7.90237 9.68342 8.29289 9.29289C8.68342 8.90237 9.31658 8.90237 9.70711 9.29289L11 10.5858L14.2929 7.29289C14.6834 6.90237 15.3166 6.90237 15.7071 7.29289Z"
-                    fill="#12131A" />
+                    fill="#e5008f" />
                 </svg>
                 <router-link to="/favorit" class="list_link ms-2"> Favorite </router-link>
               </div>
@@ -246,7 +269,7 @@ export default {
                     fill="#B5BEC8" />
                   <path
                     d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
-                    fill="black" />
+                    fill="#e5008f" />
                 </svg>
 
                 <router-link to="/changePassword" class="list_link ms-2"> Change Password </router-link>

@@ -1408,8 +1408,16 @@ margin: 10px 5px 0 0;
     fill: #ffa5dd;
 }
 .profile ul .list-group-item.active .justify-content-start svg path:first-child{
-   
     fill: #fff;
+}
+.profile ul .list-group-item .justify-content-start svg #secondary{
+    fill: var(--main-color);
+}
+.profile ul .list-group-item.active .justify-content-start svg #secondary{
+    fill: #fff;
+}
+.fa-xx{
+	color: var(--main-color);
 }
 .profile .order .white_card{
     overflow-x: auto;
@@ -2772,6 +2780,8 @@ input[type="file"]{
 }
 .card_waiting_img{
     border-radius: 11px;
+    height: 60px;
+    width: 60px;
 }
 /***************************8waiting order details *******************/
 .form-check-input:checked {
@@ -3066,6 +3076,7 @@ footer > .copy-write{
   }
   .social-links svg{
     color : var(--second-color);
+    fill: var(--second-color);
     transition: all 0.4s ease-in-out;
   }
   .social-links ul li {
@@ -3090,6 +3101,7 @@ footer > .copy-write{
   }
   .social-links ul li a:hover svg{
     color:#fff;
+    fill: #fff;
     transition: all 0.4s ease-in-out;
   }
 

@@ -972,7 +972,7 @@ export default {
                                                 <div class="row">
                                                     <div class="col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
-                                                            src="/img/pr15.jpg" alt="" />
+                                                            src="/img/Wedding1.jpg" alt="" />
                                                     </div>
                                                     <div class="col-lg-11 col-md-11 col-sm-11">
                                                         <div class="d-flex justify-content-between align-items-center name-card">
@@ -1003,8 +1003,8 @@ export default {
                                             <a v-on:click="clearData()">
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
-                                                        <img class="img-fluid card_waiting_img w-100"
-                                                            src="/img/pr15.jpg" alt="" />
+                                                        <img class="img-fluid card_waiting_img"
+                                                            src="/img/engagement.jpg" alt="" />
                                                     </div>
                                                     <div class="col-12 col-lg-11 col-md-11 col-sm-11">
                                                         <div class="d-flex justify-content-between align-items-center name-card">
@@ -1036,7 +1036,7 @@ export default {
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
-                                                            src="/img/pr15.jpg" alt="" />
+                                                            src="/img/birthday.jpg" alt="" />
                                                     </div>
                                                     <div class="col-12 col-lg-11 col-md-11 col-sm-11">
                                                         <div class="d-flex justify-content-between align-items-center name-card">
@@ -1068,7 +1068,7 @@ export default {
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
-                                                            src="/img/pr15.jpg" alt="" />
+                                                            src="/img/Graduation.png" alt="" />
                                                     </div>
                                                     <div class="col-12 col-lg-11 col-md-11 col-sm-11">
                                                         <div class="d-flex justify-content-between align-items-center name-card">
@@ -1100,7 +1100,7 @@ export default {
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
-                                                            src="/img/pr15.jpg" alt="" />
+                                                            src="/img/Specia_Occasions.jpg" alt="" />
                                                     </div>
                                                     <div class="col-12 col-lg-11 col-md-11 col-sm-11">
                                                         <div class="d-flex justify-content-between align-items-center name-card">
