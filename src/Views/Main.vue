@@ -1068,7 +1068,7 @@ export default {
                                                 <div class="row">
                                                     <div class="col-12 col-lg-1 col-md-1 col-sm-1 px-0">
                                                         <img class="img-fluid card_waiting_img w-100"
-                                                            src="/img/Graduation.png" alt="" />
+                                                            src="/img/Graduation.jpg" alt="" />
                                                     </div>
                                                     <div class="col-12 col-lg-11 col-md-11 col-sm-11">
                                                         <div class="d-flex justify-content-between align-items-center name-card">

@@ -2780,8 +2780,8 @@ input[type="file"]{
 }
 .card_waiting_img{
     border-radius: 11px;
-    height: 60px;
-    width: 60px;
+    /* height: 60px;
+    width: 60px; */
 }
 /***************************8waiting order details *******************/
 .form-check-input:checked {
@@ -3757,6 +3757,10 @@ footer > .copy-write{
 	    }
       .info .text_footer_hero{
             text-align: center;
+        }
+        .card_waiting_img{
+            /* height: 100%;
+            width: 100%; */
         }
 }
 
