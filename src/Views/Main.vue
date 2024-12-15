@@ -1292,13 +1292,12 @@ export default {
                                 required="">
                         </div> -->
                         <label class=" label-form"> Would you like to communicate by ? </label>
-
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
                                     :value="service.id" v-model="data.comunicationMethods">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
                         </div>
@@ -1430,9 +1429,9 @@ export default {
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
                                     :value="service.id" v-model="data.comunicationMethods">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
                         </div>
@@ -1563,9 +1562,9 @@ export default {
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
                                     :value="service.id" v-model="data.comunicationMethods">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
                         </div>
@@ -1740,9 +1739,9 @@ export default {
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
                                     :value="service.id" v-model="data.comunicationMethods">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
                         </div>
@@ -1873,9 +1872,9 @@ export default {
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'service-' + service.id"
+                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
                                     :value="service.id" v-model="data.comunicationMethods">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
+                                <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
                         </div>

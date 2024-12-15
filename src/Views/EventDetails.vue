@@ -86,6 +86,7 @@ export default {
     async created() {
         // Fetch cities based on initial stateId if available
         //console.log("this.getEventData :", this.getEventData);
+        this.GetPointsProfitData();
         await this.initFunc();
         if (this.getEventData.stateId) {
             await this.fetchSearchCities(this.getEventData.stateId);
@@ -226,6 +227,8 @@ export default {
             const selectedProfitRate = this.getPointProfitData.find(x => x.id === pointManagmentOperation.SiteProfitPercentage);
             const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === pointManagmentOperation.howManyPointForDollar);
 
+            // console.log("selectedProfitRate : ", selectedProfitRate);
+            // console.log("selectedPointsForDoller : ", selectedPointsForDoller);
             if (selectedProfitRate) {
                 this.siteProfitRate = selectedProfitRate.value;
             }

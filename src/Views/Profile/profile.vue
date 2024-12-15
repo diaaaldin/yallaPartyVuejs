@@ -98,6 +98,8 @@ export default {
             this.data.userTypeCFK = user.userTypeCFK;
             this.data.zipCode = user.zipCode;
 
+            console.log("user : " , user);
+            console.log("this.data : " , this.data);
             this.data.stateId = user.stateId;
             await this.fetchCities(user.stateId);
             // Wait for the cities to load and then set the city ID
