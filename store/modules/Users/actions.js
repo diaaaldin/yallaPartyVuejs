@@ -110,6 +110,14 @@ export const GetCompanyInfo = ({ commit, dispatch }, userId) => {
         throw error;
     });
 }
+export const GetStoreInfo = ({ commit, dispatch }, userId) => {
+    return User.GetStoreInfo(userId).then(function (response) {
+        commit('SET_COMPANY_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
 
 
 

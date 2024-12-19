@@ -97,7 +97,7 @@ export default {
     methods: {
         ...mapActions("Code", ["GetToolsSections"]),
         ...mapActions("Products", ["GetProducts"]),
-        ...mapActions("Users", ["GetCompanyInfo"]),
+        ...mapActions("Users", ["GetStoreInfo"]),
 
 
 
@@ -114,7 +114,7 @@ export default {
 
             this.dataSearch.userId = id;
 
-            this.GetCompanyInfo(id);
+            this.GetStoreInfo(id);
             this.GetProducts(this.dataSearch).then(Response => {
                 Response.products.data.forEach(event => {
                     this.productsData.push(event);
@@ -236,9 +236,9 @@ export default {
         async fetchSearchCities(stateId) {
             try {
                 const response = await axios.get(
-                    `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`, {
-                    withCredentials: false
-                });
+                    `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`
+                    , {  withCredentials: false }
+                );
                 this.cities = response.data;
             } catch (error) {
                 console.error("Error fetching cities:", error);

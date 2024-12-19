@@ -24,6 +24,16 @@ export default {
         return Api.get(`${END_POINT}/GetCompanyInfo`, config );
     },
 
+    GetStoreInfo(userId) {
+        let config = {
+            params: {
+                userId: userId,
+            },
+        };
+        return Api.get(`${END_POINT}/GetStoreInfo`, config );
+    },
+
+
     /////////////////
     GetAdminUsers(name, page, pageSize) {
         let token = localStorage.getItem("token")

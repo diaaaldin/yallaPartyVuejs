@@ -14,7 +14,7 @@ export default {
             default() {
                 return {
                     id: 0,
-                    companyId: 0,
+                    userId: 0,
                     companyEmail: "",
                     companyName: "",
                     name: "",
@@ -119,7 +119,7 @@ export default {
         },
 
         toMarketFunc() {
-            this.$router.push({ name: 'productsmarket', params: { id: this.product.companyId } });
+            this.$router.push({ name: 'productsmarket', params: { id: this.product.userId } });
         },
 
         stripHtml(html) {

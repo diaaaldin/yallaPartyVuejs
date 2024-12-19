@@ -110,7 +110,6 @@ export default {
         },
         
         mapBuyDataFunc() {
-            
             const selectedProfitRate = this.getPointProfitData.find(x => x.id === pointManagmentOperation.SiteProfitPercentage);
             const selectedPointsForDoller = this.getPointProfitData.find(x => x.id === pointManagmentOperation.howManyPointForDollar);
 
@@ -135,9 +134,9 @@ export default {
         },
 
         toMarketFunc() {
-            this.$router.push({ name: 'productsmarket', params: { id: this.getProductData.companyId } });
+            this.$router.push({ name: 'productsmarket', params: { id: this.getProductData.userId } });
+        
         },
-
         clearData() {
             this.buyData.paymentMethod = 0;
 

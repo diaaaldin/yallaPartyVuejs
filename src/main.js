@@ -11,6 +11,7 @@ import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import { createHead } from '@vueuse/head';
 
+
 const head = createHead()
 const app = createApp(App);
 
