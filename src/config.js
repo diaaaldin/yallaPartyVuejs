@@ -7,7 +7,7 @@ export const socialUrlData = {
     tiktok: 'https://www.tiktok.com',
     youtube: 'https://www.youtube.com',
   };
-  
+
   export const Urls = {
     dashboard: 'https://dash.yallaparty.net',
     site: 'https://yallaparty.net',
@@ -18,9 +18,22 @@ export const socialUrlData = {
     storeSignup: 'https://dash.yallaparty.net/storesignup',
     companySignup: 'https://dash.yallaparty.net/companysignup',
     partnerSignup: 'https://dash.yallaparty.net/partnersignup',
-  
 };
-  
+
+export const orderTypesEnum = {
+  Wedding: 17,
+  EngagementParty: 18,
+  BirthdayParty: 19,
+  GraduationParty : 20,
+  SpecialOccasion : 21,
+  BookEquipment : 22,
+  JobApplication : 23,
+  Withdrow : 24,
+  BeaPartner : 25,
+  CreateStore : 26,
+  CreateCompany : 27,
+};
+
 export const orderStatus = {
   pending: 54,
   success: 55,
@@ -35,3 +48,6 @@ export const pointManagmentOperation = {
   pointsForBuyEventTicket: 35,
   SiteProfitPercentage : 36,
 };
+
+
+ 

@@ -1,7 +1,8 @@
 <script>
 import { RouterView } from 'vue-router';
 import { ElLoading } from 'element-plus';
-import { socialUrlData } from '@/config';
+import { socialUrlData , orderTypesEnum } from '@/config';
+
 
 import { mapState, mapGetters, mapActions } from "vuex";
 import axios from "axios";
@@ -28,6 +29,12 @@ export default {
                 childrenServices: "",
                 totalPrice: 0
             },
+
+            orderTypeData :{
+				JobApplication : orderTypesEnum.JobApplication,
+             
+			},
+
             emailError: '', 
             states: [], // Will hold the list of states
             cities: [], // Will hold the list of cities for the selected state
@@ -136,7 +143,7 @@ export default {
         },
 
         jobApplicationCreate() {
-            this.data.orderType = 23;
+            this.data.orderType = this.orderTypeData.JobApplication;
             this.saveJobApplicationAnswers();
 
             const countryData = this.iti.getSelectedCountryData();

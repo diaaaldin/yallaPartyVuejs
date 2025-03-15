@@ -6,6 +6,7 @@ import { ElLoading } from 'element-plus';
 import { mapState, mapGetters, mapActions } from "vuex";
 import pageFooter from '../components/footer.vue';
 import axios from "axios";
+import { orderTypesEnum } from '@/config';
 
 export default {
     data() {
@@ -29,6 +30,15 @@ export default {
                 childrenServices: "",
                 totalPrice: 0
             },
+            
+			orderTypeData :{
+				Wedding : orderTypesEnum.Wedding,
+                EngagementParty : orderTypesEnum.EngagementParty,
+                BirthdayParty : orderTypesEnum.BirthdayParty,
+                GraduationParty : orderTypesEnum.GraduationParty,
+                SpecialOccasion : orderTypesEnum.SpecialOccasion,
+			},
+
             emailError: '',
             // states: [], // Will hold the list of states
             cities: [], // Will hold the list of cities for the selected state
@@ -202,7 +212,7 @@ export default {
         },
 
         weddingOrderCreate() {
-            this.data.orderType = 17;
+            this.data.orderType = this.orderTypeData.Wedding;
             this.saveWeddingAnswers();
             const countryData = this.iti.getSelectedCountryData();
             const countryCode = countryData.dialCode;
@@ -216,6 +226,7 @@ export default {
                     text: "",
                 });
 
+                // console.log("this.data : ",this.data);
                 this.CreateOrder(this.data).then(Response => {
                     this.$moshaToast('Send order success', {
                         hideProgressBar: 'false',
@@ -242,7 +253,7 @@ export default {
         },
 
         engagementOrderCreate() {
-            this.data.orderType = 18;
+            this.data.orderType = this.orderTypeData.EngagementParty;
             this.saveEngagementAnswers();
             const countryData = this.iti2.getSelectedCountryData();
             const countryCode = countryData.dialCode;
@@ -282,7 +293,7 @@ export default {
         },
 
         birthdayOrderCreate() {
-            this.data.orderType = 19;
+            this.data.orderType = this.orderTypeData.BirthdayParty;
             this.data.childrenServices = this.convertSelectedChildrenServicesToString();
             this.saveBirthdayAnswers();
             const countryData = this.iti3.getSelectedCountryData();
@@ -324,7 +335,7 @@ export default {
         },
 
         graduationOrderCreate() {
-            this.data.orderType = 20;
+            this.data.orderType = this.orderTypeData.GraduationParty;
             this.saveGraduationAnswers();
 
             const countryData = this.iti4.getSelectedCountryData();
@@ -365,7 +376,7 @@ export default {
         },
 
         specialOrderCreate() {
-            this.data.orderType = 21;
+            this.data.orderType = this.orderTypeData.SpecialOccasion;
             this.saveSpecialAnswers();
 
             const countryData = this.iti5.getSelectedCountryData();
@@ -374,41 +385,6 @@ export default {
             this.data.mobile = fullPhoneNumber;
 
             if (this.checkValidation()) {
-                const loading = ElLoading.service({
-                    lock: true,
-                    background: 'rgba(0, 0, 0, 0.7)',
-                    text: "",
-                });
-
-                this.CreateOrder(this.data).then(Response => {
-                    this.$moshaToast('Send order success', {
-                        hideProgressBar: 'false',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'success',
-                        timeout: 3000,
-                    });
-
-                    loading.close();
-                    $('#special_occasions').modal('hide');
-                }).catch(error => {
-                    this.$moshaToast(error.response.data.message, {
-                        hideProgressBar: 'false',
-                        position: 'top-center',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'warning',
-                        timeout: 3000,
-                    });
-                    loading.close();
-                });
-            }
-        },
-        jobApplicationCreate() {
-            this.data.orderType = 23;
-            this.saveJobApplicationAnswers();
-
-            if (this.checkJobApplicationValidation()) {
                 const loading = ElLoading.service({
                     lock: true,
                     background: 'rgba(0, 0, 0, 0.7)',
@@ -723,6 +699,7 @@ export default {
             }
 
         },
+
         saveJobApplicationAnswers() {
             // Clear the previous questionData
             this.data.questionData = [];
