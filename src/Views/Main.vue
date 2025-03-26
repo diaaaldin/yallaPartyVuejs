@@ -22,7 +22,7 @@ export default {
                 cityId: "",
                 orderDate: null,
                 comunicationMethods: 0,
-                service: 0,
+                service: "",
                 otherService: "",
                 moreInfo: "",
                 questionData: [],
@@ -30,14 +30,14 @@ export default {
                 childrenServices: "",
                 totalPrice: 0
             },
-            
-			orderTypeData :{
-				Wedding : orderTypesEnum.Wedding,
-                EngagementParty : orderTypesEnum.EngagementParty,
-                BirthdayParty : orderTypesEnum.BirthdayParty,
-                GraduationParty : orderTypesEnum.GraduationParty,
-                SpecialOccasion : orderTypesEnum.SpecialOccasion,
-			},
+
+            orderTypeData: {
+                Wedding: orderTypesEnum.Wedding,
+                EngagementParty: orderTypesEnum.EngagementParty,
+                BirthdayParty: orderTypesEnum.BirthdayParty,
+                GraduationParty: orderTypesEnum.GraduationParty,
+                SpecialOccasion: orderTypesEnum.SpecialOccasion,
+            },
 
             emailError: '',
             // states: [], // Will hold the list of states
@@ -47,6 +47,7 @@ export default {
             showOtherServiceText: false,
             birthdayBookingFor: 0,
             birthdayAgeGroup: 0,
+            services: [],
             childrenServices: [],
 
             weddingQuestion: [],
@@ -69,16 +70,16 @@ export default {
     },
     mounted() {
         useHead({
-                // Can be static or computed
-                title: 'Home | YallaParty',
-                meta: [
-                    {
+            // Can be static or computed
+            title: 'Home | YallaParty',
+            meta: [
+                {
                     name: `description`,
                     content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
-                    },
-                    ],
-                
-                });
+                },
+            ],
+
+        });
         //console.log("this.getQuestionsData : ", this.getQuestionsData);
         // Initialize intl-tel-input on the input element
         this.iti = window.intlTelInput(this.$refs.phoneInput1, {
@@ -133,12 +134,12 @@ export default {
     },
 
     created() {
-       // this.fetchStates();
+        // this.fetchStates();
 
     },
 
     computed: {
-        
+
         ...mapGetters("Code", ["getQuestionsData", "getStatesData", "getComunicationMethodsData", "getOrderServicesData", "getChildrenServicesData"]),
 
         GetUserName() {
@@ -167,7 +168,7 @@ export default {
                 })
             }
         },
-        
+
         goToBookStore() {
             this.$router.push({ name: 'toolStore' });
         },
@@ -214,6 +215,7 @@ export default {
         weddingOrderCreate() {
             this.data.orderType = this.orderTypeData.Wedding;
             this.saveWeddingAnswers();
+            this.data.service = this.convertSelectedServicesToString();
             const countryData = this.iti.getSelectedCountryData();
             const countryCode = countryData.dialCode;
             const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
@@ -255,6 +257,7 @@ export default {
         engagementOrderCreate() {
             this.data.orderType = this.orderTypeData.EngagementParty;
             this.saveEngagementAnswers();
+            this.data.service = this.convertSelectedServicesToString();
             const countryData = this.iti2.getSelectedCountryData();
             const countryCode = countryData.dialCode;
             const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
@@ -295,13 +298,14 @@ export default {
         birthdayOrderCreate() {
             this.data.orderType = this.orderTypeData.BirthdayParty;
             this.data.childrenServices = this.convertSelectedChildrenServicesToString();
+            this.data.service = this.convertSelectedServicesToString();
             this.saveBirthdayAnswers();
             const countryData = this.iti3.getSelectedCountryData();
             const countryCode = countryData.dialCode;
             const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
             this.data.mobile = fullPhoneNumber;
 
-
+            console.log(this.data);
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
                     lock: true,
@@ -337,7 +341,7 @@ export default {
         graduationOrderCreate() {
             this.data.orderType = this.orderTypeData.GraduationParty;
             this.saveGraduationAnswers();
-
+            this.data.service = this.convertSelectedServicesToString();
             const countryData = this.iti4.getSelectedCountryData();
             const countryCode = countryData.dialCode;
             const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
@@ -378,7 +382,7 @@ export default {
         specialOrderCreate() {
             this.data.orderType = this.orderTypeData.SpecialOccasion;
             this.saveSpecialAnswers();
-
+            this.data.service = this.convertSelectedServicesToString();
             const countryData = this.iti5.getSelectedCountryData();
             const countryCode = countryData.dialCode;
             const fullPhoneNumber = `+${countryCode}${this.data.mobile}`;
@@ -426,7 +430,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.email.focus();
+                // this.$refs.email.focus();
                 return false;
             } else if (this.data.name.trim() == '') {
                 this.$moshaToast("enter name", {
@@ -437,7 +441,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.email.focus();
+                // this.$refs.email.focus();
                 return false;
             } else if (this.data.nickName.trim() == '') {
                 this.$moshaToast("enter nickname", {
@@ -448,7 +452,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.nickName.focus();
+                // this.$refs.nickName.focus();
                 return false;
             } else if (this.data.email.trim() == '') {
                 this.$moshaToast("enter email", {
@@ -459,7 +463,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                // this.$refs.password.focus();
                 return false;
             } else if (this.data.mobile.trim() == '') {
                 this.$moshaToast("enter mobile", {
@@ -470,7 +474,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                // this.$refs.password.focus();
                 return false;
             }
 
@@ -483,7 +487,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                // this.$refs.password.focus();
                 return false;
             } else if (this.data.cityId.trim() == '') {
                 this.$moshaToast("select city", {
@@ -494,7 +498,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                // this.$refs.password.focus();
                 return false;
             }
 
@@ -507,7 +511,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                // this.$refs.password.focus();
                 return false;
             } else if (this.data.comunicationMethods == 0) {
                 this.$moshaToast("select comunication method", {
@@ -518,7 +522,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                // this.$refs.password.focus();
                 return false;
             }
             else if (!this.validateEmail(this.data.email)) {
@@ -530,7 +534,18 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                // this.$refs.password.focus();
+                return false;
+            } else if (this.data.service == "") {
+                this.$moshaToast("select at least one service", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                // this.$refs.password.focus();
                 return false;
             }
 
@@ -543,12 +558,12 @@ export default {
             if (!this.data.email) {
                 this.emailError = '';
                 return false;
-            } 
+            }
             // Check if the input does not match the email format
             else if (!emailPattern.test(this.data.email)) {
                 this.emailError = 'Please enter a valid email address.';
                 return false;
-            } 
+            }
             // Clear the error if the input is valid
             else {
                 this.emailError = '';
@@ -557,9 +572,9 @@ export default {
         },
         filterMobileInput(event) {
             const input = event.target.value.replace(/\D/g, '').slice(0, 10);
-            this.data.mobile = input; 
+            this.data.mobile = input;
         },
-      
+
 
         organizeQuestions() {
             // Clear previous data
@@ -742,6 +757,7 @@ export default {
             this.childrenServices = [];
         },
 
+
         getCommaSeparatedAnswers(questionId) {
             // Ensure userAnswers[questionId] is an array, otherwise use an empty array
             const answers = Array.isArray(this.userAnswers[questionId]) ? this.userAnswers[questionId] : [];
@@ -778,7 +794,7 @@ export default {
         },
 
         clearData() {
-                this.data.id = 0,
+            this.data.id = 0,
                 this.data.orderType = 0,
                 this.data.name = "",
                 this.data.nickName = "",
@@ -787,7 +803,8 @@ export default {
                 this.data.stateId = "",
                 this.data.cityId = "",
                 this.data.orderDate = null,
-                this.data.service = 0,
+                this.data.service = "",
+                this.services = [],
                 this.data.otherService = "",
                 this.data.comunicationMethods = 0,
                 this.data.moreInfo = "",
@@ -799,6 +816,10 @@ export default {
 
         convertSelectedChildrenServicesToString() {
             return this.childrenServices.join(', ');
+        },
+
+        convertSelectedServicesToString() {
+            return this.services.join(', ');
         }
 
     }
@@ -922,8 +943,11 @@ export default {
                     <!-- <p>Big Event 2024</p> -->
                     <h2 class="panner-title">Yalla Party</h2>
                     <p class="sub-index-title">
-                        Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.
-                        <br>For DJs, Yalla Party is a place to create and promote events, making it easy to sell tickets directly through us. Currently available in DC, MD, VA, PA, NJ and NY—with plans to expand soon!
+                        Yalla Party is your go-to platform for booking events of any size, from weddings and engagements
+                        to birthdays and graduation parties. Our platform also supports businesses by providing a
+                        marketplace where they can showcase and sell everything related to parties.
+                        <br>For DJs, Yalla Party is a place to create and promote events, making it easy to sell tickets
+                        directly through us. Currently available in DC, MD, VA, PA, NJ and NY—with plans to expand soon!
                     </p>
                     <a href="#card">Book Us</a>
                 </div>
@@ -952,24 +976,25 @@ export default {
                                                             src="/img/Wedding1.jpg" alt="" />
                                                     </div>
                                                     <div class="col-lg-11 col-md-11 col-sm-11">
-                                                        <div class="d-flex justify-content-between align-items-center name-card">
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center name-card">
                                                             <div class="d-flex justify-content-start">
                                                                 <span class="text">Wedding Party</span>
                                                             </div>
                                                             <div class="d-flex justify-content-end">
-                                                                    <svg class="feather feather-plus-square" fill="none"
-                                                                        height="24" stroke="currentColor"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" viewBox="0 0 24 24" width="24"
-                                                                        xmlns="http://www.w3.org/2000/svg">
-                                                                        <rect height="18" rx="2" ry="2" width="18" x="3"
-                                                                            y="3"></rect>
-                                                                        <line x1="12" x2="12" y1="8" y2="16"></line>
-                                                                        <line x1="8" x2="16" y1="12" y2="12"></line>
-                                                                    </svg>
-                                                                </div>
+                                                                <svg class="feather feather-plus-square" fill="none"
+                                                                    height="24" stroke="currentColor"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" viewBox="0 0 24 24" width="24"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <rect height="18" rx="2" ry="2" width="18" x="3"
+                                                                        y="3"></rect>
+                                                                    <line x1="12" x2="12" y1="8" y2="16"></line>
+                                                                    <line x1="8" x2="16" y1="12" y2="12"></line>
+                                                                </svg>
                                                             </div>
                                                         </div>
+                                                    </div>
                                                 </div>
                                             </a>
                                         </div>
@@ -984,22 +1009,23 @@ export default {
                                                             src="/img/engagement.jpg" alt="" />
                                                     </div>
                                                     <div class="col-12 col-lg-11 col-md-11 col-sm-11">
-                                                        <div class="d-flex justify-content-between align-items-center name-card">
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center name-card">
                                                             <div class="d-flex justify-content-start">
                                                                 <span class="text">Engagement Parties</span>
                                                             </div>
                                                             <div class="d-flex justify-content-end">
-                                                                    <svg class="feather feather-plus-square" fill="none"
-                                                                        height="24" stroke="currentColor"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" viewBox="0 0 24 24" width="24"
-                                                                        xmlns="http://www.w3.org/2000/svg">
-                                                                        <rect height="18" rx="2" ry="2" width="18" x="3"
-                                                                            y="3"></rect>
-                                                                        <line x1="12" x2="12" y1="8" y2="16"></line>
-                                                                        <line x1="8" x2="16" y1="12" y2="12"></line>
-                                                                    </svg>
-                                                                </div>
+                                                                <svg class="feather feather-plus-square" fill="none"
+                                                                    height="24" stroke="currentColor"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" viewBox="0 0 24 24" width="24"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <rect height="18" rx="2" ry="2" width="18" x="3"
+                                                                        y="3"></rect>
+                                                                    <line x1="12" x2="12" y1="8" y2="16"></line>
+                                                                    <line x1="8" x2="16" y1="12" y2="12"></line>
+                                                                </svg>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1016,22 +1042,23 @@ export default {
                                                             src="/img/birthday.jpg" alt="" />
                                                     </div>
                                                     <div class="col-12 col-lg-11 col-md-11 col-sm-11">
-                                                        <div class="d-flex justify-content-between align-items-center name-card">
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center name-card">
                                                             <div class="d-flex justify-content-start">
                                                                 <span class="text">Birthday Parties</span>
                                                             </div>
                                                             <div class="d-flex justify-content-end">
-                                                                    <svg class="feather feather-plus-square" fill="none"
-                                                                        height="24" stroke="currentColor"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" viewBox="0 0 24 24" width="24"
-                                                                        xmlns="http://www.w3.org/2000/svg">
-                                                                        <rect height="18" rx="2" ry="2" width="18" x="3"
-                                                                            y="3"></rect>
-                                                                        <line x1="12" x2="12" y1="8" y2="16"></line>
-                                                                        <line x1="8" x2="16" y1="12" y2="12"></line>
-                                                                    </svg>
-                                                                </div>
+                                                                <svg class="feather feather-plus-square" fill="none"
+                                                                    height="24" stroke="currentColor"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" viewBox="0 0 24 24" width="24"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <rect height="18" rx="2" ry="2" width="18" x="3"
+                                                                        y="3"></rect>
+                                                                    <line x1="12" x2="12" y1="8" y2="16"></line>
+                                                                    <line x1="8" x2="16" y1="12" y2="12"></line>
+                                                                </svg>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1048,22 +1075,23 @@ export default {
                                                             src="/img/Graduation.jpg" alt="" />
                                                     </div>
                                                     <div class="col-12 col-lg-11 col-md-11 col-sm-11">
-                                                        <div class="d-flex justify-content-between align-items-center name-card">
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center name-card">
                                                             <div class="d-flex justify-content-start">
                                                                 <span class="text">Graduation Parties</span>
                                                             </div>
                                                             <div class="d-flex justify-content-end">
-                                                                    <svg class="feather feather-plus-square" fill="none"
-                                                                        height="24" stroke="currentColor"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" viewBox="0 0 24 24" width="24"
-                                                                        xmlns="http://www.w3.org/2000/svg">
-                                                                        <rect height="18" rx="2" ry="2" width="18" x="3"
-                                                                            y="3"></rect>
-                                                                        <line x1="12" x2="12" y1="8" y2="16"></line>
-                                                                        <line x1="8" x2="16" y1="12" y2="12"></line>
-                                                                    </svg>
-                                                                </div>
+                                                                <svg class="feather feather-plus-square" fill="none"
+                                                                    height="24" stroke="currentColor"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" viewBox="0 0 24 24" width="24"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <rect height="18" rx="2" ry="2" width="18" x="3"
+                                                                        y="3"></rect>
+                                                                    <line x1="12" x2="12" y1="8" y2="16"></line>
+                                                                    <line x1="8" x2="16" y1="12" y2="12"></line>
+                                                                </svg>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1080,22 +1108,23 @@ export default {
                                                             src="/img/Specia_Occasions.jpg" alt="" />
                                                     </div>
                                                     <div class="col-12 col-lg-11 col-md-11 col-sm-11">
-                                                        <div class="d-flex justify-content-between align-items-center name-card">
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center name-card">
                                                             <div class="d-flex justify-content-start">
                                                                 <span class="text">Special Occasions</span>
                                                             </div>
                                                             <div class="d-flex justify-content-end">
-                                                                    <svg class="feather feather-plus-square" fill="none"
-                                                                        height="24" stroke="currentColor"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" viewBox="0 0 24 24" width="24"
-                                                                        xmlns="http://www.w3.org/2000/svg">
-                                                                        <rect height="18" rx="2" ry="2" width="18" x="3"
-                                                                            y="3"></rect>
-                                                                        <line x1="12" x2="12" y1="8" y2="16"></line>
-                                                                        <line x1="8" x2="16" y1="12" y2="12"></line>
-                                                                    </svg>
-                                                                </div>
+                                                                <svg class="feather feather-plus-square" fill="none"
+                                                                    height="24" stroke="currentColor"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" viewBox="0 0 24 24" width="24"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <rect height="18" rx="2" ry="2" width="18" x="3"
+                                                                        y="3"></rect>
+                                                                    <line x1="12" x2="12" y1="8" y2="16"></line>
+                                                                    <line x1="8" x2="16" y1="12" y2="12"></line>
+                                                                </svg>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1117,17 +1146,17 @@ export default {
                                                                 <span class="text">Equipment Reservation</span>
                                                             </div>
                                                             <div class="d-flex justify-content-end">
-                                                                    <svg class="feather feather-plus-square" fill="none"
-                                                                        height="24" stroke="currentColor"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" viewBox="0 0 24 24" width="24"
-                                                                        xmlns="http://www.w3.org/2000/svg">
-                                                                        <rect height="18" rx="2" ry="2" width="18" x="3"
-                                                                            y="3"></rect>
-                                                                        <line x1="12" x2="12" y1="8" y2="16"></line>
-                                                                        <line x1="8" x2="16" y1="12" y2="12"></line>
-                                                                    </svg>
-                                                                </div>
+                                                                <svg class="feather feather-plus-square" fill="none"
+                                                                    height="24" stroke="currentColor"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" viewBox="0 0 24 24" width="24"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <rect height="18" rx="2" ry="2" width="18" x="3"
+                                                                        y="3"></rect>
+                                                                    <line x1="12" x2="12" y1="8" y2="16"></line>
+                                                                    <line x1="8" x2="16" y1="12" y2="12"></line>
+                                                                </svg>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1179,7 +1208,7 @@ export default {
                                 <div class="d-flex justify-content-start flex-column">
                                     <h2 class="text-hero mt-4 mt-lg-3 mb-lg-2">Be a partner</h2>
                                     <span class="sub-index-title mb-3 mb-lg-0 my-lg-4">
-                                       We are looking to extend Yalla Party to other states. Be our partner! </span>
+                                        We are looking to extend Yalla Party to other states. Be our partner! </span>
                                     <div class="my-4">
                                         <a href="http://dash.yallaparty.net/partnersignup" type="button"
                                             class="home-btn p-2"> Create Account
@@ -1272,8 +1301,9 @@ export default {
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
-                                    :value="service.id" v-model="data.comunicationMethods">
+                                <input class="form-check-input" type="radio" name="radio"
+                                    :id="'serviceCom-' + service.id" :value="service.id"
+                                    v-model="data.comunicationMethods">
                                 <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
@@ -1281,12 +1311,11 @@ export default {
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
-                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
-                                </label>
-                            </div>
+                                <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                    <input name="childrenService" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + service.id" :value="service.id" v-model="services" />
+                                    <label :for="'checkbox-' + service.id">{{ service.name }}</label>
+                                </div>
                         </div>
                         <!-- Textarea for "Other services" -->
                         <div v-if="this.showOtherServiceText">
@@ -1406,8 +1435,9 @@ export default {
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
-                                    :value="service.id" v-model="data.comunicationMethods">
+                                <input class="form-check-input" type="radio" name="radio"
+                                    :id="'serviceCom-' + service.id" :value="service.id"
+                                    v-model="data.comunicationMethods">
                                 <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
@@ -1415,12 +1445,11 @@ export default {
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
-                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
-                                </label>
-                            </div>
+                                <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                    <input name="childrenService" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + service.id" :value="service.id" v-model="services" />
+                                    <label :for="'checkbox-' + service.id">{{ service.name }}</label>
+                                </div>
                         </div>
                         <!-- Textarea for "Other services" -->
                         <div v-if="this.showOtherServiceText">
@@ -1539,8 +1568,9 @@ export default {
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
-                                    :value="service.id" v-model="data.comunicationMethods">
+                                <input class="form-check-input" type="radio" name="radio"
+                                    :id="'serviceCom-' + service.id" :value="service.id"
+                                    v-model="data.comunicationMethods">
                                 <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
@@ -1548,13 +1578,13 @@ export default {
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
-                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
-                                </label>
-                            </div>
+                                <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                    <input name="childrenService" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + service.id" :value="service.id" v-model="services" />
+                                    <label :for="'checkbox-' + service.id">{{ service.name }}</label>
+                                </div>
                         </div>
+                        
                         <!-- Textarea for "Other services" -->
                         <div v-if="this.showOtherServiceText">
                             <label class="label-form">Please specify other services:</label>
@@ -1716,8 +1746,9 @@ export default {
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
-                                    :value="service.id" v-model="data.comunicationMethods">
+                                <input class="form-check-input" type="radio" name="radio"
+                                    :id="'serviceCom-' + service.id" :value="service.id"
+                                    v-model="data.comunicationMethods">
                                 <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
@@ -1725,12 +1756,11 @@ export default {
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
-                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
-                                </label>
-                            </div>
+                                <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                    <input name="childrenService" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + service.id" :value="service.id" v-model="services" />
+                                    <label :for="'checkbox-' + service.id">{{ service.name }}</label>
+                                </div>
                         </div>
                         <!-- Textarea for "Other services" -->
                         <div v-if="this.showOtherServiceText">
@@ -1810,7 +1840,7 @@ export default {
                         <label class=" label-form"> Mobile </label>
                         <div class="input-group mb-3">
                             <input v-model="data.mobile" id="phone" type="tel" ref="phoneInput5" class="form-control"
-                                maxlength="10" placeholder="(201) 555-0123" aria-label="" 
+                                maxlength="10" placeholder="(201) 555-0123" aria-label=""
                                 aria-describedby="basic-addon1" @input="filterMobileInput" required>
 
                         </div>
@@ -1820,7 +1850,7 @@ export default {
                                 aria-label="Username" aria-describedby="basic-addon1" @input="validateEmail">
                         </div>
                         <p v-if="emailError" style="color: red">{{ emailError }}</p>
-                        
+
                         <label class=" label-form"> State </label>
                         <div class="input-group mb-3">
                             <select v-model="data.stateId" class="form-control" @change="fetchCities(data.stateId)">
@@ -1849,8 +1879,9 @@ export default {
                         <div class="mb-3">
                             <div class="form-check" v-for="service in this.getComunicationMethodsData"
                                 :key="service.id">
-                                <input class="form-check-input" type="radio" name="radio" :id="'serviceCom-' + service.id"
-                                    :value="service.id" v-model="data.comunicationMethods">
+                                <input class="form-check-input" type="radio" name="radio"
+                                    :id="'serviceCom-' + service.id" :value="service.id"
+                                    v-model="data.comunicationMethods">
                                 <label class="form-check-label" :for="'serviceCom-' + service.id"> {{ service.name }}
                                 </label>
                             </div>
@@ -1858,12 +1889,11 @@ export default {
 
                         <label class="label-form">Select the type of service provided</label>
                         <div class="mb-3">
-                            <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
-                                <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
-                                    :value="service.id" v-model="data.service" @change="handleServiceChange">
-                                <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }}
-                                </label>
-                            </div>
+                                <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                                    <input name="childrenService" class="form-check-input" type="checkbox"
+                                        :id="'checkbox-' + service.id" :value="service.id" v-model="services" />
+                                    <label :for="'checkbox-' + service.id">{{ service.name }}</label>
+                                </div>
                         </div>
                         <!-- Textarea for "Other services" -->
                         <div v-if="this.showOtherServiceText">

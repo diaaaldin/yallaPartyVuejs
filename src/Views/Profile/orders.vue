@@ -3,6 +3,8 @@ import { RouterView } from 'vue-router';
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
 import axios from "axios";
+import { orderTypesEnum } from '@/config';
+
 
 export default {
   data() {
@@ -18,7 +20,7 @@ export default {
         cityId: "",
         orderDate: null,
         comunicationMethods: 0,
-        service: 0,
+        service: "",
         otherService: "",
         moreInfo: "",
         questionData: [],
@@ -49,6 +51,7 @@ export default {
       showOtherServiceText: false,
       birthdayBookingFor: 0,
       birthdayAgeGroup: 0,
+      services: [],
       childrenServices: [],
 
       weddingQuestion: [],
@@ -60,7 +63,10 @@ export default {
 
       userAnswers: {},
       questions: [ /* your questions array */],
-
+      orderEnums :{
+                BirthdayParty : orderTypesEnum.BirthdayParty,
+                JobApplication : orderTypesEnum.JobApplication
+            }
     }
   },
 
@@ -192,8 +198,8 @@ export default {
     },
 
     OrderUpdate() {
-
       this.data.childrenServices = this.convertSelectedChildrenServicesToString();
+      this.data.service = this.convertSelectedServicesToString();
 
       this.saveAnswersFunc();
       if (this.checkValidation()) {
@@ -229,7 +235,7 @@ export default {
     },
 
     checkValidation() {
-      if (this.data.orderType == 23) {
+      if (this.data.orderType == orderTypesEnum.JobApplication) {
         if (this.data.name.trim() == '') {
           this.$moshaToast("enter name", {
             hideProgressBar: 'false',
@@ -239,7 +245,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.email.focus();
+          // this.$refs.email.focus();
           return false;
         } else if (this.data.nickName.trim() == '') {
           this.$moshaToast("enter nickname", {
@@ -261,7 +267,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         } else if (this.data.mobile.trim() == '') {
           this.$moshaToast("enter mobile", {
@@ -272,7 +278,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         }
         else if (this.data.stateId.trim() == '') {
@@ -284,7 +290,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         } else if (this.data.cityId.trim() == '') {
           this.$moshaToast("select city", {
@@ -295,7 +301,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         }
         else if (this.data.comunicationMethods == 0) {
@@ -307,7 +313,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         } 
         
@@ -321,7 +327,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.email.focus();
+          // this.$refs.email.focus();
           return false;
         } else if (this.data.nickName.trim() == '') {
           this.$moshaToast("enter nickname", {
@@ -332,7 +338,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.nickName.focus();
+          // this.$refs.nickName.focus();
           return false;
         } else if (this.data.email.trim() == '') {
           this.$moshaToast("enter email", {
@@ -343,7 +349,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         } else if (this.data.mobile.trim() == '') {
           this.$moshaToast("enter mobile", {
@@ -354,7 +360,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         }
 
@@ -367,7 +373,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         } else if (this.data.cityId.trim() == '') {
           this.$moshaToast("select city", {
@@ -378,7 +384,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         }
 
@@ -391,7 +397,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         } else if (this.data.comunicationMethods == 0) {
           this.$moshaToast("select comunication method", {
@@ -402,10 +408,10 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
-        } else if (this.data.service == 0) {
-          this.$moshaToast("select service", {
+        } else if (this.data.service == "") {
+          this.$moshaToast("select at least one service", {
             hideProgressBar: 'false',
             position: 'top-center',
             showIcon: 'true',
@@ -413,7 +419,7 @@ export default {
             type: 'warning',
             timeout: 3000,
           });
-          this.$refs.password.focus();
+          // this.$refs.password.focus();
           return false;
         }
       }
@@ -487,22 +493,22 @@ export default {
       // Iterate over questions and filter based on orderType
       for (const question of this.getQuestionsData) {
         switch (question.orderType) {
-          case 17:
+          case orderTypesEnum.Wedding:
             this.weddingQuestion.push(question);
             break;
-          case 18:
+          case orderTypesEnum.EngagementParty:
             this.engagementQuestion.push(question);
             break;
-          case 19:
+          case orderTypesEnum.BirthdayParty:
             this.birthdayQuestion.push(question);
             break;
-          case 20:
+          case orderTypesEnum.GraduationParty:
             this.graduationQuestion.push(question);
             break;
-          case 21:
+          case orderTypesEnum.SpecialOccasion:
             this.specialQuestion.push(question);
             break;
-          case 23:
+          case orderTypesEnum.JobApplication:
             this.jobApplicationQuestion.push(question);
             break;
           default:
@@ -607,7 +613,8 @@ export default {
       this.data.stateId = "";
       this.data.cityId = "";
       this.data.orderDate = null;
-      this.data.service = 0;
+      this.data.service = "";
+      this.services = [];
       this.data.otherService = "";
       this.data.comunicationMethods = 0;
       this.data.moreInfo = "";
@@ -637,7 +644,7 @@ export default {
         this.data.moreInfo = selectedOrder.moreInfo;
         this.data.orderDate = selectedOrder.orderDateSt;
 
-        this.data.service = selectedOrder.serviceId;
+        this.services = selectedOrder.serviceId;
         this.data.otherService = selectedOrder.otherService;
         this.handleServiceChange();
         this.data.comunicationMethods = selectedOrder.comunicationMethodId;
@@ -662,22 +669,22 @@ export default {
         // console.log("question save : " , selectedOrder.questionData);
         ///// map data
         switch (this.data.orderType) {
-          case 17:
+          case orderTypesEnum.Wedding:
             this.questions = this.weddingQuestion;
             break;
-          case 18:
+          case orderTypesEnum.EngagementParty:
             this.questions = this.engagementQuestion;
             break;
-          case 19:
+          case orderTypesEnum.BirthdayParty:
             this.questions = this.birthdayQuestion;
             break;
-          case 20:
+          case orderTypesEnum.GraduationParty:
             this.questions = this.graduationQuestion;
             break;
-          case 21:
+          case orderTypesEnum.SpecialOccasion:
             this.questions = this.specialQuestion;
             break;
-          case 23:
+          case orderTypesEnum.JobApplication:
             this.questions = this.jobApplicationQuestion;
             break;
         }
@@ -719,6 +726,9 @@ export default {
 
     convertSelectedChildrenServicesToString() {
       return this.childrenServices.join(', ');
+    },
+    convertSelectedServicesToString() {
+      return this.services.join(', ');
     }
 
   }
@@ -848,8 +858,8 @@ export default {
                 </option>
               </select>
             </div>
-            <label v-if="data.orderType != 23" class=" label-form"> Party date </label>
-            <div v-if="data.orderType != 23" class="input-group mb-3">
+            <label v-if="data.orderType != orderEnums.JobApplication" class=" label-form"> Party date </label>
+            <div v-if="data.orderType != orderEnums.JobApplication" class="input-group mb-3">
               <input class="form-control" type="date" v-model="data.orderDate" required />
             </div>
 
@@ -863,12 +873,19 @@ export default {
               </div>
             </div>
 
-            <label v-if="data.orderType != 23" class="label-form">Select the type of service provided</label>
-            <div v-if="data.orderType != 23" class="mb-3">
-              <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+            <label v-if="data.orderType != orderEnums.JobApplication" class="label-form">Select the type of service provided</label>
+            <div v-if="data.orderType != orderEnums.JobApplication" class="mb-3">
+              <!-- <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
                 <input class="form-check-input" type="radio" name="rad" :id="'service-' + service.id"
                   :value="service.id" v-model="data.service" @change="handleServiceChange">
                 <label class="form-check-label" :for="'service-' + service.id"> {{ service.name }} </label>
+              </div> -->
+              <div class="mb-3">
+                  <div class="form-check" v-for="service in this.getOrderServicesData" :key="service.id">
+                      <input name="childrenService" class="form-check-input" type="checkbox"
+                          :id="'checkbox-' + service.id" :value="service.id" v-model="services" />
+                      <label :for="'checkbox-' + service.id">{{ service.name }}</label>
+                  </div>
               </div>
             </div>
             <!-- Textarea for "Other services" -->
@@ -876,7 +893,7 @@ export default {
               <label class="label-form">Please specify other services:</label>
               <textarea class="form-control" v-model="data.otherService" rows="3"></textarea>
             </div>
-            <div v-if="this.data.orderType == 19">
+            <div v-if="this.data.orderType == this.orderEnums.BirthdayParty">
               <label class="label-form">Are you booking the party for yourself or someone else?</label>
               <div class="mb-3">
                 <div class="form-check" key="1">
